@@ -1,2 +1,12 @@
-wp-vezbanka
-<router-outlet></router-outlet>
+<app-preloader></app-preloader>
+
+
+<div id="app">
+ <app-sidebar></app-sidebar>
+ <app-rsidebar></app-rsidebar>
+ <app-search></app-search>
+ <app-navbar></app-navbar>
+ <div style="top: 80px; position: relative;">
+    <router-outlet></router-outlet>
+ </div>
+</div>

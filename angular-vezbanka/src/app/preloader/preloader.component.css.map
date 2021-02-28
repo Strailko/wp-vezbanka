@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "preloader.component.scss"
+    ],
+    "names": [],
+    "file": "preloader.component.css"
+}

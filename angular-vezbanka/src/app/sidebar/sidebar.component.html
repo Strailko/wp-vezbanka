@@ -1,0 +1,41 @@
+<aside class="main-sidebar fixed offcanvas shadow" data-toggle='offcanvas'>
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a class="ajaxifyPage active" href="/">
+                <i class="icon icon-sitemap s-24"></i> <span>Почетна</span>
+            </a>
+            </li>
+            <li class="menu-item-has-children">
+                <a href="#">
+                    <i class="icon icon-dashboard s-24"></i> <span>Категории на игри</span>
+                </a>
+                <ul class="sub-menu">
+                    <li><a href="#" [routerLink]="['/games/category/{id}']"><i class="icon icon-asterisk"></i>Категорија 1</a></li>
+                </ul>
+            </li>
+            <li><a class="ajaxifyPage" href="#" [routerLink]="['/games/topplayed']">
+                <i class="icon icon-play-circle s-24"></i> <span>Најиграни игри</span>
+            </a>
+            </li>
+            <li><a class="ajaxifyPage" href="#" [routerLink]="['/games/toprated']">
+                <i class="icon icon-gamepad s-24"></i> <span>Најомилени игри</span>
+            </a>
+            </li>
+
+            <li><a class="ajaxifyPage" href="#" [routerLink]="['/games/latest']">
+                <i class="icon icon-tags s-24"></i> <span>Нови игри</span>
+            </a>
+            </li>
+            <li><a class="ajaxifyPage" href="#" [routerLink]="['/games/favorite']" style="cursor: not-allowed; text-decoration: none; opacity: 0.5;">
+                <i class="icon icon-gittip s-24"></i> <span>Твои омилени игри</span>
+            </a>
+            </li>
+
+            <li><a class="ajaxifyPage" href="#" [routerLink]="['/games/create']" style="cursor: not-allowed; text-decoration: none; opacity: 0.5;">
+                <i class="icon icon-wrench s-24"></i> <span>Креирај нова игра</span>
+            </a>
+            </li>
+        </ul>
+
+    </div>
+</aside>
