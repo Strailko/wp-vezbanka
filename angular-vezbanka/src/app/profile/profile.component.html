@@ -1,0 +1,72 @@
+<main id="pageContent" class="page has-sidebar">
+    <div class="container-fluid relative animatedParent animateOnce p-lg-5">
+        <div class="card no-b shadow no-r">
+            <div class="row no-gutters" *ngIf="user">
+                <div class="col-md-4 b-r">
+                    <div class="text-center p-5 mt-5">
+                        <figure class="avatar avatar-xl">
+                            <img [src]="user?.photo" alt="User photo"></figure>
+                        <div>
+                            <h4 class="p-t-10">{{user.firstName}} {{user?.lastName}}</h4>
+                        </div>
+                        <a href="mailto:{{user.email}}" class="btn btn-outline-primary btn-sm  mt-3">Испрати мејл</a>
+                        <!--div class="mt-5">
+                            <ul class="social social list-inline">
+                                <li class="list-inline-item"><a href="#" class="grey-text"><i class="icon-facebook"></i></a>
+                                </li>
+                                <li class="list-inline-item"><a href="#" class="grey-text"><i class="icon-youtube"></i></a>
+                                </li>
+                                <li class="list-inline-item"><a href="#" class="grey-text"><i class="icon-twitter"></i></a>
+                                </li>
+                            </ul>
+                        </div-->
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="p5 b-b">
+                        <div class="pl-4 mt-4">
+                            <h5>Информации за креаторот</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="p-4">
+                                    <h4>Е-пошта</h4>
+                                    <span>{{user.email}}</span>
+                                </div>
+                                <div class="p-4">
+                                    <h4>Био</h4>
+                                    <span>{{user.biography}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="p-4">
+                        <h4>Нови игри</h4>
+                        <ul class="list-inline mt-3" *ngIf="games">
+                            <li class="list-inline-item " *ngFor="let game of games" [routerLink]="['/game/' + game.id]">
+                                <img [src]="game.photo" alt="{{game.name}}" class="img-responsive w-40px circle mb-3">
+                            </li>
+                        </ul>
+                    </div>
+    
+                </div>
+            </div>
+
+        </div>
+    
+    </div>
+    <div *ngIf="!user">
+        <div class="preloader-wrapper big active" style="left: 50%;">
+            <div class="spinner-layer spinner-red-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+    </main>

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "editgame.component.scss"
+    ],
+    "names": [],
+    "file": "editgame.component.css"
+}

@@ -1,0 +1,74 @@
+<nav class="navbar-wrapper shadow">
+    <div class="navbar navbar-expand player-header justify-content-between  bd-navbar">
+        <div class="d-flex align-items-center">
+            <a href="#" data-toggle="push-menu" class="paper-nav-toggle pp-nav-toggle ml-2 mr-2">
+                <i></i>
+            </a>
+            <a class="navbar-brand d-none d-lg-block" href="/">
+                <div class="d-flex align-items-center s-14 l-s-2">
+                    <span>ВЕЖБАНКА</span>
+                </div>
+            </a>
+        </div>
+
+        <!--Top Menu Start -->
+<div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+
+        <!-- Right Sidebar Toggle Button -->
+        <li class="searchOverlay-wrap" style="padding-right: 2em;" *ngIf="loggedIn">
+            <a href="#" data-toggle="control-sidebar" class="nav-link mr-3 btn--searchOverlay no-ajaxy">
+                <i class="icon icon-menu-3 s-24"></i>
+            </a>
+        </li>
+        <li class="searchOverlay-wrap">
+            <a href="#" id="btn-searchOverlay" class="nav-link mr-3 btn--searchOverlay no-ajaxy">
+                <i class="icon icon-search s-24"></i>
+            </a>
+        </li>
+        <!-- User Account-->
+        <li class="dropdown custom-dropdown user user-menu ">
+            <a href="#" class="nav-link" data-toggle="dropdown">
+                <figure *ngIf="loggedIn" class="avatar">
+                    <img src="assets/img/demo/u1.png" alt="">
+                </figure>
+                <figure *ngIf="!loggedIn" class="avatar" style="color: inherit !important; background-color: inherit !important;">
+                    <i class="icon icon-user-circle" style="font-size: 28px;"></i>
+                </figure>
+                <i class="icon-more_vert "></i>
+            </a>
+            <div class="dropdown-menu p-4 dropdown-menu-right">
+                <div class="row box justify-content-between my-4">
+                        <div class="col text-center" *ngIf="loggedIn">
+                            <a class="ajaxifyPage" href="#" [routerLink]="['/profile/' + userId]">
+                                <i class="icon icon-user-4 s-24"></i> <span>Профил</span>
+                            </a>
+                        </div>
+                        <div class="col text-center" *ngIf="loggedIn">
+                            <a class="ajaxifyPage" href="#" [routerLink]="['/games/favorite']">
+                                <i class="icon icon-heart s-24"></i> <span style="white-space: nowrap;">Омилени игри</span>
+                            </a>
+                        </div>
+                        <div class="col text-center" style="padding-top: 1em;" *ngIf="loggedIn">
+                            <a class="ajaxifyPage" href="#">
+                                <i class="icon icon-lock s-24"></i> <span>Одјава</span>
+                            </a>
+                        </div>
+                        <div class="col text-center" *ngIf="!loggedIn">
+                            <a class="ajaxifyPage" href="#" [routerLink]="['/login']">
+                                <i class="icon icon-user-4 s-24"></i> <span>Најава</span>
+                            </a>
+                        </div>
+                        <div class="col text-center" *ngIf="!loggedIn">
+                            <a class="ajaxifyPage" href="#" [routerLink]="['/login']">  
+                                <i class="icon icon-lock s-24"></i> <span>Регистрација</span>
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+    </div>
+
+</nav>

@@ -1,0 +1,27 @@
+<aside class="control-sidebar fixed ">
+    <div class="slimScroll">
+        <div class="sidebar-header">
+            <h4>Игри</h4>
+            <p>Листа на твои игри</p>
+            <a href="#" data-toggle="control-sidebar" class="paper-nav-toggle  active"><i></i></a>
+        </div>
+        <div class="p-3">
+            <ul id="playlist" class="playlist list-group">
+                <li class="list-group-item my-1" *ngFor="let game of games" [routerLink]="['/game/' + game.id]">
+                    <a class="no-ajaxy media-url">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <i class="icon-play s-28"></i>
+                            <figure class="avatar-md float-left mr-3 mt-1">
+                                <img class="r-5" [src]="game.photo" alt="Game photo">
+                            </figure>
+                            <div>
+                                <h6>{{game.name}}</h6><p *ngFor="let cat of game.categories">{{cat.name}} ,</p>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</aside>
