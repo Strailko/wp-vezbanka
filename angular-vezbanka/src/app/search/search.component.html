@@ -15,8 +15,8 @@
         </svg>
     </button>
     <div class="searchOverlay__inner  searchOverlay__inner--up">
-        <form class="searchOverlay__form" action="index.html">
-            <input class="searchOverlay__input" name="searchOverlay" type="text" placeholder="Пребарај" autocomplete="off" spellcheck="false">
+        <form class="searchOverlay__form">
+            <input class="searchOverlay__input" name="searchOverlay" (keyup)="searchGames($event.target.value)" type="text" placeholder="Пребарај" autocomplete="off" spellcheck="false">
             <span class="searchOverlay__info">Внесете текст за да пребарате игра или ESC за да го исклучите</span>
         </form>
     </div>
@@ -28,50 +28,14 @@
                         <strong>Листа на игри</strong>
                     </div>
                     <ul class="playlist list-group list-group-flush">
-                        <li class="list-group-item">
+                        <li class="list-group-item" *ngFor="let game of filteredGames" [routerLink]="['/game/' + game.id]">
                             <div class="d-flex align-items-center">
                                 <div class="col-10">
                                     <figure class="avatar avatar-md float-left  mr-3 mt-1">
-                                        <img src="assets/img/demo/u1.jpeg" alt="">
+                                        <img [src]="game.photo" alt="Game photo">
                                     </figure>
-                                    <h6>Zoe Foe</h6>
-                                    <small>5 Albums - 50 Songs</small>
-                                </div>
-                                <a href="#" class="ml-auto"><i class="icon-more"></i></a>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="col-10">
-                                    <figure class="avatar avatar-md float-left  mr-3 mt-1">
-                                        <img src="assets/img/demo/u2.jpeg" alt="">
-                                    </figure>
-                                    <h6>Zoe Foe</h6>
-                                    <small>5 Albums - 50 Songs</small>
-                                </div>
-                                <a href="#" class="ml-auto"><i class="icon-more"></i></a>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="col-10">
-                                    <figure class="avatar avatar-md float-left  mr-3 mt-1">
-                                        <img src="assets/img/demo/u3.jpeg" alt="">
-                                    </figure>
-                                    <h6>Zoe Foe</h6>
-                                    <small>5 Albums - 50 Songs</small>
-                                </div>
-                                <a href="#" class="ml-auto"><i class="icon-more"></i></a>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex align-items-center">
-                                <div class="col-10">
-                                    <figure class="avatar avatar-md float-left  mr-3 mt-1">
-                                        <img src="assets/img/demo/u6.jpeg" alt="">
-                                    </figure>
-                                    <h6>Zoe Foe</h6>
-                                    <small>5 Albums - 50 Songs</small>
+                                    <h6>{{game.name}}</h6>
+                                    <small><p *ngFor="let cat of game.categories">{{cat.name}}</p>></small>
                                 </div>
                                 <a href="#" class="ml-auto"><i class="icon-more"></i></a>
                             </div>

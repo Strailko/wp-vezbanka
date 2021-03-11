@@ -1,6 +1,6 @@
 export interface Answer{
   id?: Number;
-  awnser: string;
+  answer: string;
   isCorrect: boolean;
 }
 
@@ -27,11 +27,11 @@ export interface User{
   username:string;
   password:string;
   firstName:string;
-  lastName:string;
+  lastName?:string;
   email:string;
-  photo:string;
-  role:Role;
-  biography:string;
+  photo?:string;
+  role?:Role;
+  biography?:string;
 }
 
 export interface Question{
@@ -46,7 +46,7 @@ export interface Category{
   name:string;
   shortDescription:string;
   coverPhoto:string;
-  games: Game[];
+  games?: Game[];
 }
 
 export interface Game{
@@ -57,12 +57,13 @@ export interface Game{
   numberOfHearts:Number;
   photo:string;
   shortDescription:string;
-  creator:User;
-  player:User;
-  questions:Question[];
+  creator?:User;
+  player?:User;
+  questions?:Question[];
   categories:Category[];
 }
 
-
-
-
+export interface HeartedGame {
+  userId?: Number;
+  gameId?: Number;
+}

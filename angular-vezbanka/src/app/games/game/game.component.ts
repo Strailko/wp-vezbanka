@@ -12,4 +12,15 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // heartGame(gameId: Number) {
+  //   if(this.loggedIn) {
+  //     this.heartedGame.gameId = gameId;
+  //     this.heartedGame.userId = this.userId;
+  //     this.dataService.heartGame(this.heartedGame)
+  //         .subscribe((confirmation) => {
+  //           console.log(confirmation);
+  //         });
+      
+  //   }
+  // }
 }

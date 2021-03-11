@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ApplicationModule, NgModule } from '@angular/core';
 import { MaterialModule } from './shared/material/material.module';
 import { AuthModule } from './shared/auth/auth.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { RegisterDialogComponent } from './login/register-dialog/register-dialog
 import { GameComponent } from './games/game/game.component';
 import { PlayComponent } from './games/play/play.component';
 import { EditgameComponent } from './games/editgame/editgame.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -51,8 +53,11 @@ import { EditgameComponent } from './games/editgame/editgame.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
-    //AuthModule
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    HttpClientModule,
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

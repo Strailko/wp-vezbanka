@@ -7,10 +7,10 @@
         <a href="#" [routerLink]="['/games']">Види ги сите игри<i class="icon-angle-right ml-3"></i></a>
     </div>
     <div class="lightSlider has-items-overlay playlist" data-item="6" data-item-lg="3" data-item-md="3" data-item-sm="2" data-auto="false" data-pager="false" data-controls="true" data-loop="false">
-        <div>
+        <div *ngFor="let game of games" [routerLink]="['/game/' + game.id]">
             <figure>
                 <div class="img-wrapper">
-                    <img src="assets/img/demo/a8.jpeg" alt="/">
+                    <img [src]="game.photo" alt="/">
                     <div class="img-overlay text-white">
                         <div class="figcaption">
                             <ul class="list-inline d-flex align-items-center justify-content-between">
@@ -20,218 +20,25 @@
                                     </a>
                                 </li>
                                 <li class="list-inline-item ">
-                                    <a class="no-ajaxy media-url" href="assets/media/track2.mpga" data-wave="assets/media/track2.json">
+                                    <a class="no-ajaxy media-url">
                                         <i class="icon-play s-48"></i>
                                     </a>
                                 </li>
                                 <li class="list-inline-item">
-                                    <a href="album-single.html"><i class="icon-more s-18 pt-3"></i></a></li>
+                                    <a href="#"><i class="icon-more s-18 pt-3"></i></a></li>
                             </ul>
                             <div class="text-center mt-5">
-                                <h5>To Phir Ao</h5>
-                                <span>Joe Doe</span>
+                                <h5>{{game.name}}</h5>
+                                <span><p *ngFor="let cat of game.categories">{{cat.name}}, </p></span>
                             </div>
                         </div>
                     </div>
                     <div class="figure-title text-center p-2">
-                        <h5>To Phir Ao</h5>
-                        <span>Joe Doe</span>
+                        <h5>{{game.name}}</h5>
+                        <span><p *ngFor="let cat of game.categories">{{cat.name}}, </p></span>
                     </div>
                 </div>
             </figure>
         </div>
-        <div>
-            <figure>
-                <div class="img-wrapper">
-                    <img src="assets/img/demo/a1.jpeg" alt="/">
-                    <div class="img-overlay text-white">
-                        <div class="figcaption">
-                            <ul class="list-inline d-flex align-items-center justify-content-between">
-                                <li class="list-inline-item">
-                                    <a href="#" class="snackbar" data-text="Added to favourites" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b">
-                                        <i class="icon-heart-o s-18"></i>
-                                    </a></li>
-                                <li class="list-inline-item ">
-                                    <a class="no-ajaxy media-url" href="assets/media/track2.mpga" data-wave="assets/media/track2.json">
-                                        <i class="icon-play s-48"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="album-single.html"><i class="icon-more s-18 pt-3"></i></a></li>
-                            </ul>
-                            <div class="text-center mt-5">
-                                <h5>To Phir Ao</h5>
-                                <span>Joe Doe</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="figure-title text-center p-2">
-                        <h5>To Phir Ao</h5>
-                        <span>Joe Doe</span>
-                    </div>
-                </div>
-            </figure>
-        </div>
-        <div>
-            <figure>
-                <div class="img-wrapper">
-                    <img src="assets/img/demo/a2.jpeg" alt="/">
-                    <div class="img-overlay text-white">
-                        <div class="figcaption">
-                            <ul class="list-inline d-flex align-items-center justify-content-between">
-                                <li class="list-inline-item">
-                                    <a href="#" class="snackbar" data-text="Added to favourites" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b">
-                                        <i class="icon-heart-o s-18"></i>
-                                    </a></li>
-                                <li class="list-inline-item ">
-                                    <a class="no-ajaxy media-url" href="assets/media/track2.mpga" data-wave="assets/media/track2.json">
-                                        <i class="icon-play s-48"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="album-single.html"><i class="icon-more s-18 pt-3"></i></a></li>
-                            </ul>
-                            <div class="text-center mt-5">
-                                <h5>To Phir Ao</h5>
-                                <span>Joe Doe</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="figure-title text-center p-2">
-                        <h5>To Phir Ao</h5>
-                        <span>Joe Doe</span>
-                    </div>
-                </div>
-            </figure>
-        </div>
-        <div>
-            <figure>
-                <div class="img-wrapper">
-                    <img src="assets/img/demo/a4.jpeg" alt="/">
-                    <div class="img-overlay text-white">
-                        <div class="figcaption">
-                            <ul class="list-inline d-flex align-items-center justify-content-between">
-                                <li class="list-inline-item">
-                                    <a href="#" class="snackbar" data-text="Added to favourites" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b">
-                                        <i class="icon-heart-o s-18"></i>
-                                    </a></li>
-                                <li class="list-inline-item ">
-                                    <a class="no-ajaxy media-url" href="assets/media/track2.mpga" data-wave="assets/media/track2.json">
-                                        <i class="icon-play s-48"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="album-single.html"><i class="icon-more s-18 pt-3"></i></a></li>
-                            </ul>
-                            <div class="text-center mt-5">
-                                <h5>To Phir Ao</h5>
-                                <span>Joe Doe</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="figure-title text-center p-2">
-                        <h5>To Phir Ao</h5>
-                        <span>Joe Doe</span>
-                    </div>
-                </div>
-            </figure>
-        </div>
-        <div>
-            <figure>
-                <div class="img-wrapper">
-                    <img src="assets/img/demo/a5.jpeg" alt="/">
-                    <div class="img-overlay text-white">
-                        <div class="figcaption">
-                            <ul class="list-inline d-flex align-items-center justify-content-between">
-                                <li class="list-inline-item">
-                                    <a href="#" class="snackbar" data-text="Added to favourites" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b">
-                                        <i class="icon-heart-o s-18"></i>
-                                    </a></li>
-                                <li class="list-inline-item ">
-                                    <a class="no-ajaxy media-url" href="assets/media/track2.mpga" data-wave="assets/media/track2.json">
-                                        <i class="icon-play s-48"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="album-single.html"><i class="icon-more s-18 pt-3"></i></a></li>
-                            </ul>
-                            <div class="text-center mt-5">
-                                <h5>To Phir Ao</h5>
-                                <span>Joe Doe</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="figure-title text-center p-2">
-                        <h5>To Phir Ao</h5>
-                        <span>Joe Doe</span>
-                    </div>
-                </div>
-            </figure>
-        </div>
-        <div>
-            <figure>
-                <div class="img-wrapper">
-                    <img src="assets/img/demo/a6.jpeg" alt="/">
-                    <div class="img-overlay text-white">
-                        <div class="figcaption">
-                            <ul class="list-inline d-flex align-items-center justify-content-between">
-                                <li class="list-inline-item">
-                                    <a href="#" class="snackbar" data-text="Added to favourites" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b">
-                                        <i class="icon-heart-o s-18"></i>
-                                    </a></li>
-                                <li class="list-inline-item ">
-                                    <a class="no-ajaxy media-url" href="assets/media/track2.mpga" data-wave="assets/media/track2.json">
-                                        <i class="icon-play s-48"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="album-single.html"><i class="icon-more s-18 pt-3"></i></a></li>
-                            </ul>
-                            <div class="text-center mt-5">
-                                <h5>To Phir Ao</h5>
-                                <span>Joe Doe</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="figure-title text-center p-2">
-                        <h5>To Phir Ao</h5>
-                        <span>Joe Doe</span>
-                    </div>
-                </div>
-            </figure>
-        </div>
-        <div>
-            <figure>
-                <div class="img-wrapper">
-                    <img src="assets/img/demo/a7.jpeg" alt="/">
-                    <div class="img-overlay text-white">
-                        <div class="figcaption">
-                            <ul class="list-inline d-flex align-items-center justify-content-between">
-                                <li class="list-inline-item">
-                                    <a href="#" class="snackbar" data-text="Added to favourites" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b">
-                                        <i class="icon-heart-o s-18"></i>
-                                    </a></li>
-                                <li class="list-inline-item ">
-                                    <a class="no-ajaxy media-url" href="assets/media/track2.mpga" data-wave="assets/media/track2.json">
-                                        <i class="icon-play s-48"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="album-single.html"><i class="icon-more s-18 pt-3"></i></a></li>
-                            </ul>
-                            <div class="text-center mt-5">
-                                <h5>To Phir Ao</h5>
-                                <span>Joe Doe</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="figure-title text-center p-2">
-                        <h5>To Phir Ao</h5>
-                        <span>Joe Doe</span>
-                    </div>
-                </div>
-            </figure>
-        </div>
-
     </div>
 </section>

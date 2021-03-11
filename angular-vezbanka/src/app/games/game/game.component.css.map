@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "game.component.scss"
+    ],
+    "names": [],
+    "file": "game.component.css"
+}

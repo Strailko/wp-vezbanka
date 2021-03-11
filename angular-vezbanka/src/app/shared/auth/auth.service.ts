@@ -4,25 +4,28 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map, tap, delay, finalize } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { User } from '../data/interfaces';
 
 
 interface LoginResult {
-  userName: string;
-  role: string;
-  originalUserName?: string;
   accessToken: string;
   refreshToken: string;
-  user?: string;
+  user?: User;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  private readonly apiUrl = `${environment.baseApiUrl}api/pharmacyhead`;
+  private readonly apiUrl = `${environment.baseApiUrl}`;
   private timer: Subscription;
   private _user = new BehaviorSubject<LoginResult>(null);
   user$: Observable<LoginResult> = this._user.asObservable();
+
+  constructor(private router: Router, private http: HttpClient) {
+    window.addEventListener('storage', this.storageEventListener.bind(this));
+    console.log(this.apiUrl);
+  }
 
   private storageEventListener(event: StorageEvent) {
     if (event.storageArea === localStorage) {
@@ -34,9 +37,6 @@ export class AuthService implements OnDestroy {
         this.stopTokenTimer();
         this.http.get<LoginResult>(`${this.apiUrl}/user`).subscribe((x) => {
           this._user.next({
-            userName: x.userName,
-            role: x.role,
-            originalUserName: x.originalUserName,
             accessToken: x.accessToken,
             refreshToken: x.refreshToken,
             user: x.user
@@ -44,11 +44,6 @@ export class AuthService implements OnDestroy {
         });
       }
     }
-  }
-
-  constructor(private router: Router, private http: HttpClient) {
-    window.addEventListener('storage', this.storageEventListener.bind(this));
-    console.log(this.apiUrl);
   }
 
   ngOnDestroy(): void {
@@ -61,9 +56,6 @@ export class AuthService implements OnDestroy {
       .pipe(
         map((x) => {
           this._user.next({
-            userName: x.userName,
-            role: x.role,
-            originalUserName: x.originalUserName,
             accessToken: x.accessToken,
             refreshToken: x.refreshToken,
             user: x.user
@@ -101,9 +93,6 @@ export class AuthService implements OnDestroy {
       .pipe(
         map((x) => {
           this._user.next({
-            userName: x.userName,
-            role: x.role,
-            originalUserName: x.originalUserName,
             accessToken: x.accessToken,
             refreshToken: x.refreshToken,
             user: x.user
