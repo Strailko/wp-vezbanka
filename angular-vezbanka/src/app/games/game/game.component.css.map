@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "mappings": "",
+    "mappings": "AAAA,AAAA,gBAAgB,AAAA,OAAO,CAAC;EACpB,MAAM,EAAE,cAAc;CACzB",
     "sources": [
         "game.component.scss"
     ],

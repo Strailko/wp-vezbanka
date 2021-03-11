@@ -1,1 +1,4 @@
-/* No CSS *//*# sourceMappingURL=game.component.css.map */
+.bottom-gradient::after {
+  height: 5em !important;
+}
+/*# sourceMappingURL=game.component.css.map */

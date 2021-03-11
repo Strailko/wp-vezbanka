@@ -3,6 +3,7 @@ import { ApplicationModule, NgModule } from '@angular/core';
 import { MaterialModule } from './shared/material/material.module';
 import { AuthModule } from './shared/auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ClipboardModule } from '@angular/cdk/clipboard'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -57,7 +58,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
-    AuthModule
+    AuthModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

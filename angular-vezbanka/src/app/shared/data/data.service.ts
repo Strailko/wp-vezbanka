@@ -28,7 +28,7 @@ export class DataService {
                );
   }
 
-  getGame(id: string) : Observable<Game> {
+  getGame(id: Number) : Observable<Game> {
     return this.http.get<Game>(this.baseGameUrl + '/' + id)
                .pipe(
                     map((game: Game) => {

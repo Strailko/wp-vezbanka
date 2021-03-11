@@ -13,7 +13,7 @@ import { AuthGuard } from './shared/auth/auth.guard';
 
 const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
-  { path: 'game/:id/play', component: PlayComponent, pathMatch: 'prefix', canActivate: [AuthGuard] },
+  { path: 'game/:id/play', component: PlayComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   { path: 'game/:id/edit', component: EditgameComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   { path: 'game/:id', component: GameComponent, pathMatch: 'prefix'},
   { path: 'games/create', component: CreategameComponent, pathMatch: 'full', canActivate: [AuthGuard] },
