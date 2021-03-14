@@ -45,6 +45,11 @@ public class Game {
     @ManyToMany(mappedBy = "games")
     private List<Category> categories;
 
+    @ManyToMany(mappedBy = "heartedGames")
+    private List<User> usersHearted;
+
+
+
     public Long getId() {
         return id;
     }
@@ -139,5 +144,13 @@ public class Game {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public List<User> getUsersHearted() {
+        return usersHearted;
+    }
+
+    public void setUsersHearted(List<User> usersHearted) {
+        this.usersHearted = usersHearted;
     }
 }

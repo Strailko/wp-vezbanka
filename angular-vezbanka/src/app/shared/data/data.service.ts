@@ -37,7 +37,7 @@ export class DataService {
                     catchError(this.handleError)
                );
   }
-  
+
   searchGames(query: string) : Observable<Game[]> {
     return this.http.get<Game[]>(this.baseGameUrl + '/search/' + query)
                .pipe(
@@ -47,9 +47,9 @@ export class DataService {
                     catchError(this.handleError)
                );
   }
-  
+
   heartGame(game: HeartedGame) : Observable<HeartedGame> {
-    return this.http.get<HeartedGame>(this.baseGameUrl + '/heart')
+    return this.http.get<HeartedGame>(this.baseProfileUrl + '/heart')
                .pipe(
                     map((game) => {
                         return game;
@@ -59,7 +59,7 @@ export class DataService {
   }
 
   getTopRankedGames() : Observable<Game[]> {
-    return this.http.get<Game[]>(this.baseGameUrl + '/topranked')
+    return this.http.get<Game[]>(this.baseGameUrl + '/top-ranked')
                .pipe(
                     map((game: Game[]) => {
                         return game;
@@ -79,7 +79,7 @@ export class DataService {
   }
 
   getTopPlayedGames() : Observable<Game[]> {
-    return this.http.get<Game[]>(this.baseGameUrl + '/topplayed')
+    return this.http.get<Game[]>(this.baseGameUrl + '/top-played')
                .pipe(
                     map((game: Game[]) => {
                         return game;
@@ -89,7 +89,7 @@ export class DataService {
   }
 
   getGames() : Observable<Game[]> {
-    return this.http.get<Game[]>(this.baseGameUrl)
+    return this.http.get<Game[]>(this.baseGameUrl + '/all')
                .pipe(
                     map((game: Game[]) => {
                         return game;
@@ -172,7 +172,7 @@ export class DataService {
                     catchError(this.handleError)
                );
   }
-  
+
   getProfileFavoriteGames(profileId: Number) : Observable<Game[]> {
     return this.http.get<Game[]>(this.baseProfileUrl + '/favorites/' + profileId)
                .pipe(

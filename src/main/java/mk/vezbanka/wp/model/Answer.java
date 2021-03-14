@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +18,10 @@ public class Answer {
     private String answer;
 
     private boolean isCorrect;
+
+    //@ManyToOne
+    //@JoinColumn(name="question_id", nullable=false)
+    //private Question question;
 
     public Long getId() {
         return id;

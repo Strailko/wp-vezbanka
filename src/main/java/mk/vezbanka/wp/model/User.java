@@ -1,11 +1,16 @@
 package mk.vezbanka.wp.model;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import mk.vezbanka.wp.model.enums.Role;
 
@@ -32,6 +37,13 @@ public class User {
     private String photo;
 
     private String biography;
+
+    @ManyToMany
+    @JoinTable(
+        name = "hearted_games",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "game_id"))
+    private List<Game> heartedGames;
 
     public Long getId() {
         return id;
@@ -103,5 +115,13 @@ public class User {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public List<Game> getHeartedGames() {
+        return heartedGames;
+    }
+
+    public void setHeartedGames(List<Game> heartedGames) {
+        this.heartedGames = heartedGames;
     }
 }
