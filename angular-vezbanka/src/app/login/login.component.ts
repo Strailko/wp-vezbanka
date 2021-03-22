@@ -55,6 +55,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if(this.route.snapshot.url[0].path == "register") {
+      this.showRegister = !this.showRegister;
+    }
     this.subscription = this.authService.user$.subscribe((x) => {
       if (this.route.snapshot.url[0].path === 'login') {
         const accessToken = localStorage.getItem('access_token');

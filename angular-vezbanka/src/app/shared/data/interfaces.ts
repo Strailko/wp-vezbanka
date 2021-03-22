@@ -39,6 +39,7 @@ export interface Question{
   content:string;
   photo:string;
   answers:Answer[];
+  type:QuestionType;
 }
 
 export interface Category{
@@ -52,15 +53,15 @@ export interface Category{
 export interface Game{
   id?:Number;
   name:string;
-  numberOfPlayers:Number;
-  dateCreated:Date;
-  numberOfHearts:Number;
+  numberOfPlayers?:Number;
+  dateCreated?:string;
+  numberOfHearts?:Number;
   photo:string;
   shortDescription:string;
   creator?:User;
   player?:User;
   questions?:Question[];
-  categories:Category[];
+  categories?:Category[];
 }
 
 export interface HeartedGame {

@@ -1,0 +1,42 @@
+div.fileinputs {
+	position: relative;
+	height: 38px;
+	display: flex;
+	justify-content: flex-start;
+	max-width: 120px;
+}
+
+div.fakefile {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+}
+
+input.file {
+	position: relative;
+	text-align: right;
+	-moz-opacity:0 ;
+	filter:alpha(opacity=0);
+	opacity: 0;
+	z-index: 2;
+}
+
+.bgButtons {
+	position: relative;
+	top: 50%;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+	z-index: 999;
+}
+
+@media only screen and (max-width: 600px) {
+	.bgButtons {
+	  flex-direction: column;
+	}
+	div.fileinputs {
+		margin-top: 0.5em;
+	}
+  }

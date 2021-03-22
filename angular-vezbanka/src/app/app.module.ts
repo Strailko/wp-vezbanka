@@ -27,6 +27,9 @@ import { GameComponent } from './games/game/game.component';
 import { PlayComponent } from './games/play/play.component';
 import { EditgameComponent } from './games/editgame/editgame.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BottomSheetComponent } from './games/creategame/bottom-sheet/bottom-sheet.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { AutofocusDirective } from './shared/directives/autofocus.directive';
 
 @NgModule({
   declarations: [
@@ -48,7 +51,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RegisterDialogComponent,
     GameComponent,
     PlayComponent,
-    EditgameComponent
+    EditgameComponent,
+    BottomSheetComponent,
+    AutofocusDirective
   ],
   imports: [
     BrowserModule,
@@ -59,9 +64,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     HttpClientModule,
     AuthModule,
-    ClipboardModule
+    ClipboardModule,
+    MatBottomSheetModule
   ],
   providers: [],
+  entryComponents: [
+    BottomSheetComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
