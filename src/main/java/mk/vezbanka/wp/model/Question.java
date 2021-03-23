@@ -1,6 +1,7 @@
 package mk.vezbanka.wp.model;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,11 +16,18 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Question(String content) {
+        this.content = content;
+    }
+
+    public Question() {
+    }
+
     private String content;
 
     private String photo;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<Answer> answers;
 
     public Long getId() {

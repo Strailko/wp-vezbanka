@@ -2,7 +2,7 @@ package mk.vezbanka.wp.service;
 
 import java.util.List;
 import mk.vezbanka.wp.model.Game;
-import mk.vezbanka.wp.model.Question;
+import mk.vezbanka.wp.model.request.GameRequest;
 
 public interface GameService {
     Game getRandomGame();
@@ -23,10 +23,9 @@ public interface GameService {
 
     List<Game> getAllGames();
 
-    //Long createGame(String name, String photo, String shortDescription,
-    //                Long userId, List<Question> questions, List<Long> categories);
-    //
-    //Game editGame(Long gameId);
+    Game createGame(GameRequest request);
+
+    Game editGame(Long gameId, GameRequest request);
 
     void deleteGame(Long id);
 

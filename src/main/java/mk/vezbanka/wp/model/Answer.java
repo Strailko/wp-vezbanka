@@ -19,9 +19,13 @@ public class Answer {
 
     private boolean isCorrect;
 
-    //@ManyToOne
-    //@JoinColumn(name="question_id", nullable=false)
-    //private Question question;
+    public Answer(String answer, boolean isCorrect) {
+        this.answer = answer;
+        this.isCorrect = isCorrect;
+    }
+
+    public Answer() {
+    }
 
     public Long getId() {
         return id;

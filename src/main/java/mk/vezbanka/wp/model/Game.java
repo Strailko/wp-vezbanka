@@ -2,6 +2,7 @@ package mk.vezbanka.wp.model;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,15 +40,14 @@ public class Game {
     @ManyToOne
     private User player;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<Question> questions;
 
-    @ManyToMany(mappedBy = "games")
+    @ManyToMany(mappedBy = "games", cascade = {CascadeType.ALL})
     private List<Category> categories;
 
     @ManyToMany(mappedBy = "heartedGames")
     private List<User> usersHearted;
-
 
 
     public Long getId() {

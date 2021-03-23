@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
-    List<Game> findAllByNameLike(String name);
+    List<Game> findAllByNameContainingIgnoreCase(String name);
 
     List<Game> findByOrderByNumberOfHeartsDesc();
 

@@ -1,6 +1,7 @@
 package mk.vezbanka.wp.model;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class Category {
 
     private String coverPhoto;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
         name = "categories_games",
         joinColumns = @JoinColumn(name = "category_id"),

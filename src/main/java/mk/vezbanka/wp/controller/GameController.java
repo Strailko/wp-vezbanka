@@ -2,15 +2,17 @@ package mk.vezbanka.wp.controller;
 
 import java.util.List;
 import mk.vezbanka.wp.model.Game;
+import mk.vezbanka.wp.model.request.GameRequest;
 import mk.vezbanka.wp.service.GameService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/game")
 public class GameController {
 
@@ -55,16 +57,14 @@ public class GameController {
         return gameService.getAllGames();
     }
 
-    //TODO: Implement this method
     @PostMapping("/create")
-    public Game createGame() {
-        return null;
+    public Game createGame(@RequestBody GameRequest request) {
+        return gameService.createGame(request);
     }
 
-    //TODO: Implement this method
-    @PostMapping("/edit")
-    public Game editGame() {
-        return null;
+    @PostMapping("/edit/{id}")
+    public Game editGame(@PathVariable Long id, @RequestBody GameRequest request) {
+        return gameService.editGame(id, request);
     }
 
     @DeleteMapping("/delete/{id}")
