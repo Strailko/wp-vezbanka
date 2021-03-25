@@ -8,4 +8,6 @@ public class AnswerRequest {
 
     @NotNull
     public boolean isCorrect;
+
+    public boolean isSelected;
 }

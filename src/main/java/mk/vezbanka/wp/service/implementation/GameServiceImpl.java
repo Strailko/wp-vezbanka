@@ -12,6 +12,7 @@ import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.Question;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.enums.GameState;
+import mk.vezbanka.wp.model.enums.QuestionType;
 import mk.vezbanka.wp.model.request.GameRequest;
 import mk.vezbanka.wp.repository.GameRepository;
 import mk.vezbanka.wp.repository.UserRepository;
@@ -68,10 +69,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void updateNumberOfHearts(Long gameId) {
+    public void increaseNumberOfHearts(Long gameId) {
         Game game = getGameById(gameId);
         game.setNumberOfHearts(game.getNumberOfHearts()+1);
+        save(game);
+    }
 
+    @Override
+    public void decreaseNumberOfHearts(Long gameId) {
+        Game game = getGameById(gameId);
+        game.setNumberOfHearts(game.getNumberOfHearts()-1);
         save(game);
     }
 
@@ -110,6 +117,34 @@ public class GameServiceImpl implements GameService {
         gameRepository.save(game);
     }
 
+    // Maybe in the future this method can save an instance of the user's game with results and score
+    // (new CompletedGame entity?)
+    // TODO: Logic for different question types needs to be implemented
+    @Override
+    public float submitGame(Long id, Game completedGame) {
+        int correctAnswers = 0;
+        // standard for loops are used because you can't change the value of correctAnswers in a lambda expression
+        // explanation: https://stackoverflow.com/a/50341404/6553931
+        for (Question question : completedGame.getQuestions()) {
+            for (Answer answer : question.getAnswers()) {
+                if (answer.isCorrect() && answer.isSelected()) {
+                    correctAnswers += 1;
+                }
+            }
+        }
+
+        float result = (float) correctAnswers / completedGame.getQuestions().size() * 100;
+
+        // Get the game we have saved in the database by the id, and increase the number of plays
+        // (this shouldn't be done on the completedGame object because that will save the values for "isSelected" on
+        // the answers)
+        Game game = getGameById(id);
+        game.setNumberOfPlays(game.getNumberOfPlays()+1);
+        save(game);
+
+        return result;
+    }
+
     @Transactional
     private void setUpGameDetails(Game game, GameRequest request) {
         game.setName(request.name);
@@ -127,13 +162,6 @@ public class GameServiceImpl implements GameService {
             game.setPhoto(request.photo);
         }
 
-        List<Category> categoryList = new ArrayList<>();
-        if(request.categoryIds != null || !request.categoryIds.isEmpty()) {
-            request.categoryIds.forEach(categoryId ->
-                categoryList.add(categoryService.getCategoryById(categoryId)));
-        }
-        game.setCategories(categoryList);
-
         List<Question> questionList = new ArrayList<>();
 
         request.questions.forEach(question -> {
@@ -149,6 +177,23 @@ public class GameServiceImpl implements GameService {
             questionList.add(currentQuestion);
         });
         game.setQuestions(questionList);
+
+        save(game);
+
+        // Because of the many-to-many mapping, Category is the entity that's the "owner" of games, so we need to save
+        // the categories the game belongs to through a Category object first in order for them to be saved in the db.
+        List<Category> categoryList = new ArrayList<>();
+        if(request.categoryIds != null || !request.categoryIds.isEmpty()) {
+            //save the current game in each category it belongs to, through the method addGameToCategory
+            request.categoryIds.forEach(categoryId -> {
+                categoryService.addGameToCategory(categoryId, game);
+
+                //add each category to categoryList which will later be saved in the entity game
+                Category currentCategory = categoryService.getCategoryById(categoryId);
+                categoryList.add(currentCategory);
+            });
+        }
+        game.setCategories(categoryList);
 
         save(game);
     }

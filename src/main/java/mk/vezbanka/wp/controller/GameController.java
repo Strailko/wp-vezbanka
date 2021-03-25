@@ -72,9 +72,8 @@ public class GameController {
         gameService.deleteGame(id);
     }
 
-    //TODO: Implement this method
     @PostMapping("/submit/{id}")
-    public Double submitGame(@PathVariable Long id) {
-        return null;
+    public float submitGame(@PathVariable Long id, @RequestBody Game game) {
+        return gameService.submitGame(id, game);
     }
 }

@@ -17,6 +17,6 @@ public class GameRequest {
 
     public List<QuestionRequest> questions;
 
-    //Make this @NotNull too
+    @NotNull
     public List<Long> categoryIds;
 }
