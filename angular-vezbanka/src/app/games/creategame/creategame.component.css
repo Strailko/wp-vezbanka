@@ -42,9 +42,12 @@ input.file {
   z-index: 999;
 }
 
-.gamecheckbox {
-  display: flex;
-  justify-content: center;
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 @media only screen and (max-width: 600px) {
@@ -56,9 +59,6 @@ input.file {
   }
   div.fileinputs {
     margin-top: 0.5em;
-  }
-  .gamecheckbox {
-    flex-direction: column;
   }
 }
 /*# sourceMappingURL=creategame.component.css.map */

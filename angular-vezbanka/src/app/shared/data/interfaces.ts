@@ -4,6 +4,14 @@ export interface Answer{
   isCorrect: boolean;
 }
 
+export interface MergingAnswers {
+  id?: Number;
+  photo1?: string;
+  photo2?: string;
+  bgButton1?: boolean;
+  bgButton2?: boolean;
+}
+
 export enum Role{
   ADMIN,
   MODERATOR,
@@ -38,8 +46,9 @@ export interface Question{
   id?:Number;
   content:string;
   photo:string;
-  answers:Answer[];
+  answers?:Answer[];
   type:QuestionType;
+  mergingAnswers?: MergingAnswers[];
 }
 
 export interface Category{

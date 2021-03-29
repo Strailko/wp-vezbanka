@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/shared/data/data.service';
 import { Answer, Category, Game, Question, QuestionType } from 'src/app/shared/data/interfaces';
@@ -17,6 +18,7 @@ export class CreategameComponent implements OnInit {
   qCounter = 0;
   aCounter = 0;
   bgButton: boolean = false;
+  headerBgButton: boolean = false;
   bgLinks: boolean = false;
   bgUrl: boolean = false;
   fileName: string;
@@ -31,7 +33,7 @@ export class CreategameComponent implements OnInit {
   };
   categories: Category[] = [];
   
-  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private _bottomSheet: MatBottomSheet, private changeDetectorRef: ChangeDetectorRef) { }
+  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar, private _bottomSheet: MatBottomSheet, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.dataService.getCategories()
@@ -50,22 +52,38 @@ export class CreategameComponent implements OnInit {
       content: '',
       photo: '../../../assets/img/cover1.jpg',
       answers: [],
-      type: QuestionType.SELECTION
+      type: QuestionType.SELECTION,
+      mergingAnswers: []
     };
     this.questions.push(newQuestion);
     this.addAnswer(newQuestion);
   }
 
   addAnswer(question) {
-    if(this.questions[question.id-1].answers.length > 3) {
-      return;
+    if(question.type == 0) {
+      if(this.questions[question.id-1].answers.length > 3) {
+        return;
+      }
+      let newAnswer = {
+        id: this.questions[question.id-1].answers.length + 1,
+        answer: '',
+        isCorrect: false
+      };
+      this.questions[question.id-1].answers.push(newAnswer);
     }
-    let newAnswer = {
-      id: this.questions[question.id-1].answers.length + 1,
-      answer: '',
-      isCorrect: false
-    };
-    this.questions[question.id-1].answers.push(newAnswer);
+    else if(question.type == 1) {
+      if(this.questions[question.id-1].answers.length > 9) {
+        return;
+      }
+      let newAnswer = {
+        id: this.questions[question.id-1].mergingAnswers.length + 1,
+        photo1: '../../../assets/img/cover1.jpg',
+        photo2: '../../../assets/img/cover3.jpg',
+        bgButton1: false,
+        bgButton2: false
+      };
+      this.questions[question.id-1].mergingAnswers.push(newAnswer);
+    }
   }
 
   deleteQuestion(question) {
@@ -81,14 +99,26 @@ export class CreategameComponent implements OnInit {
   }
 
   deleteAnswer(answer, id) {
-    if(this.questions[id-1].answers.length < 2) {
-      return;
+    if(this.questions[id-1].type == 0) {
+      if(this.questions[id-1].answers.length < 2) {
+        return;
+      }
+      this.questions[id-1].answers = this.questions[id-1].answers.filter(a => a != answer);
+      this.questions[id-1].answers.forEach(a => {
+        this.aCounter+=1;
+        a.id = this.aCounter;
+      });
     }
-    this.questions[id-1].answers = this.questions[id-1].answers.filter(a => a != answer);
-    this.questions[id-1].answers.forEach(a => {
-      this.aCounter+=1;
-      a.id = this.aCounter;
-    });
+    else if(this.questions[id-1].type == 1) {
+      if(this.questions[id-1].mergingAnswers.length < 2) {
+        return;
+      }
+      this.questions[id-1].mergingAnswers = this.questions[id-1].mergingAnswers.filter(a => a != answer);
+      this.questions[id-1].mergingAnswers.forEach(a => {
+        this.aCounter+=1;
+        a.id = this.aCounter;
+      });
+    }
     this.aCounter = 0;
   }
 
@@ -97,6 +127,9 @@ export class CreategameComponent implements OnInit {
     bottomSheetRef.afterDismissed().subscribe((data) => {
       if(data != undefined) {
         question.type = data;
+        question.answers = [];
+        question.mergingAnswers = [];
+        this.addAnswer(question);
       }
     });
   }
@@ -105,11 +138,16 @@ export class CreategameComponent implements OnInit {
     this.bgButton = true;
   }
 
-  bgLeave() {
+  bgLeave(answer?: any) {
     if(!this.locked) {
       this.bgUrl = false;
       this.bgLinks = false;
       this.bgButton = false;
+      this.headerBgButton = false;
+      if(answer) {
+        answer.bgButton1 = false;
+        answer.bgButton2 = false;
+      }
     }
   }
 
@@ -117,7 +155,7 @@ export class CreategameComponent implements OnInit {
     this.bgLeave();
   }
 
-  fileSelected(event, question) {
+  fileSelected(event: any, question: any, answerId?: any, num?: any) {
     const file:File = event.target.files[0];
     if (file) {
         this.fileName = file.name;
@@ -128,8 +166,22 @@ export class CreategameComponent implements OnInit {
         var reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
         reader.onload = (e:any) => {
-          question.photo = e.target.result;
-          console.log(e.target.result);
+          if(question.type == 0 && answerId == undefined && num == undefined) {
+            question.photo = e.target.result;
+          }
+          else {
+            if(num == 1) {
+              question.mergingAnswers[answerId-1].photo1 = e.target.result;
+              question.mergingAnswers[answerId-1].bgButton1 = false;
+            }
+            else if(num == 2) {
+              question.mergingAnswers[answerId-1].photo2 = e.target.result;
+              question.mergingAnswers[answerId-1].bgButton2 = false;
+            }
+            else {
+              question.photo = e.target.result;
+            }
+          }
           this.locked = false;
           this.bgLeave();
         }
@@ -147,7 +199,14 @@ export class CreategameComponent implements OnInit {
   }
 
   finishCreatingGame() {
-    console.log("finishing");
+    this.game.questions = this.questions;
+    this.dataService.createGame(this.game)
+        .subscribe((data) => {
+              this.openSnackBar("Успешно креиравте нова игра!", "Во ред");
+              this.router.navigate(['/game/'+data])
+          }, () => {
+            this.openSnackBar("Неуспешно креирање на нова игра!", "Обиди се повторно");
+          });
   }
 
   addCategory(event, category) {
@@ -172,5 +231,11 @@ export class CreategameComponent implements OnInit {
 
   turnEditMode() {
     this.editMode = !this.editMode;
+  }
+
+  openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+    return this.snackBar.open(message, action, {
+      duration: 5000,
+    });
   }
 }
