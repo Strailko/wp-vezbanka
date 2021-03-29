@@ -5,6 +5,8 @@ import { DataService } from 'src/app/shared/data/data.service';
 import { Answer, Category, Game, Question, QuestionType } from 'src/app/shared/data/interfaces';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import { BottomSheetComponent } from './bottom-sheet/bottom-sheet.component'
+import { TokenStorageService } from 'src/app/shared/auth/token-storage.service';
+
 
 @Component({
   selector: 'app-creategame',
@@ -32,8 +34,10 @@ export class CreategameComponent implements OnInit {
     questions: []
   };
   categories: Category[] = [];
-  
-  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar, private _bottomSheet: MatBottomSheet, private changeDetectorRef: ChangeDetectorRef) { }
+
+  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar,
+              private _bottomSheet: MatBottomSheet, private changeDetectorRef: ChangeDetectorRef,
+              private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.dataService.getCategories()
@@ -133,7 +137,7 @@ export class CreategameComponent implements OnInit {
       }
     });
   }
-  
+
   bgEnter() {
     this.bgButton = true;
   }
@@ -187,7 +191,7 @@ export class CreategameComponent implements OnInit {
         }
     }
   }
-  
+
   nextStage() {
     this.resetDefaults();
     this.stage = this.stage + 1;
@@ -200,10 +204,13 @@ export class CreategameComponent implements OnInit {
 
   finishCreatingGame() {
     this.game.questions = this.questions;
+    console.log(this.tokenStorageService.getUser())
+    this.game.userCreatorId = this.tokenStorageService.getUser().id;
+    this.game.categoryIds = this.game.categories.map(x => x.id)
     this.dataService.createGame(this.game)
         .subscribe((data) => {
               this.openSnackBar("Успешно креиравте нова игра!", "Во ред");
-              this.router.navigate(['/game/'+data])
+              this.router.navigate(['/game/'+data.id])
           }, () => {
             this.openSnackBar("Неуспешно креирање на нова игра!", "Обиди се повторно");
           });

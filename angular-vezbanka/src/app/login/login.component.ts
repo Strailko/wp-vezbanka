@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit {
     this.showRegister = !this.showRegister;
   }
 
-  
+
   login() {
     if (!this.username || !this.password || !this.loginForm.valid) {
       this.loginError = true;
@@ -105,8 +105,10 @@ export class LoginComponent implements OnInit {
       .login(credentials)
       .pipe(finalize(() => (this.busy = false)))
       .subscribe(
-        () => {
-            window.location.replace("/");
+        data => {
+          this.storage.saveToken(data.accessToken);
+          this.storage.saveUser(data);
+          window.location.replace("/");
         },
         () => {
           this.loginError = true;

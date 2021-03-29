@@ -1,24 +1,17 @@
 package mk.vezbanka.wp.controller;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.*;
 import mk.vezbanka.wp.config.JwtUtils;
 import mk.vezbanka.wp.model.Game;
-import mk.vezbanka.wp.model.Role;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.UserDetailsImpl;
-import mk.vezbanka.wp.model.enums.RoleEnum;
 import mk.vezbanka.wp.model.request.ChangeRoleRequest;
 import mk.vezbanka.wp.model.request.HeartedGameRequest;
 import mk.vezbanka.wp.model.request.UserRequest;
 import mk.vezbanka.wp.model.response.JwtResponse;
 import mk.vezbanka.wp.model.response.MessageResponse;
-import mk.vezbanka.wp.model.response.UserResponse;
-import mk.vezbanka.wp.repository.RoleRepository;
 import mk.vezbanka.wp.repository.UserRepository;
-import mk.vezbanka.wp.service.GameService;
 import mk.vezbanka.wp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +29,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping(value = "/api/user")

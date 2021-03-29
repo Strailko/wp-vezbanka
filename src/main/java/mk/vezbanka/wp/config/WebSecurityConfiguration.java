@@ -1,6 +1,7 @@
 package mk.vezbanka.wp.config;
 
 import mk.vezbanka.wp.service.UserService;
+import mk.vezbanka.wp.service.implementation.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,14 +20,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
-
+    private final UserServiceImpl userService;
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationEntryPointJwt unauthorizedHandler;
 
-    public WebSecurityConfiguration(UserService userService,
-                                    AuthenticationEntryPointJwt unauthorizedHandler) {
-        this.userService = userService;
+    public WebSecurityConfiguration(AuthenticationEntryPointJwt unauthorizedHandler, UserServiceImpl userService,
+                                    PasswordEncoder passwordEncoder) {
         this.unauthorizedHandler = unauthorizedHandler;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
@@ -36,7 +38,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(this.passwordEncoder);
     }
 
     @Bean
@@ -55,19 +57,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
-    //@Bean
-    //public WebMvcConfigurer corsConfigurer() {
-    //    return new WebMvcConfigurerAdapter() {
-    //        @Override
-    //        public void addCorsMappings(CorsRegistry registry) {
-    //            registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").allowedOrigins("*")
-    //                .allowedHeaders("*");
-    //        }
-    //    };
-    //}
-
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").allowedOrigins("*")
+                    .allowedHeaders("*");
+            }
+        };
     }
 }

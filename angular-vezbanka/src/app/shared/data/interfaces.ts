@@ -71,6 +71,8 @@ export interface Game{
   player?:User;
   questions?:Question[];
   categories?:Category[];
+  userCreatorId?: Number;
+  categoryIds?: Number[];
 }
 
 export interface HeartedGame {

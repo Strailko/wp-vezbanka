@@ -9,8 +9,6 @@ import { PlayComponent } from './games/play/play.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
-import { AuthGuard } from './shared/auth/auth.guard';
-import { LoginGuard } from './shared/auth/login.guard';
 
 const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
