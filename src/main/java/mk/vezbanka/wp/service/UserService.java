@@ -5,6 +5,8 @@ import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.request.UserRequest;
 import mk.vezbanka.wp.model.response.UserResponse;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserService {
     User getUser(Long id);
@@ -22,4 +24,6 @@ public interface UserService {
     User register(UserRequest request);
 
     //UserResponse login(String username, String password);
+
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

@@ -1,6 +1,6 @@
 package mk.vezbanka.wp.model.enums;
 
-public enum Role {
+public enum RoleEnum {
     ADMIN,
     MODERATOR,
     REGULAR

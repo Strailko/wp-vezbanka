@@ -1,9 +1,12 @@
 package mk.vezbanka.wp.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Data;
-import mk.vezbanka.wp.model.enums.Role;
+import mk.vezbanka.wp.model.enums.RoleEnum;
 
 @Entity
 @Data
@@ -32,8 +35,11 @@ public class User {
 
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     private String photo;
 
@@ -46,4 +52,11 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "game_id"))
     private List<Game> heartedGames;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public User() {
+    }
 }
