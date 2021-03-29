@@ -50,10 +50,10 @@ export class DataService {
 
   // TODO: Change return type to boolean: true = game successfully hearted, false = game successfully unhearted,
   heartGame(game: HeartedGame) : Observable<HeartedGame> {
-    return this.http.post<HeartedGame>(this.baseProfileUrl + '/heart')
+    return this.http.post<HeartedGame>(this.baseProfileUrl + '/heart', game)
                .pipe(
-                    map((game) => {
-                        return game;
+                    map((isHearted) => {
+                        return isHearted;
                     }),
                     catchError(this.handleError)
                );
