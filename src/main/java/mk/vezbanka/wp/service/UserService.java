@@ -4,6 +4,7 @@ import java.util.List;
 import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.request.UserRequest;
+import mk.vezbanka.wp.model.response.UserResponse;
 
 public interface UserService {
     User getUser(Long id);
@@ -19,4 +20,6 @@ public interface UserService {
     User changeRole(Long userId, String role);
 
     User register(UserRequest request);
+
+    //UserResponse login(String username, String password);
 }

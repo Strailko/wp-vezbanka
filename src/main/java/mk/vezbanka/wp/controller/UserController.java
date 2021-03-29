@@ -8,6 +8,7 @@ import mk.vezbanka.wp.model.request.HeartedGameRequest;
 import mk.vezbanka.wp.model.request.UserRequest;
 import mk.vezbanka.wp.service.GameService;
 import mk.vezbanka.wp.service.UserService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/user")
+@CrossOrigin("http://localhost:4200/")
 public class UserController {
 
     private final UserService userService;
@@ -60,4 +62,9 @@ public class UserController {
     public User register(@RequestBody UserRequest request) {
         return userService.register(request);
     }
+    //
+    //@PostMapping("/login")
+    //public UserResponse login(@RequestBody UserRequest request) {
+    //    return userService.login(request.username, request.password);
+    //}
 }

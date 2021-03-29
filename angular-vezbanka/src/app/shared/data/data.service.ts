@@ -205,7 +205,7 @@ export class DataService {
   }
 
   register(user: User) : Observable<User> {
-    return this.http.post<User>(this.baseApiUrl + '/register', user)
+    return this.http.post<User>(this.baseApiUrl + '/user/register', user)
                .pipe(
                     map((data) => {
                         return data;

@@ -7,6 +7,7 @@ import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.enums.Role;
 import mk.vezbanka.wp.model.request.UserRequest;
+import mk.vezbanka.wp.model.response.UserResponse;
 import mk.vezbanka.wp.repository.UserRepository;
 import mk.vezbanka.wp.service.GameService;
 import mk.vezbanka.wp.service.UserService;
@@ -114,6 +115,11 @@ public class UserServiceImpl implements UserService {
 
         return saveUser(user);
     }
+    //
+    //@Override
+    //public UserResponse login(String username, String password) {
+    //
+    //}
 
     private User saveUser(User user) {
         return userRepository.save(user);
