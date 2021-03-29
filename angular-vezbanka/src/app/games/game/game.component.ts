@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/auth/auth.service';
+import { TokenStorageService } from 'src/app/shared/auth/token-storage.service';
 import { DataService } from 'src/app/shared/data/data.service';
 import { Game, HeartedGame, User } from 'src/app/shared/data/interfaces';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -18,7 +18,7 @@ export class GameComponent implements OnInit {
   user: User;
   heartedGame: HeartedGame;
 
-  constructor(private snackBar: MatSnackBar, private dataService: DataService, private authService: AuthService, private router: Router, private route: ActivatedRoute, private clipboard: Clipboard) { }
+  constructor(private snackBar: MatSnackBar, private dataService: DataService, private storage: TokenStorageService, private router: Router, private route: ActivatedRoute, private clipboard: Clipboard) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -26,12 +26,9 @@ export class GameComponent implements OnInit {
         .subscribe((data: Game) => {
           this.game = data;
         });
-    if(localStorage.getItem('access_token')) {
+    if(this.storage.getToken()) {
       this.loggedIn = true;
-      this.authService.getUser()
-          .subscribe(login => {
-            this.user = login.user;
-          });
+      this.user = this.storage.getUser();
     }
   }
 

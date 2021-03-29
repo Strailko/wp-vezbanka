@@ -6,17 +6,16 @@ import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../shared/data/interfaces';
 import { finalize, first } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { AuthService } from '../shared/auth/auth.service';
+import { TokenStorageService } from '../shared/auth/token-storage.service';
 import { DataService } from '../shared/data/data.service';
+import { AuthService } from '../shared/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
+export class LoginComponent implements OnInit {
   busy = false;
   showRegister: boolean = false;
   username = '';
@@ -37,6 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private dataService: DataService,
+    private storage: TokenStorageService,
     private authService: AuthService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -49,27 +49,23 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
     this.instantiateRegisterForm();
   }
-  
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
+
 
   ngOnInit(): void {
-    this.subscription = this.authService.user$.subscribe((x) => {
-      if (this.route.snapshot.url[0].path === 'login') {
-        const accessToken = localStorage.getItem('access_token');
-        const refreshToken = localStorage.getItem('refresh_token');
-        if (x && accessToken && refreshToken) {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-          if(returnUrl === '' || returnUrl === '/') {
-            window.location.replace("/");
-          }
-          else {
-            this.router.navigate([returnUrl]);
-          }
+    if(this.route.snapshot.url[0].path == "register") {
+      this.showRegister = !this.showRegister;
+    }
+    if (this.route.snapshot.url[0].path === 'login') {
+      if (this.storage.getToken()) {
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+        if(returnUrl === '' || returnUrl === '/') {
+          window.location.replace("/");
+        }
+        else {
+          this.router.navigate([returnUrl]);
         }
       }
-    });
+    }
   }
 
   instantiateRegisterForm() {
@@ -93,7 +89,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.showRegister = !this.showRegister;
   }
 
-  
+
   login() {
     if (!this.username || !this.password || !this.loginForm.valid) {
       this.loginError = true;
@@ -101,12 +97,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     this.busy = true;
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+    let credentials = {
+      username: this.username,
+      password: this.password
+    }
     this.authService
-      .login(this.username, this.password)
+      .login(credentials)
       .pipe(finalize(() => (this.busy = false)))
       .subscribe(
-        (data) => {
-            window.location.replace("/");
+        data => {
+          this.storage.saveToken(data.accessToken);
+          this.storage.saveUser(data);
+          window.location.replace("/");
         },
         () => {
           this.loginError = true;
@@ -121,9 +123,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.registerError = true;
       return;
     }
-    this.dataService.register(this.registerUser)
+    this.authService.register(this.registerUser)
         .subscribe(
-          (data) => {
+          () => {
               this.toggleRegistration();
               this.openSnackBar("Успешна регистрација!", "Во ред");
           },

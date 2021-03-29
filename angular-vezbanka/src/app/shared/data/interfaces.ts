@@ -4,6 +4,14 @@ export interface Answer{
   isCorrect: boolean;
 }
 
+export interface MergingAnswers {
+  id?: Number;
+  photo1?: string;
+  photo2?: string;
+  bgButton1?: boolean;
+  bgButton2?: boolean;
+}
+
 export enum Role{
   ADMIN,
   MODERATOR,
@@ -38,7 +46,9 @@ export interface Question{
   id?:Number;
   content:string;
   photo:string;
-  answers:Answer[];
+  answers?:Answer[];
+  type:QuestionType;
+  mergingAnswers?: MergingAnswers[];
 }
 
 export interface Category{
@@ -52,15 +62,17 @@ export interface Category{
 export interface Game{
   id?:Number;
   name:string;
-  numberOfPlayers:Number;
-  dateCreated:Date;
-  numberOfHearts:Number;
+  numberOfPlayers?:Number;
+  dateCreated?:string;
+  numberOfHearts?:Number;
   photo:string;
   shortDescription:string;
   creator?:User;
   player?:User;
   questions?:Question[];
-  categories:Category[];
+  categories?:Category[];
+  userCreatorId?: Number;
+  categoryIds?: Number[];
 }
 
 export interface HeartedGame {

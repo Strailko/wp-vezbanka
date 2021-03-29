@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ApplicationModule, NgModule } from '@angular/core';
 import { MaterialModule } from './shared/material/material.module';
-import { AuthModule } from './shared/auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
-import { ClipboardModule } from '@angular/cdk/clipboard'
-
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 import { PreloaderComponent } from './preloader/preloader.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -26,7 +27,10 @@ import { RegisterDialogComponent } from './login/register-dialog/register-dialog
 import { GameComponent } from './games/game/game.component';
 import { PlayComponent } from './games/play/play.component';
 import { EditgameComponent } from './games/editgame/editgame.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BottomSheetComponent } from './games/creategame/bottom-sheet/bottom-sheet.component';
+
+import { AutofocusDirective } from './shared/directives/autofocus.directive';
+import { authInterceptorProviders } from './shared/auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -48,7 +52,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RegisterDialogComponent,
     GameComponent,
     PlayComponent,
-    EditgameComponent
+    EditgameComponent,
+    BottomSheetComponent,
+    AutofocusDirective
   ],
   imports: [
     BrowserModule,
@@ -58,10 +64,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
-    AuthModule,
-    ClipboardModule
+    ClipboardModule,
+    MatBottomSheetModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
+  entryComponents: [
+    BottomSheetComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
