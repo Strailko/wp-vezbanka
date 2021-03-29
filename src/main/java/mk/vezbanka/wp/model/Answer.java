@@ -4,10 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Table(name = "answers")
+@Data
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,27 +21,14 @@ public class Answer {
 
     private boolean isCorrect;
 
-    public Long getId() {
-        return id;
-    }
+    private boolean isSelected = false;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
+    public Answer(String answer, boolean isCorrect) {
         this.answer = answer;
+        this.isCorrect = isCorrect;
     }
 
-    public boolean isCorrect() {
-        return isCorrect;
+    public Answer() {
     }
 
-    public void setCorrect(boolean correct) {
-        isCorrect = correct;
-    }
 }

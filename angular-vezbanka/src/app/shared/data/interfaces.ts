@@ -74,6 +74,6 @@ export interface Game{
 }
 
 export interface HeartedGame {
-  userId?: Number;
-  gameId?: Number;
+  userId: Number;
+  gameId: Number;
 }
