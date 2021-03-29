@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../shared/auth/auth.service';
+import { TokenStorageService } from '../shared/auth/token-storage.service';
 import { DataService } from '../shared/data/data.service';
 import { Category, Game, User } from '../shared/data/interfaces';
 
@@ -19,7 +19,7 @@ export class GamesComponent implements OnInit {
   title: string = 'Игри';
   subtitle: string = 'Листа на игри';
 
-  constructor(private dataService: DataService, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, private storage: TokenStorageService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -64,13 +64,11 @@ export class GamesComponent implements OnInit {
       }
     }
     else if(this.type === 'favorite') {
-      if(localStorage.getItem('access_token')) {
+      if(this.storage.getToken()) {
         this.loggedIn = true;
-        this.authService.getUser()
-            .subscribe(login => {
-              this.userId = login.user.id;
-              this.getFavGames();
-            });
+        let user = this.storage.getUser();
+        this.userId = Number(user?.id);
+        this.getFavGames();
       }
       else {
         this.router.navigate(['/games']);
@@ -85,12 +83,14 @@ export class GamesComponent implements OnInit {
   }
 
   getFavGames() {
-    this.dataService.getProfileFavoriteGames(this.userId)
-        .subscribe((list: Game[]) => {
-          this.games = list;
-          this.title = 'Твои омилени';
-          this.subtitle = 'Листа на твои омилени игри';
-        });
+    if(this.userId) {
+      this.dataService.getProfileFavoriteGames(this.userId)
+          .subscribe((list: Game[]) => {
+            this.games = list;
+            this.title = 'Твои омилени';
+            this.subtitle = 'Листа на твои омилени игри';
+          });
+    }
   }
 
 }

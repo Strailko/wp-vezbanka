@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../shared/auth/auth.service';
+import { TokenStorageService } from '../shared/auth/token-storage.service';
 import { DataService } from '../shared/data/data.service';
 import { Game } from '../shared/data/interfaces';
 
@@ -13,24 +13,24 @@ export class RsidebarComponent implements OnInit {
   loggedIn: boolean = false;
   userId: Number;
 
-  constructor(private dataService: DataService, private authService: AuthService) { }
+  constructor(private dataService: DataService, private storage: TokenStorageService) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('access_token')) {
+    if(this.storage.getToken()) {
       this.loggedIn = true;
-      this.authService.getUser()
-          .subscribe(login => {
-            this.userId = login.user.id;
-            this.getGames();
-          });
+      let user = this.storage.getUser();
+      this.userId = Number(user?.id);
+      this.getGames();
     }
   }
 
   getGames() {
-    this.dataService.getProfileGames(this.userId)
-        .subscribe((list: Game[]) => {
-          this.games = list;
-        });
+    if(this.userId) {
+      this.dataService.getProfileGames(this.userId)
+          .subscribe((list: Game[]) => {
+            this.games = list;
+          });
+    }
   }
 
 

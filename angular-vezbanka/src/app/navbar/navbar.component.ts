@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../shared/auth/auth.service';
+import { TokenStorageService } from '../shared/auth/token-storage.service';
 import { User } from '../shared/data/interfaces';
 
 @Component({
@@ -11,19 +11,17 @@ export class NavbarComponent implements OnInit {
   loggedIn: boolean = false;
   userId: Number;
 
-  constructor(private authService: AuthService) { }
+  constructor(private storage: TokenStorageService) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('access_token')) {
+    if(this.storage.getToken()) {
       this.loggedIn = true;
-      this.authService.getUser()
-          .subscribe(login => {
-            this.userId = login.user.id;
-          });
+      let user = this.storage.getUser()
+      this.userId = user.id;
     }
   }
 
   logout() {
-    this.authService.logout();
+    this.storage.signOut();
   }
 }

@@ -15,14 +15,14 @@ import { LoginGuard } from './shared/auth/login.guard';
 const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
   { path: 'game/:id/play', component: PlayComponent, pathMatch: 'full' },
-  { path: 'game/:id/edit', component: EditgameComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: 'game/:id/edit', component: EditgameComponent, pathMatch: 'full' },
   { path: 'game/:id', component: GameComponent, pathMatch: 'prefix'},
-  { path: 'games/create', component: CreategameComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: 'games/create', component: CreategameComponent, pathMatch: 'full'},
   { path: 'games/:type/:id', component: GamesComponent, pathMatch: 'full'},
   { path: 'games/:type', component: GamesComponent, pathMatch: 'prefix'},
   { path: 'games', component: GamesComponent, pathMatch: 'full'},
-  { path: 'login', component: LoginComponent, pathMatch: 'full', canActivate: [LoginGuard] },
-  { path: 'register', component: LoginComponent, pathMatch: 'full', canActivate: [LoginGuard] },
+  { path: 'login', component: LoginComponent, pathMatch: 'full'},
+  { path: 'register', component: LoginComponent, pathMatch: 'full'},
   { path: 'profile/:id', component: ProfileComponent, pathMatch: 'prefix'},
   { path: 'profile', component: ProfileComponent, pathMatch: 'full'},
   { path: '**', redirectTo: '', pathMatch: 'full' }

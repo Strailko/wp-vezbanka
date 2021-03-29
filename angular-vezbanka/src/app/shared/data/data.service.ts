@@ -204,16 +204,6 @@ export class DataService {
                 );
   }
 
-  register(user: User) : Observable<User> {
-    return this.http.post<User>(this.baseApiUrl + '/user/register', user)
-               .pipe(
-                    map((data) => {
-                        return data;
-                    }),
-                    catchError(this.handleError)
-                );
-  }
-
   private handleError(error: HttpErrorResponse) {
     console.error('server error:', error);
     if (error.error instanceof Error) {
