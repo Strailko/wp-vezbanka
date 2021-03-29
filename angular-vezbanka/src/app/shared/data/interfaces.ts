@@ -2,6 +2,7 @@ export interface Answer{
   id?: Number;
   answer: string;
   isCorrect: boolean;
+  isSelected: boolean;
 }
 
 export interface MergingAnswers {
