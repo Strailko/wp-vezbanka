@@ -30,9 +30,14 @@ export class LoginComponent implements OnInit {
     username: '',
     email: '',
     password: '',
-    photo: '',
+    photo: '../../../assets/img/demo/u1.png',
     biography: ''
   };
+  bgButton: boolean = false;
+  bgLinks: boolean = false;
+  bgUrl: boolean = false;
+  fileName: string;
+  locked: boolean = false;
 
   constructor(
     private dataService: DataService,
@@ -119,7 +124,7 @@ export class LoginComponent implements OnInit {
   }
 
   register() {
-    if (!this.registerUser.firstName || !this.registerUser.username || !this.registerUser.email || !this.registerUser.password || !this.registerUser.biography || !this.registerForm.valid) {
+    if (!this.registerUser.firstName || !this.registerUser.username || !this.registerUser.photo || !this.registerUser.email || !this.registerUser.password || !this.registerUser.biography || !this.registerForm.valid) {
       this.registerError = true;
       return;
     }
@@ -135,6 +140,36 @@ export class LoginComponent implements OnInit {
           }
         );
     this.registerForm.reset();
+  }
+
+  bgEnter() {
+    this.bgButton = true;
+  }
+
+  bgLeave(answer?: any) {
+    if(!this.locked) {
+      this.bgUrl = false;
+      this.bgLinks = false;
+      this.bgButton = false;
+      if(answer) {
+        answer.bgButton1 = false;
+        answer.bgButton2 = false;
+      }
+    }
+  }
+
+  fileSelected(event: any) {
+    const file:File = event.target.files[0];
+    if (file) {
+        this.fileName = file.name;
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (e:any) => {
+          this.registerUser.photo = e.target.result;
+          this.locked = false;
+          this.bgLeave();
+        }
+    }
   }
 
   openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {

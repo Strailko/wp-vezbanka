@@ -2,7 +2,7 @@ export interface Answer{
   id?: Number;
   answer: string;
   isCorrect: boolean;
-  isSelected: boolean;
+  isSelected?: boolean;
 }
 
 export interface MergingAnswers {
@@ -48,7 +48,7 @@ export interface Question{
   content:string;
   photo:string;
   answers?:Answer[];
-  type:QuestionType;
+  questionType:QuestionType;
   mergingAnswers?: MergingAnswers[];
 }
 

@@ -12,11 +12,15 @@ import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/s
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
+  isMod: boolean = false;
   id: string;
   game: Game;
   loggedIn: boolean = false;
   user: User;
-  heartedGame: HeartedGame;
+  heartedGame: HeartedGame = {
+    gameId: 0,
+    userId: 0
+  };
 
   constructor(private snackBar: MatSnackBar, private dataService: DataService, private storage: TokenStorageService, private router: Router, private route: ActivatedRoute, private clipboard: Clipboard) { }
 
@@ -29,6 +33,9 @@ export class GameComponent implements OnInit {
     if(this.storage.getToken()) {
       this.loggedIn = true;
       this.user = this.storage.getUser();
+      if(this.storage.getUser().roles.includes("MODERATOR") || this.storage.getUser().roles.includes("ADMIN")) {
+        this.isMod = true;
+      }
     }
   }
 

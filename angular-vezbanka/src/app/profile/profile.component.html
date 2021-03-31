@@ -3,23 +3,29 @@
         <div class="card no-b shadow no-r">
             <div class="row no-gutters" *ngIf="user">
                 <div class="col-md-4 b-r">
-                    <div class="text-center p-5 mt-5">
+                    <div class="text-center p-5" *ngIf="showEditProfileButton">
+                        <div>
+                            <a href="#" [routerLink]="['/profile/' + user.id + '/edit']" class="snackbar" data-text="Edit button clicked" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-edit s-24"></i></a>
+                        </div>
                         <figure class="avatar avatar-xl">
-                            <img [src]="user?.photo" alt="User photo"></figure>
+                            <img [src]="user?.photo" alt="User photo">
+                        </figure>
                         <div>
                             <h4 class="p-t-10">{{user.firstName}} {{user?.lastName}}</h4>
                         </div>
                         <a href="mailto:{{user.email}}" class="btn btn-outline-primary btn-sm  mt-3">Испрати мејл</a>
-                        <!--div class="mt-5">
-                            <ul class="social social list-inline">
-                                <li class="list-inline-item"><a href="#" class="grey-text"><i class="icon-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item"><a href="#" class="grey-text"><i class="icon-youtube"></i></a>
-                                </li>
-                                <li class="list-inline-item"><a href="#" class="grey-text"><i class="icon-twitter"></i></a>
-                                </li>
-                            </ul>
-                        </div-->
+                    </div>
+                    <div class="text-center p-5 mt-5" *ngIf="!showEditProfileButton">
+                        <div>
+                            <a href="#" [routerLink]="['/profile/' + user.id + '/edit']" class="snackbar" data-text="Edit button clicked" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-edit s-24"></i></a>
+                        </div>
+                        <figure class="avatar avatar-xl">
+                            <img [src]="user?.photo" alt="User photo">
+                        </figure>
+                        <div>
+                            <h4 class="p-t-10">{{user.firstName}} {{user?.lastName}}</h4>
+                        </div>
+                        <a href="mailto:{{user.email}}" class="btn btn-outline-primary btn-sm  mt-3">Испрати мејл</a>
                     </div>
                 </div>
                 <div class="col-md-8">

@@ -23,14 +23,13 @@ import { SearchComponent } from './search/search.component';
 import { CreategameComponent } from './games/creategame/creategame.component';
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterDialogComponent } from './login/register-dialog/register-dialog.component';
 import { GameComponent } from './games/game/game.component';
 import { PlayComponent } from './games/play/play.component';
-import { EditgameComponent } from './games/editgame/editgame.component';
 import { BottomSheetComponent } from './games/creategame/bottom-sheet/bottom-sheet.component';
 
 import { AutofocusDirective } from './shared/directives/autofocus.directive';
 import { authInterceptorProviders } from './shared/auth/auth.interceptor';
+import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -49,12 +48,11 @@ import { authInterceptorProviders } from './shared/auth/auth.interceptor';
     CreategameComponent,
     ProfileComponent,
     LoginComponent,
-    RegisterDialogComponent,
     GameComponent,
     PlayComponent,
-    EditgameComponent,
     BottomSheetComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

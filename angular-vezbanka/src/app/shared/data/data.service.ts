@@ -18,10 +18,10 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getRandomGameId() : Observable<Number> {
-    return this.http.get<Number>(this.baseGameUrl + '/random')
+  getRandomGameId() : Observable<Game> {
+    return this.http.get<Game>(this.baseGameUrl + '/random')
                .pipe(
-                    map((gameId: Number) => {
+                    map((gameId: Game) => {
                         return gameId;
                     }),
                     catchError(this.handleError)

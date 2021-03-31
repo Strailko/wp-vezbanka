@@ -1,5 +1,5 @@
 <main id="pageContent" class="page has-sidebar">
-    <div class="container-fluid relative animatedParent animateOnce">
+    <div class="container-fluid relative">
         <div class="animated p-md-5 p-3">
             <div class="row my-3" style="justify-content: center;">
                     <div class="col-12 col-xl-9">
@@ -8,7 +8,7 @@
                                 <div class="tab-content">
                                     <div class="tab-pane fade text-center p-5" *ngFor="let question of questions" [id]="'w8-tab'+question.id" [class.show]="question.id == 1" [class.active]="question.id == 1" role="tabpanel" [aria-labelledby]="'w8-tab'+question.id">
                                         
-                                        <section *ngIf="question.type == 0">
+                                        <section *ngIf="question.questionType == 0">
                                             <div class="header-bg" style="min-height: 20em; height: 20em; margin-bottom:2em; background-repeat: no-repeat; background-position: center; background-size: cover; background-image: url('{{question.photo}}');" (mouseenter)="bgEnter()" (mouseleave)="bgLeave()">
                                                 <div *ngIf="bgButton" class="bgButtons">
                                                     <a class="btn btn-primary" *ngIf="!bgLinks" (click)="this.bgLinks = true;"><i class="icon-photo p-0"></i> Смени ја сликата</a>
@@ -63,7 +63,7 @@
                                                 </div>
                                             </section>
 
-                                            <section *ngIf="question.type == 1">
+                                            <section *ngIf="question.questionType == 1">
                                                 <div class="header-bg" style="min-height: 20em; height: 20em; margin-bottom:2em; background-repeat: no-repeat; background-position: center; background-size: cover; background-image: url('{{question.photo}}');" (mouseenter)="bgEnter(); this.headerBgButton = true" (mouseleave)="bgLeave()">
                                                     <div *ngIf="bgButton && headerBgButton" class="bgButtons">
                                                         <a class="btn btn-primary" *ngIf="!bgLinks" (click)="this.bgLinks = true;"><i class="icon-photo p-0"></i> Смени ја сликата</a>
@@ -129,7 +129,7 @@
                                                 <a class="btn btn-outline-primary" style="margin: 0.5em;" *ngIf="this.questions[question.id-1]?.mergingAnswers?.length <= 1" (click)="changeQuestionType(question)">Смени го типот на прашањето</a>
                                             </section>
 
-                                            <section *ngIf="question.type == 2">
+                                            <section *ngIf="question.questionType == 2">
                                                 <h1>Селекција</h1>
                                                 <h4 class="card-title">Прашање {{question.id}} <mat-slide-toggle [checked]="true" (click)="turnEditMode()"></mat-slide-toggle></h4>
                                                 <p class="card-title" *ngIf="!editMode">{{question.content}}</p>
@@ -154,9 +154,9 @@
                                         <ul class="nav nav-pills nav-icon-pills mb-3" role="tablist">
                                             <li class="nav-item" *ngFor="let question of questions" style="padding: 0.5em 0;">
                                                 <a class="nav-link btn-fab mr-2" *ngIf="!this.deleteQuestionMode" [id]="'w8--tab'+question.id" data-toggle="tab" [href]="'#w8-tab'+question.id" role="tab" [aria-controls]="'tab'+question.id" [class.show]="question.id == 1" [class.active]="question.id == 1" aria-expanded="true" aria-selected="true">
-                                                    <i *ngIf="question.type == 0" class="icon-question p-0"></i>
-                                                    <i *ngIf="question.type == 1" class="icon-image p-0"></i>
-                                                    <i *ngIf="question.type == 2" class="icon-arrows p-0"></i>
+                                                    <i *ngIf="question.questionType == 0" class="icon-question p-0"></i>
+                                                    <i *ngIf="question.questionType == 1" class="icon-image p-0"></i>
+                                                    <i *ngIf="question.questionType == 2" class="icon-arrows p-0"></i>
                                                 </a>
                                                 <a class="nav-link btn-fab mr-2" *ngIf="this.deleteQuestionMode" (click)="deleteQuestion(question)"><i class="icon-trash-o p-0"></i></a>
                                             </li>
@@ -229,9 +229,9 @@
                                         <ul class="nav nav-pills nav-icon-pills mb-3" role="tablist">
                                             <li class="nav-item" *ngFor="let question of questions" style="padding: 0.5em 0;">
                                                 <a class="nav-link btn-fab mr-2" [id]="'w8--tab'+question.id">
-                                                    <i *ngIf="question.type == 0" class="icon-question p-0" style="color: #86939E;"></i>
-                                                    <i *ngIf="question.type == 1" class="icon-image p-0" style="color: #86939E;"></i>
-                                                    <i *ngIf="question.type == 2" class="icon-arrows p-0" style="color: #86939E;"></i>
+                                                    <i *ngIf="question.questionType == 0" class="icon-question p-0" style="color: #86939E;"></i>
+                                                    <i *ngIf="question.questionType == 1" class="icon-image p-0" style="color: #86939E;"></i>
+                                                    <i *ngIf="question.questionType == 2" class="icon-arrows p-0" style="color: #86939E;"></i>
                                                 </a>
                                             </li>
                                         </ul>

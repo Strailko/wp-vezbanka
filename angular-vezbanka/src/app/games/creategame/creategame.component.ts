@@ -14,6 +14,8 @@ import { TokenStorageService } from 'src/app/shared/auth/token-storage.service';
   styleUrls: ['./creategame.component.scss']
 })
 export class CreategameComponent implements OnInit {
+  gameId: string;
+  IsEditingGame: boolean = false;
   editMode: boolean = true;
   questions: Question[] = [];
   deleteQuestionMode: boolean = false;
@@ -45,6 +47,16 @@ export class CreategameComponent implements OnInit {
       this.categories = cats;
     });
     this.addQuestion();
+
+    if(this.route.snapshot.url[1].path !== "create") {
+      this.gameId = this.route.snapshot.paramMap.get('id');
+      this.dataService.getGame(Number(this.gameId))
+          .subscribe((data) => {
+            this.game = data;
+            this.questions = this.game.questions;
+            this.IsEditingGame = true;
+          });
+    }
   }
 
   addQuestion() {
@@ -56,7 +68,7 @@ export class CreategameComponent implements OnInit {
       content: '',
       photo: '../../../assets/img/cover1.jpg',
       answers: [],
-      type: QuestionType.SELECTION,
+      questionType: QuestionType.SELECTION,
       mergingAnswers: []
     };
     this.questions.push(newQuestion);
@@ -103,7 +115,7 @@ export class CreategameComponent implements OnInit {
   }
 
   deleteAnswer(answer, id) {
-    if(this.questions[id-1].type == 0) {
+    if(this.questions[id-1].questionType == 0) {
       if(this.questions[id-1].answers.length < 2) {
         return;
       }
@@ -113,7 +125,7 @@ export class CreategameComponent implements OnInit {
         a.id = this.aCounter;
       });
     }
-    else if(this.questions[id-1].type == 1) {
+    else if(this.questions[id-1].questionType == 1) {
       if(this.questions[id-1].mergingAnswers.length < 2) {
         return;
       }
@@ -127,10 +139,10 @@ export class CreategameComponent implements OnInit {
   }
 
   changeQuestionType(question) {
-    const bottomSheetRef = this._bottomSheet.open(BottomSheetComponent, {data: {type: question.type}});
+    const bottomSheetRef = this._bottomSheet.open(BottomSheetComponent, {data: {questionType: question.questionType}});
     bottomSheetRef.afterDismissed().subscribe((data) => {
       if(data != undefined) {
-        question.type = data;
+        question.questionType = data;
         question.answers = [];
         question.mergingAnswers = [];
         this.addAnswer(question);
@@ -207,13 +219,25 @@ export class CreategameComponent implements OnInit {
     console.log(this.tokenStorageService.getUser())
     this.game.userCreatorId = this.tokenStorageService.getUser().id;
     this.game.categoryIds = this.game.categories.map(x => x.id)
-    this.dataService.createGame(this.game)
-        .subscribe((data) => {
-              this.openSnackBar("Успешно креиравте нова игра!", "Во ред");
-              this.router.navigate(['/game/'+data.id])
-          }, () => {
-            this.openSnackBar("Неуспешно креирање на нова игра!", "Обиди се повторно");
-          });
+    if(this.IsEditingGame) {
+      this.game.questions = this.questions;
+      this.dataService.editGame(this.game)
+          .subscribe((data) => {
+                this.openSnackBar("Успешно направивте промени на играта!", "Во ред");
+                this.router.navigate(['/game/'+data])
+            }, () => {
+              this.openSnackBar("Неуспешни промени!", "Обиди се повторно");
+            });
+    }
+    else {
+      this.dataService.createGame(this.game)
+          .subscribe((data) => {
+                this.openSnackBar("Успешно креиравте нова игра!", "Во ред");
+                this.router.navigate(['/game/'+data.id])
+            }, () => {
+              this.openSnackBar("Неуспешно креирање на нова игра!", "Обиди се повторно");
+            });
+    }
   }
 
   addCategory(event, category) {

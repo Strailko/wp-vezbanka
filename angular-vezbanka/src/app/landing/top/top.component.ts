@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/shared/data/data.service';
+import { Game } from 'src/app/shared/data/interfaces';
 
 @Component({
   selector: 'app-top',
@@ -16,9 +17,9 @@ export class TopComponent implements OnInit {
 
   randomGame() {
     this.dataService.getRandomGameId()
-        .subscribe((id: Number) => {
-          if(id) {
-            this.router.navigate(['/game/' + id]);
+        .subscribe((game) => {
+          if(game) {
+            this.router.navigate(['/game/' + game.id]);
           }
         });
   }
