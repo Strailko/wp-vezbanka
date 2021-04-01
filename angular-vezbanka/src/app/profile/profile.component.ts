@@ -29,7 +29,6 @@ export class ProfileComponent implements OnInit {
           this.getGames();
         });
     if(this.storage.getToken()) {
-      console.log(this.storage.getUser())
       this.loggedUserId = this.storage.getUser().id;
       if(this.loggedUserId == this.id) {
         this.showEditProfileButton = true;

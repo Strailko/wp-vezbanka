@@ -76,18 +76,19 @@ export class CreategameComponent implements OnInit {
   }
 
   addAnswer(question) {
-    if(question.type == 0) {
+    if(question.questionType == 0) {
       if(this.questions[question.id-1].answers.length > 3) {
         return;
       }
       let newAnswer = {
         id: this.questions[question.id-1].answers.length + 1,
         answer: '',
-        isCorrect: false
+        isCorrect: false,
+        isSelected: false
       };
       this.questions[question.id-1].answers.push(newAnswer);
     }
-    else if(question.type == 1) {
+    else if(question.questionType == 1) {
       if(this.questions[question.id-1].answers.length > 9) {
         return;
       }
@@ -182,7 +183,7 @@ export class CreategameComponent implements OnInit {
         var reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
         reader.onload = (e:any) => {
-          if(question.type == 0 && answerId == undefined && num == undefined) {
+          if(question.questionType == 0 && answerId == undefined && num == undefined) {
             question.photo = e.target.result;
           }
           else {
@@ -216,7 +217,6 @@ export class CreategameComponent implements OnInit {
 
   finishCreatingGame() {
     this.game.questions = this.questions;
-    console.log(this.tokenStorageService.getUser())
     this.game.userCreatorId = this.tokenStorageService.getUser().id;
     this.game.categoryIds = this.game.categories.map(x => x.id)
     if(this.IsEditingGame) {
@@ -243,11 +243,9 @@ export class CreategameComponent implements OnInit {
   addCategory(event, category) {
     if(event.checked) {
       this.game.categories.push(category);
-      console.log(this.game.categories);
     }
     else {
       this.game.categories = this.game.categories.filter(cat => cat != category);
-      console.log(this.game.categories);
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { TokenStorageService } from 'src/app/shared/auth/token-storage.service';
 import { DataService } from 'src/app/shared/data/data.service';
@@ -13,6 +13,7 @@ import { User } from 'src/app/shared/data/interfaces';
   styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit {
+  id: string;
   userId: Number;
   bgButton: boolean = false;
   bgLinks: boolean = false;
@@ -23,17 +24,25 @@ export class EditProfileComponent implements OnInit {
   editForm: FormGroup;
   error = false;
 
-  constructor(private dataService: DataService ,private authService: AuthService, private snackBar: MatSnackBar, private storage: TokenStorageService, private router: Router) { }
+  constructor(private dataService: DataService ,private authService: AuthService, private snackBar: MatSnackBar, private storage: TokenStorageService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.instantiateForm();
-    let user = this.storage.getUser();
-    this.userId = user.id;
-    this.dataService.getProfile(this.userId)
-        .subscribe((profile: User) => {
-          this.user = profile;
-          this.user.password = '';
-        });
+    this.id = this.route.snapshot.paramMap.get('id');
+    let usr = this.storage.getUser();
+    this.userId = usr.id;
+    if(this.id) {
+      if(Number(this.id) == this.userId || usr.roles.includes("MODERATOR") || usr.roles.includes("ADMIN")) {
+        this.dataService.getProfile(Number(this.id))
+            .subscribe((profile: User) => {
+              this.user = profile;
+              this.user.password = '';
+            });
+      }
+      else {
+        this.router.navigate(["/profile/"+this.id]);
+      }
+    }
   }
 
   instantiateForm() {

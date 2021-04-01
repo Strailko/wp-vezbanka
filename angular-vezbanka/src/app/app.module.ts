@@ -30,6 +30,8 @@ import { BottomSheetComponent } from './games/creategame/bottom-sheet/bottom-she
 import { AutofocusDirective } from './shared/directives/autofocus.directive';
 import { authInterceptorProviders } from './shared/auth/auth.interceptor';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
+import { ModerationComponent } from './panels/moderation/moderation.component';
+import { AdministrationComponent } from './panels/administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
     PlayComponent,
     BottomSheetComponent,
     AutofocusDirective,
-    EditProfileComponent
+    EditProfileComponent,
+    ModerationComponent,
+    AdministrationComponent
   ],
   imports: [
     BrowserModule,

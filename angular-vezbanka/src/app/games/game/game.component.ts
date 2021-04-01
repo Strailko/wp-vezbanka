@@ -45,14 +45,27 @@ export class GameComponent implements OnInit {
       this.heartedGame.userId = this.user.id;
       this.dataService.heartGame(this.heartedGame)
           .subscribe((confirmation) => {
-            console.log(confirmation);
-            this.openSnackBar("Успешно ја додадовте играта во омилени", "Во ред");
+            if(confirmation) {
+              this.openSnackBar("Успешно ја додадовте играта во омилени", "Во ред");
+            }
+            else {
+              this.openSnackBar("Играта е отстранета од омилени", "Во ред");
+            }
             return;
           });
-      this.openSnackBar("Играта е веќе поставена во омилени", "Во ред");
     }
     else {
       this.openSnackBar("Мора да бидете логирани за да додавате игри во омилени", "Во ред");
+    }
+  }
+
+  deleteGame() {
+    if(this.game) {
+      this.dataService.deleteGame(String(this.game.id))
+          .subscribe(() => {
+            this.router.navigate(['/games']);
+            this.openSnackBar("Успешно ја избришавте играта", "Во ред");
+          });
     }
   }
 
