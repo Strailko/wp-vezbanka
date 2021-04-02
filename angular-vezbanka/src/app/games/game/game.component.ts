@@ -75,7 +75,8 @@ export class GameComponent implements OnInit {
   }
 
   playGame() {
-    this.router.navigate(['/game/' + this.game.id + '/play'])
+    //this.router.navigate(['/game/' + this.game.id + '/play'])
+    window.location.replace("/game/" + this.game.id + "/play");
   }
 
   openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {

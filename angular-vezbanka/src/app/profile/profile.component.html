@@ -16,9 +16,6 @@
                         <a href="mailto:{{user.email}}" class="btn btn-outline-primary btn-sm  mt-3">Испрати мејл</a>
                     </div>
                     <div class="text-center p-5 mt-5" *ngIf="!showEditProfileButton">
-                        <div>
-                            <a href="#" [routerLink]="['/profile/' + user.id + '/edit']" class="snackbar" data-text="Edit button clicked" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-edit s-24"></i></a>
-                        </div>
                         <figure class="avatar avatar-xl">
                             <img [src]="user?.photo" alt="User photo">
                         </figure>

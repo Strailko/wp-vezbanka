@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
         .subscribe((profile: User) => {
           this.user = profile;
           this.getGames();
-        });
+        }, () => window.location.replace("/"));
     if(this.storage.getToken()) {
       this.loggedUserId = this.storage.getUser().id;
       if(this.loggedUserId == this.id) {
