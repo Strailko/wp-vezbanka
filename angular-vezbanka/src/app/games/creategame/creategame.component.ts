@@ -50,12 +50,20 @@ export class CreategameComponent implements OnInit {
 
     if(this.route.snapshot.url[1].path !== "create") {
       this.gameId = this.route.snapshot.paramMap.get('id');
-      this.dataService.getGame(Number(this.gameId))
-          .subscribe((data) => {
-            this.game = data;
-            this.questions = this.game.questions;
-            this.IsEditingGame = true;
-          });
+      if(this.gameId) {
+        this.dataService.getGame(Number(this.gameId))
+            .subscribe((data) => {
+              this.game = data;
+              let usr = this.tokenStorageService.getUser();
+              if(this.game.creator.id === usr.id || usr.roles.includes("MODERATOR") || usr.roles.includes("ADMIN")) {
+                this.questions = this.game.questions;
+                this.IsEditingGame = true;
+              }
+              else {
+                this.router.navigate(['/games/create']);
+              }
+            }, () => this.router.navigate(['/games/create']));
+      }
     }
   }
 

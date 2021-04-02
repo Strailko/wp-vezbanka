@@ -37,6 +37,8 @@ export class EditProfileComponent implements OnInit {
             .subscribe((profile: User) => {
               this.user = profile;
               this.user.password = '';
+            }, () => {
+              this.router.navigate(["/profile"]);
             });
       }
       else {
@@ -57,7 +59,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   finishEditing() {
-    if (!this.user.firstName || !this.user.username || !this.user.photo || !this.user.email || !this.user.password || !this.user.biography || !this.editForm.valid) {
+    if (!this.user.firstName || !this.user.username || !this.user.photo || !this.user.email || !this.user.password || !this.user.biography) {
       this.error = true;
       return;
     }
