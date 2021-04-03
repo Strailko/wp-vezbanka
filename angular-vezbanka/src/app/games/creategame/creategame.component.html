@@ -49,8 +49,8 @@
                                                                 </div>
                                                                 <ul class="nav nav-pills nav-icon-pills mb-3">
                                                                     <li class="nav-item">
-                                                                        <a class="nav-link btn-fab mr-2" (click)="this.answer.isCorrect = true" [class.show]="this.answer.isCorrect" [class.active]="this.answer.isCorrect"><i class="icon-check p-0"></i></a>
-                                                                        <a class="nav-link btn-fab mr-2" (click)="this.answer.isCorrect = false" [class.show]="!this.answer.isCorrect" [class.active]="!this.answer.isCorrect"><i class="icon-remove p-0"></i></a>
+                                                                        <a class="nav-link btn-fab mr-2" (click)="this.answer.correct = true" [class.show]="this.answer.correct" [class.active]="this.answer.correct"><i class="icon-check p-0"></i></a>
+                                                                        <a class="nav-link btn-fab mr-2" (click)="this.answer.correct = false" [class.show]="!this.answer.correct" [class.active]="!this.answer.correct"><i class="icon-remove p-0"></i></a>
                                                                         <a class="nav-link btn-fab mr-2" (click)="deleteAnswer(answer, question.id)"><i class="icon-trash-o p-0"></i></a>
                                                                     </li>
                                                                 </ul>

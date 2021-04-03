@@ -1,8 +1,8 @@
 export interface Answer{
   id?: Number;
   answer: string;
-  isCorrect: boolean;
-  isSelected?: boolean;
+  correct: boolean;
+  selected?: boolean;
 }
 
 export interface MergingAnswers {

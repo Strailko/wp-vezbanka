@@ -91,8 +91,8 @@ export class CreategameComponent implements OnInit {
       let newAnswer = {
         id: this.questions[question.id-1].answers.length + 1,
         answer: '',
-        isCorrect: false,
-        isSelected: false
+        correct: false,
+        selected: false
       };
       this.questions[question.id-1].answers.push(newAnswer);
     }

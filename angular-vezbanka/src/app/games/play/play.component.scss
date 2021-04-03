@@ -362,7 +362,7 @@ clear: both;
     Modify as content requires.
     ========================================================================== */
 
-@media only screen and (min-width: 35em) {
+@media only screen and (max-width: 35em) {
     /* Style adjustments for viewports that meet the condition */
 }
 
@@ -662,4 +662,85 @@ margin:0;
 
 p,pre,dl,menu,ol,ul {
 margin:1em 0;
+}
+
+.selected1 {
+    background-color: rgb(220, 72, 50) !important;
+}
+.selected2 {
+    background-color: rgb(248, 154, 49) !important;
+}
+
+#answer0 {
+    top: 41%;
+    left: 14%;
+}
+#answer1 {
+    top: 41%;
+    left: 51%;
+}
+#answer2 {
+    top: 58%;
+    left: 14%;
+}
+#answer3 {
+    top: 58%;
+    left: 51%;
+}
+
+#answer0small {
+    top: 40%;
+    left: 10%;
+}
+#answer1small {
+    top: 52%;
+    left: 10%;
+}
+#answer2small {
+    top: 64%;
+    left: 10%;
+}
+#answer3small {
+    top: 76%;
+    left: 10%;
+}
+
+.gameTimerStatus, .gameQuestionStatus {
+    font-size: 40px !important; 
+    line-height: 40px !important;
+}
+
+@media only screen and (max-width: 1600px) {
+    .gameTimerStatus, .gameQuestionStatus {
+        font-size: 35px !important; 
+        line-height: 35px !important;
+    }
+}
+
+@media only screen and (max-width: 1300px) {
+    .gameTimerStatus, .gameQuestionStatus {
+        font-size: 25px !important; 
+        line-height: 25px !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .gameTimerStatus, .gameQuestionStatus {
+        font-size: 15px !important; 
+        line-height: 20px !important;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .gameTimerStatus, .gameQuestionStatus {
+        font-size: 20px !important; 
+        line-height: 20px !important;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .gameTimerStatus, .gameQuestionStatus {
+        font-size: 15px !important; 
+        line-height: 20px !important;
+    }
 }
