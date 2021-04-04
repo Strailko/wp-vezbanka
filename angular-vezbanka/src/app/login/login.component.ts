@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
         data => {
           this.storage.saveToken(data.token);
           this.storage.saveUser(data);
-          this.router.navigate(["/profile"]);
+          window.location.replace("/");
         },
         () => {
           this.loginError = true;

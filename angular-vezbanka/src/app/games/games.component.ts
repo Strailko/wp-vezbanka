@@ -50,7 +50,6 @@ export class GamesComponent implements OnInit {
     }
     else if(this.type === 'category') {
       this.id = this.route.snapshot.paramMap.get('id');
-      console.log('category ' + this.id);
       if(this.id) {
         this.dataService.getCategory(Number(this.id))
             .subscribe((cat: Category) => {

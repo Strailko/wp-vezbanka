@@ -1,0 +1,10 @@
+#btn-searchOverlay {
+    cursor: pointer;
+    
+    &:hover {
+        opacity: .8;
+        text-decoration: none;
+        outline: medium none;
+        color: #ff1744;
+    }
+}

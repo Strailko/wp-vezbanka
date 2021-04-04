@@ -44,6 +44,14 @@
                 <i class="icon icon-wrench s-24"></i> <span>Креирај нова игра</span>
             </a>
             </li>
+            <li *ngIf="isMod || isAdmin"><a class="ajaxifyPage" href="#" [routerLink]="['/panel/mod']">
+                <i class="icon icon-gears s-24"></i> <span>Панел за модерирање</span>
+            </a>
+            </li>
+            <li *ngIf="isAdmin"><a class="ajaxifyPage" href="#" [routerLink]="['/panel/admin']">
+                <i class="icon icon-eercast s-24"></i> <span>Панел за администрирање</span>
+            </a>
+            </li>
         </ul>
 
     </div>

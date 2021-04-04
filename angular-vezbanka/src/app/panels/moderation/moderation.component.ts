@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/shared/data/data.service';
+import { Game } from 'src/app/shared/data/interfaces';
 
 @Component({
   selector: 'app-moderation',
@@ -6,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./moderation.component.scss']
 })
 export class ModerationComponent implements OnInit {
+  games: Game[] = [];
 
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
+    this.dataService.getGames()
+    .subscribe((list: Game[]) => {
+      this.games = list;
+    });
   }
 
 }

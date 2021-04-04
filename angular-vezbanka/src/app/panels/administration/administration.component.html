@@ -1,1 +1,34 @@
-<p>administration works!</p>
+<main id="pageContent" class="page has-sidebar">
+    <div class="container-fluid relative">
+        <div class="p-md-5 p-3">
+            <div class="relative mb-5">
+                <h1 class="mb-2 text-primary">Панел за администрирање</h1>
+                <p>Сите регистриран корисници на сајтот</p>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-4 mb-3" style="padding-bottom: 2em;" *ngFor="let user of users">
+                    <figure class="avatar avatar-md float-left mr-3 mt-1" [routerLink]="['/profile/'+user.id]">
+                        <img [src]="user.photo" alt="userphoto">
+                    </figure>
+                    <div [routerLink]="['/profile/'+user.id]">
+                        <h3>{{user.username}}</h3>
+                        <h6>{{user.firstName}} {{user.lastName}}</h6>
+                        {{user.email}}
+                    </div>
+                    <div *ngIf="user.roles[0].name == 'REGULAR'" >
+                        <a (click)="changeRole(user, 'MODERATOR')" class="btn btn-outline-primary btn-sm  mt-3">Додај како модератор</a><br>
+                        <a (click)="changeRole(user, 'ADMIN')" class="btn btn-outline-primary btn-sm  mt-3">Додај како администратор</a>
+                    </div>
+                    <div *ngIf="user.roles[0].name == 'MODERATOR'">
+                        <a (click)="changeRole(user, 'REGULAR')" class="btn btn-outline-primary btn-sm  mt-3">Отстрани од модератор</a><br>
+                        <a (click)="changeRole(user, 'ADMIN')" class="btn btn-outline-primary btn-sm  mt-3">Додај како администратор</a>
+                    </div>
+                    <div *ngIf="user.roles[0].name == 'ADMIN'" >
+                        <a (click)="changeRole(user, 'MODERATOR')" class="btn btn-outline-primary btn-sm  mt-3">Спушти на модератор</a>
+                        <a (click)="changeRole(user, 'REGULAR')" class="btn btn-outline-primary btn-sm  mt-3">Отстрани од администратор</a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
