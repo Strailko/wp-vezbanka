@@ -46,4 +46,11 @@ input.file {
 	div.fileinputs {
 		margin-top: 0.5em;
 	}
-  }
+	.classification {
+		flex-direction: column !important;
+		.category {
+			width: 100% !important;
+			padding-top: 1em;
+		}
+	}
+}

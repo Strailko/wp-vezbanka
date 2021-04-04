@@ -28,7 +28,7 @@
                                     <p>Креирана од <a [routerLink]="['/profile/' + game?.creator?.id]">{{game?.creator?.username}}</a></p>
                                 </div>
                                 <div class="pt-3">
-                                    <a class="btn btn-primary btn-lg" (click)="playGame()">Играј сега</a>
+                                    <a class="btn btn-primary btn-lg" style="z-index: 999999; position: relative;" (click)="playGame()">Играј сега</a>
                                 </div>
                             </div>
                         </div>

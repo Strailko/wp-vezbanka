@@ -77,7 +77,8 @@ export class CreategameComponent implements OnInit {
       photo: '../../../assets/img/cover1.jpg',
       answers: [],
       questionType: QuestionType.SELECTION,
-      mergingAnswers: []
+      mergingAnswers: [],
+      classes: []
     };
     this.questions.push(newQuestion);
     this.addAnswer(newQuestion);
@@ -91,13 +92,13 @@ export class CreategameComponent implements OnInit {
       let newAnswer = {
         id: this.questions[question.id-1].answers.length + 1,
         answer: '',
-        correct: false,
-        selected: false
+        isCorrect: false,
+        isSelected: false
       };
       this.questions[question.id-1].answers.push(newAnswer);
     }
     else if(question.questionType == 1) {
-      if(this.questions[question.id-1].answers.length > 9) {
+      if(this.questions[question.id-1].mergingAnswers.length > 9) {
         return;
       }
       let newAnswer = {
@@ -109,6 +110,23 @@ export class CreategameComponent implements OnInit {
       };
       this.questions[question.id-1].mergingAnswers.push(newAnswer);
     }
+    else if(question.questionType == 2) {
+      if(this.questions[question.id-1].classes.length >= 2) {
+        return;
+      }
+      let newCategory = {
+        id: this.questions[question.id-1].classes.length,
+        name: '',
+        photo: '../../../assets/img/cover1.jpg',
+        words: [''],
+        bgButtonCat: false
+      };
+      this.questions[question.id-1].classes.push(newCategory);
+    }
+  }
+
+  addWord(questionId, catId) {
+    this.questions[questionId-1].classes[catId].words.push('');
   }
 
   deleteQuestion(question) {
@@ -147,6 +165,13 @@ export class CreategameComponent implements OnInit {
     this.aCounter = 0;
   }
 
+  deleteWord(word, questionId, catIndex) {
+    this.questions[questionId-1].classes[catIndex].words = this.questions[questionId-1].classes[catIndex].words.filter(w => w != word);
+    if(this.questions[questionId-1].classes[catIndex].words.length < 1) {
+      this.addWord(questionId, catIndex);
+    }
+  }
+
   changeQuestionType(question) {
     const bottomSheetRef = this._bottomSheet.open(BottomSheetComponent, {data: {questionType: question.questionType}});
     bottomSheetRef.afterDismissed().subscribe((data) => {
@@ -154,7 +179,11 @@ export class CreategameComponent implements OnInit {
         question.questionType = data;
         question.answers = [];
         question.mergingAnswers = [];
+        question.classes = [];
         this.addAnswer(question);
+        if(question.questionType == 2) {
+          this.addAnswer(question);
+        }
       }
     });
   }
@@ -163,12 +192,20 @@ export class CreategameComponent implements OnInit {
     this.bgButton = true;
   }
 
-  bgLeave(answer?: any) {
+  bgLeave(answer?: any, question?: any) {
     if(!this.locked) {
       this.bgUrl = false;
       this.bgLinks = false;
       this.bgButton = false;
       this.headerBgButton = false;
+      if(answer == 0 && question) {
+        question.classes[0].bgButtonCat = false;
+        return;
+      }
+      if(answer == 1 && question) {
+        question.classes[1].bgButtonCat = false;
+        return;
+      }
       if(answer) {
         answer.bgButton1 = false;
         answer.bgButton2 = false;
@@ -194,7 +231,7 @@ export class CreategameComponent implements OnInit {
           if(question.questionType == 0 && answerId == undefined && num == undefined) {
             question.photo = e.target.result;
           }
-          else {
+          else if(question.questionType == 1) {
             if(num == 1) {
               question.mergingAnswers[answerId-1].photo1 = e.target.result;
               question.mergingAnswers[answerId-1].bgButton1 = false;
@@ -207,10 +244,18 @@ export class CreategameComponent implements OnInit {
               question.photo = e.target.result;
             }
           }
+          else if(question.questionType == 2) {
+            question.classes[num].photo = e.target.result;
+            question.classes[num].bgButtonCat = false;
+          }
           this.locked = false;
           this.bgLeave();
         }
     }
+  }
+
+  setWord($event, i, catIndex) {
+    console.log($event);
   }
 
   nextStage() {
@@ -274,5 +319,9 @@ export class CreategameComponent implements OnInit {
     return this.snackBar.open(message, action, {
       duration: 5000,
     });
+  }
+
+  customTrackBy(index: number, obj: any): any {
+    return index;
   }
 }
