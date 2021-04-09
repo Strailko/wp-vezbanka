@@ -1,8 +1,10 @@
 package mk.vezbanka.wp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,10 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.Data;
-import mk.vezbanka.wp.model.enums.RoleEnum;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Data
@@ -27,6 +30,7 @@ public class User {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String firstName;
@@ -41,7 +45,9 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    private String photo;
+    @Lob
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] photo;
 
     private String biography;
 

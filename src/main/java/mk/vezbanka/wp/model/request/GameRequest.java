@@ -19,4 +19,14 @@ public class GameRequest {
 
     @NotNull
     public List<Long> categoryIds;
+
+    public GameRequest(String name, String photo, String shortDescription, Long userCreatorId,
+                       List<QuestionRequest> questions, List<Long> categoryIds) {
+        this.name = name;
+        this.photo = photo;
+        this.shortDescription = shortDescription;
+        this.userCreatorId = userCreatorId;
+        this.questions = questions;
+        this.categoryIds = categoryIds;
+    }
 }

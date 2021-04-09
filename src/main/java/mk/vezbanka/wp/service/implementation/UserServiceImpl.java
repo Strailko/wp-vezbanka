@@ -1,5 +1,6 @@
 package mk.vezbanka.wp.service.implementation;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -131,16 +132,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         if (request.photo != null) {
-            user.setPhoto(request.photo);
+            user.setPhoto(request.photo.getBytes(StandardCharsets.UTF_8));
         }
 
         return saveUser(user);
     }
-    //
-    //@Override
-    //public UserResponse login(String username, String password) {
-    //
-    //}
 
     private User saveUser(User user) {
         return userRepository.save(user);

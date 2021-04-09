@@ -58,7 +58,7 @@ export interface Question{
   content:string;
   photo:string;
   answers?:Answer[];
-  questionType:QuestionType;
+  questionType?: QuestionType;
   mergingAnswers?: MergingAnswers[];
   classes?: ClassificationCategory[];
 }
@@ -83,8 +83,9 @@ export interface Game{
   player?:User;
   questions?:Question[];
   categories?:Category[];
-  userCreatorId?: Number;
+  creatorId?: Number;
   categoryIds?: Number[];
+  usersHeartedIds?: Number[];
 }
 
 export interface HeartedGame {

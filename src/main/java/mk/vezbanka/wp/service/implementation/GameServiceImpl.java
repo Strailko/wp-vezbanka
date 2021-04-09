@@ -1,5 +1,6 @@
 package mk.vezbanka.wp.service.implementation;
 
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,7 +160,7 @@ public class GameServiceImpl implements GameService {
         game.setState(GameState.UNOPENED);
 
         if(request.photo != null) {
-            game.setPhoto(request.photo);
+            game.setPhoto(request.photo.getBytes(StandardCharsets.UTF_8));
         }
 
         List<Question> questionList = new ArrayList<>();
@@ -170,9 +171,15 @@ public class GameServiceImpl implements GameService {
             question.answers.forEach(answer ->
                 answerList.add(new Answer(answer.answer, answer.isCorrect)));
             currentQuestion.setAnswers(answerList);
+            if (question.questionType == 0)
+                currentQuestion.setQuestionType(QuestionType.SELECTION);
+            else if (question.questionType == 1)
+                currentQuestion.setQuestionType(QuestionType.DRAGGABLE);
+            else if (question.questionType == 2)
+                currentQuestion.setQuestionType(QuestionType.CLASSIFICATION);
 
             if(question.photo != null) {
-                currentQuestion.setPhoto(question.photo);
+                currentQuestion.setPhoto(question.photo.getBytes(StandardCharsets.UTF_8));
             }
             questionList.add(currentQuestion);
         });
