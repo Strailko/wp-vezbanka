@@ -15,17 +15,17 @@
                         <h6>{{user.firstName}} {{user.lastName}}</h6>
                         {{user.email}}
                     </div>
-                    <div *ngIf="user.roles[0].name == 'REGULAR'" >
+                    <div *ngIf="user.roles[0] == 'REGULAR'" >
                         <a (click)="changeRole(user, 'MODERATOR')" class="btn btn-outline-primary btn-sm  mt-3">Додај како модератор</a><br>
                         <a (click)="changeRole(user, 'ADMIN')" class="btn btn-outline-primary btn-sm  mt-3">Додај како администратор</a>
                     </div>
-                    <div *ngIf="user.roles[0].name == 'MODERATOR'">
+                    <div *ngIf="user.roles[0] == 'MODERATOR'">
                         <a (click)="changeRole(user, 'REGULAR')" class="btn btn-outline-primary btn-sm  mt-3">Отстрани од модератор</a><br>
                         <a (click)="changeRole(user, 'ADMIN')" class="btn btn-outline-primary btn-sm  mt-3">Додај како администратор</a>
                     </div>
-                    <div *ngIf="user.roles[0].name == 'ADMIN'" >
-                        <a (click)="changeRole(user, 'MODERATOR')" class="btn btn-outline-primary btn-sm  mt-3">Спушти на модератор</a>
-                        <a (click)="changeRole(user, 'REGULAR')" class="btn btn-outline-primary btn-sm  mt-3">Отстрани од администратор</a><br>
+                    <div *ngIf="user.roles[0] == 'ADMIN'" >
+                        <a (click)="changeRole(user, 'MODERATOR')" class="btn btn-outline-primary btn-sm  mt-3">Спушти на модератор</a><br>
+                        <a (click)="changeRole(user, 'REGULAR')" class="btn btn-outline-primary btn-sm  mt-3">Отстрани од администратор</a>
                     </div>
                 </div>
             </div>

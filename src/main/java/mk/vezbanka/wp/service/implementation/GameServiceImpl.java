@@ -14,7 +14,9 @@ import mk.vezbanka.wp.model.Question;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.enums.GameState;
 import mk.vezbanka.wp.model.enums.QuestionType;
+import mk.vezbanka.wp.model.request.AnswerRequest;
 import mk.vezbanka.wp.model.request.GameRequest;
+import mk.vezbanka.wp.model.request.QuestionRequest;
 import mk.vezbanka.wp.repository.GameRepository;
 import mk.vezbanka.wp.repository.UserRepository;
 import mk.vezbanka.wp.service.CategoryService;
@@ -122,19 +124,19 @@ public class GameServiceImpl implements GameService {
     // (new CompletedGame entity?)
     // TODO: Logic for different question types needs to be implemented
     @Override
-    public float submitGame(Long id, Game completedGame) {
+    public float submitGame(Long id, GameRequest completedGame) {
         int correctAnswers = 0;
         // standard for loops are used because you can't change the value of correctAnswers in a lambda expression
         // explanation: https://stackoverflow.com/a/50341404/6553931
-        for (Question question : completedGame.getQuestions()) {
-            for (Answer answer : question.getAnswers()) {
-                if (answer.isCorrect() && answer.isSelected()) {
+        for (QuestionRequest question : completedGame.questions) {
+            for (AnswerRequest answer : question.answers) {
+                if (answer.isCorrect && answer.isSelected) {
                     correctAnswers += 1;
                 }
             }
         }
 
-        float result = (float) correctAnswers / completedGame.getQuestions().size() * 100;
+        float result = (float) correctAnswers / completedGame.questions.size() * 100;
 
         // Get the game we have saved in the database by the id, and increase the number of plays
         // (this shouldn't be done on the completedGame object because that will save the values for "isSelected" on
@@ -151,8 +153,8 @@ public class GameServiceImpl implements GameService {
         game.setName(request.name);
         game.setShortDescription(request.shortDescription);
 
-        User user = userRepository.findById(request.userCreatorId).orElseThrow(() ->
-            new RuntimeException("No user with id " + request.userCreatorId));
+        User user = userRepository.findById(request.creatorId).orElseThrow(() ->
+            new RuntimeException("No user with id " + request.creatorId));
         game.setCreator(user);
         game.setDateCreated(ZonedDateTime.now());
         game.setNumberOfHearts(0L);

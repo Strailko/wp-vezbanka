@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/data/data.service';
-import { Game } from 'src/app/shared/data/interfaces';
+import { Category, Game } from 'src/app/shared/data/interfaces';
 
 @Component({
   selector: 'app-moderation',
@@ -9,13 +9,20 @@ import { Game } from 'src/app/shared/data/interfaces';
 })
 export class ModerationComponent implements OnInit {
   games: Game[] = [];
+  categories: Category[] = [];
+  toggleCategories: boolean = false;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.getGames()
     .subscribe((list: Game[]) => {
-      this.games = list;
+      this.dataService.getCategories()
+          .subscribe((cats) => {
+            this.categories = cats;
+            list.forEach((game) => game.categories = this.categories.filter(cat => game.categoryIds.includes(cat.id)));
+            this.games = list;
+          });
     });
   }
 

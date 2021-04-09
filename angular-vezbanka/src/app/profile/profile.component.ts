@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
         }, () => window.location.replace("/"));
     if(this.storage.getToken()) {
       this.loggedUserId = this.storage.getUser().id;
-      if(this.loggedUserId == this.id) {
+      if(this.loggedUserId == this.id || this.storage.getUser().roles.includes("ADMIN")) {
         this.showEditProfileButton = true;
       }
     }

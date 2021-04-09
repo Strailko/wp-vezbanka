@@ -4,11 +4,14 @@
           <div class="d-flex relative align-items-center justify-content-between">
             <div class="mb-4">
               <h4>Панел за модерирање</h4>
-              <p>Сите креирани игри на Вежбанка</p>
+              <p>Сите креирани игри и категории на игри на Вежбанка</p>
             </div>
-            <a href=""
-              >Почетна<i class="icon-angle-right ml-3"></i
+            <a style="color:#ff1744" *ngIf="!toggleCategories" (click)="this.toggleCategories = !this.toggleCategories"
+              >Прикажи категории<i class="icon-angle-right ml-3"></i
             ></a>
+            <a style="color:#ff1744" *ngIf="toggleCategories" (click)="this.toggleCategories = !this.toggleCategories"
+            >Прикажи игри<i class="icon-angle-right ml-3"></i
+          ></a>
           </div>
         <div id="mobile" class="has-items-overlay playlist d-flex relative align-items-center justify-content-start" style="flex-wrap: wrap;"
           data-item="6"
@@ -19,7 +22,7 @@
           data-pager="false"
           data-controls="true"
           data-loop="false"
-          *ngIf="games">
+          *ngIf="games && !toggleCategories">
           <div *ngFor="let game of games" [routerLink]="['/game/' + game.id]" class="gameCard">
             <figure style="margin: 0;">
               <div class="img-wrapper">
@@ -70,4 +73,59 @@
         </div>
         </section>
       </div>
+      <div id="mobile" class="has-items-overlay playlist d-flex relative align-items-center justify-content-start" style="flex-wrap: wrap;"
+      data-item="6"
+      data-item-lg="3"
+      data-item-md="3"
+      data-item-sm="2"
+      data-auto="false"
+      data-pager="false"
+      data-controls="true"
+      data-loop="false"
+      *ngIf="categories && toggleCategories">
+      <div *ngFor="let cat of categories" [routerLink]="['/category/' + cat.id + '/edit']" class="gameCard">
+        <figure style="margin: 0;">
+          <div class="img-wrapper">
+            <img [src]="cat.photo" alt="Category photo" />
+            <div class="img-overlay text-white">
+              <div class="figcaption">
+                <ul
+                  class="list-inline d-flex align-items-center justify-content-between"
+                >
+                  <li class="list-inline-item">
+                    <a
+                      href="#"
+                      class="snackbar"
+                      data-text="Added to favourites"
+                      data-pos="top-right"
+                      data-showaction="true"
+                      data-actiontext="ok"
+                      data-actiontextcolor="#fff"
+                      data-backgroundcolor="#0c101b"
+                    >
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="no-ajaxy media-url"
+                    >
+                      <i class="icon-edit s-48"></i>
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a><i class="icon-more s-18 pt-3"></i></a>
+                  </li>
+                </ul>
+                <div class="text-center mt-5">
+                  <h5>{{category?.name}}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="figure-title text-center p-2">
+              <h5>{{category?.name}}</h5>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </div>
 </main>

@@ -410,6 +410,18 @@ html {
   width: 100%;
 }
 
+#groupHolder {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#groupHolder .groupDrop, #groupHolder .groupDropLabel {
+  position: absolute;
+  width: 100%;
+  white-space: pre-line;
+}
+
 /*-- Result Wrapper -- */
 #resultHolder {
   display: table;
@@ -662,16 +674,100 @@ ul.scoreList li:nth-child(odd) {
   width: 100%;
 }
 
-.editBorder .question {
-  border: #fff solid 2px;
-}
-
-.editBorder #videoHolder {
-  border: #fff solid 2px;
+.editBorder .question, .editBorder #videoHolder, .editBorder .dropLabel, .editBorder .groupDropLabel, .editBorder .explanation {
+  outline: #fff000 dashed 2px;
 }
 
 .editBorder .buttonClick, .editBorder input {
-  border: #F90 solid 2px;
+  outline: #F90 dashed 2px;
+}
+
+.editFrontIndex {
+  z-index: 1000;
+}
+
+.editSecondIndex {
+  z-index: 500;
+}
+
+.editDrag {
+  position: absolute;
+}
+
+.editDrag:hover {
+  outline: 1px dashed #ccc;
+}
+
+.editDrag .ui-icon {
+  width: 18px;
+  height: 18px;
+  background: url("../../../assets/button_save.png");
+}
+
+.editBorderFocus {
+  -webkit-animation-name: borderFocus;
+          animation-name: borderFocus;
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes borderFocus {
+  0% {
+    outline: #F90 solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #F90 solid 4px;
+  }
+}
+
+@keyframes borderFocus {
+  0% {
+    outline: #F90 solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #F90 solid 4px;
+  }
+}
+
+.editBorderDropFocus {
+  -webkit-animation-name: borderDropFocus;
+          animation-name: borderDropFocus;
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes borderDropFocus {
+  0% {
+    outline: #15a30e solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #15a30e solid 4px;
+  }
+}
+
+@keyframes borderDropFocus {
+  0% {
+    outline: #15a30e solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #15a30e solid 4px;
+  }
 }
 
 .buttonClick {

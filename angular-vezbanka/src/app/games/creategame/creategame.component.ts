@@ -33,7 +33,8 @@ export class CreategameComponent implements OnInit {
     photo: '../../../assets/img/cover1.jpg',
     shortDescription: '',
     categories: [],
-    questions: []
+    questions: [],
+    categoryIds: []
   };
   categories: Category[] = [];
 
@@ -55,8 +56,13 @@ export class CreategameComponent implements OnInit {
             .subscribe((data) => {
               this.game = data;
               let usr = this.tokenStorageService.getUser();
-              if(this.game.creator.id === usr.id || usr.roles.includes("MODERATOR") || usr.roles.includes("ADMIN")) {
+              if(this.game.creatorId === usr.id || usr.roles.includes("MODERATOR") || usr.roles.includes("ADMIN")) {
                 this.questions = this.game.questions;
+                this.questions.forEach(q => {
+                  this.qCounter+=1;
+                  q.id = this.qCounter;
+                });
+                this.qCounter = 0;
                 this.IsEditingGame = true;
               }
               else {
@@ -221,10 +227,6 @@ export class CreategameComponent implements OnInit {
     const file:File = event.target.files[0];
     if (file) {
         this.fileName = file.name;
-        // const formData = new FormData();
-        // formData.append("photo", file);
-        // const upload$ = this.http.post("/api/thumbnail-upload", formData);
-        // upload$.subscribe();
         var reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
         reader.onload = (e:any) => {
@@ -254,6 +256,20 @@ export class CreategameComponent implements OnInit {
     }
   }
 
+  fileSelectedGame(event: any, game: any) {
+    const file:File = event.target.files[0];
+    if (file) {
+        this.fileName = file.name;
+        var reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (e:any) => {
+          game.photo = e.target.result;
+          this.locked = false;
+          this.bgLeave();
+        }
+    }
+  }
+
   setWord($event, i, catIndex) {
     console.log($event);
   }
@@ -270,14 +286,13 @@ export class CreategameComponent implements OnInit {
 
   finishCreatingGame() {
     this.game.questions = this.questions;
-    this.game.userCreatorId = this.tokenStorageService.getUser().id;
-    this.game.categoryIds = this.game.categories.map(x => x.id)
+    this.game.creatorId = this.tokenStorageService.getUser().id;
     if(this.IsEditingGame) {
       this.game.questions = this.questions;
       this.dataService.editGame(this.game)
           .subscribe((data) => {
                 this.openSnackBar("Успешно направивте промени на играта!", "Во ред");
-                this.router.navigate(['/game/'+data])
+                this.router.navigate(['/game/'+data.id])
             }, () => {
               this.openSnackBar("Неуспешни промени!", "Обиди се повторно");
             });
@@ -296,9 +311,11 @@ export class CreategameComponent implements OnInit {
   addCategory(event, category) {
     if(event.checked) {
       this.game.categories.push(category);
+      this.game.categoryIds.push(category.id);
     }
     else {
       this.game.categories = this.game.categories.filter(cat => cat != category);
+      this.game.categoryIds = this.game.categoryIds.filter(catId => catId != category.id);
     }
   }
 

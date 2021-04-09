@@ -106,10 +106,14 @@ export class PlayComponent implements OnInit, OnDestroy {
     while (new Date().getTime() < start + 200);
     this.submited = false;
     if(this.questionIndex + 1 >= this.questions.length) {
-      this.explanationToggle = false;
       this.resultToggle = true;
+      this.explanationToggle = false;
       this.game.questions = this.questions;
-      this.dataService.finishGame(this.game);
+      this.dataService.finishGame(this.game)
+          .subscribe((percent) => {
+            console.log(percent);
+            this.score = percent;
+          });
       return;
     }
     this.questionIndex = this.questionIndex + 1;
@@ -126,7 +130,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   toggleAnswerSelection(answer) {
-    answer.selected = !answer.selected;
+    answer.isSelected = !answer.isSelected;
   }
 
   submitQuestion(question) {
@@ -134,8 +138,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.submited = true;
     this.seconds = "00";
     question.answers.forEach(a => {
-      console.log((a.selected && !a.correct) || (a.correct && !a.selected));
-      if((a.selected && !a.correct) || (a.correct && !a.selected)) {
+      if((a.isSelected == true && a.isCorrect == false) || (a.isCorrect == true && a.isSelected == false)) {
         this.result = "Неточно";
         this.explanationToggle = true;
       }
@@ -145,6 +148,10 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.score += 1;
     }
     this.explanationToggle = true;
+  }
+
+  dragWord() {
+    console.log(1);
   }
 
   share(action){
@@ -171,5 +178,11 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   playAgain() {
     window.location.reload();
+  }
+
+  collapsePhotoStage() {
+    if(!this.explanationToggle) {
+      this.photoStage = false;
+    }
   }
 }

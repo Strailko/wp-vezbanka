@@ -29,6 +29,10 @@ export class GameComponent implements OnInit {
     this.dataService.getGame(Number(this.id))
         .subscribe((data: Game) => {
           this.game = data;
+          this.dataService.getProfile(this.game.creatorId)
+              .subscribe((user) => {
+                this.game.creator = user;
+              });
         });
     if(this.storage.getToken()) {
       this.loggedIn = true;

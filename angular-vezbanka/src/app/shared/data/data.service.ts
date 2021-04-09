@@ -110,7 +110,7 @@ export class DataService {
   }
 
   editGame(game: Game) : Observable<Game> {
-    return this.http.put<Game>(this.baseGameUrl + '/edit/' + game.id, game)
+    return this.http.post<Game>(this.baseGameUrl + '/edit/' + game.id, game)
                .pipe(
                     map((data) => {
                         return data;
@@ -124,8 +124,8 @@ export class DataService {
                .pipe(catchError(this.handleError));
   }
 
-  finishGame(game: Game) : Observable<Game> {
-    return this.http.post<Game>(this.baseGameUrl + '/submit/' + game.id, game)
+  finishGame(game: Game) : Observable<number> {
+    return this.http.post<number>(this.baseGameUrl + '/submit/' + game.id, game)
                .pipe(
                     map((data) => {
                         return data;
@@ -154,6 +154,26 @@ export class DataService {
                );
   }
 
+  createCategory(category: Category) : Observable<Category> {
+    return this.http.post<Category>(this.baseCategoryUrl + '/create', category)
+               .pipe(
+                    map((data) => {
+                        return data;
+                    }),
+                    catchError(this.handleError)
+                );
+  }
+
+  editCategory(category: Category) : Observable<Category> {
+    return this.http.post<Category>(this.baseCategoryUrl + '/edit/' + category.id, category)
+               .pipe(
+                    map((data) => {
+                        return data;
+                    }),
+                    catchError(this.handleError)
+                );
+  }
+
   getProfile(profileId: Number) : Observable<User> {
     return this.http.get<User>(this.baseProfileUrl + '/' + profileId)
                .pipe(
@@ -162,6 +182,26 @@ export class DataService {
                     }),
                     catchError(this.handleError)
                );
+  }
+  
+  editProfile(user: User) : Observable<User> {
+    return this.http.post<User>(this.baseProfileUrl + '/edit/' + user.id, user)
+               .pipe(
+                    map((data) => {
+                        return data;
+                    }),
+                    catchError(this.handleError)
+                );
+  }
+    
+  changePassword(userId: string, newPassword: string) : Observable<boolean> {
+    return this.http.post<boolean>(this.baseProfileUrl + '/editPassword/' + userId, newPassword)
+               .pipe(
+                    map((data) => {
+                        return data;
+                    }),
+                    catchError(this.handleError)
+                );
   }
 
   getProfileGames(profileId: Number) : Observable<Game[]> {

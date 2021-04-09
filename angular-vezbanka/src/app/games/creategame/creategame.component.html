@@ -22,7 +22,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h4 class="card-title">Прашање {{question.id}} <mat-slide-toggle [checked]="true" (click)="turnEditMode()"></mat-slide-toggle></h4>
+                                            <h4 class="card-title">Прашање {{question.id}} <mat-slide-toggle [checked]="true" disabled></mat-slide-toggle></h4>
                                                 <p class="card-title" *ngIf="!editMode">{{question.content}}</p>
                                                 <form class="form-material" novalidate>
                                                     <div class="body">
@@ -272,7 +272,7 @@
                                                 <a class="btn btn-primary" *ngIf="bgLinks && !bgUrl" (click)="this.bgUrl = true; this.locked = true;"><i class="icon-link p-0"></i> Линк</a>
                                                 <input type="text" class="form-control" style="width: 30%;" *ngIf="bgUrl" name="game-photo" [(ngModel)]="this.game.photo" (keydown.enter)="this.locked = false; bgLeave();" (keydown.esc)="this.locked = false; bgLeave();" (focusout)="this.locked = false; bgLeave();" autofocus>
                                                 <div class="fileinputs" *ngIf="bgLinks && !bgUrl" (click)="this.locked = true">
-                                                    <input type="file" class="file" accept=".png, .jpg, .jpeg" (change)="fileSelected($event, game)">
+                                                    <input type="file" class="file" accept=".png, .jpg, .jpeg" (change)="fileSelectedGame($event, game)">
                                                     <div class="fakefile">
                                                       <a class="btn btn-primary"><i class="icon-upload p-0"></i> Прикачи </a>
                                                     </div>
@@ -289,7 +289,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group form-float gamecheckbox">
-                                                        <mat-checkbox *ngFor="let category of categories" (change)="addCategory($event, category)" style="padding: 0 2em;">
+                                                        <mat-checkbox *ngFor="let category of categories" (change)="addCategory($event, category)" style="padding: 0 2em;" [checked]="this.game.categoryIds.includes(category.id)">
                                                             {{category.name}}
                                                         </mat-checkbox>
                                                     </div>

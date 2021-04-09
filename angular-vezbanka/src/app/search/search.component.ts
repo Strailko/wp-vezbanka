@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../shared/data/data.service';
-import { Game } from '../shared/data/interfaces';
+import { Category, Game } from '../shared/data/interfaces';
 
 @Component({
   selector: 'app-search',
@@ -10,26 +10,40 @@ import { Game } from '../shared/data/interfaces';
 export class SearchComponent implements OnInit {
   games: Game[] = [];
   filteredGames: Game[];
+  categories: Category[] = [];
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.dataService.getGames()
+    this.dataService.getTopPlayedGames()
         .subscribe((list: Game[]) => {
-          this.games = this.filteredGames = list;
+          this.dataService.getCategories()
+              .subscribe((cats) => {
+                this.categories = cats;
+                list.forEach((game) => game.categories = this.categories.filter(cat => game.categoryIds.includes(cat.id)));
+                this.games = this.filteredGames = list;
+              });
         });
   }
 
   searchGames(filterValue: string) {
-    console.log(filterValue);
     if(filterValue) {
       this.dataService.searchGames(filterValue)
           .subscribe((list: Game[]) => {
-            this.filteredGames = list;
+            this.dataService.getCategories()
+                .subscribe((cats) => {
+                  this.categories = cats;
+                  list.forEach((game) => game.categories = this.categories.filter(cat => game.categoryIds.includes(cat.id)));
+                  this.filteredGames = list;
+                });
           });
     }
     else {
       this.filteredGames = this.games;
     }
+  }
+
+  routeToGame(id) {
+    window.location.replace("/game/"+id);
   }
 }

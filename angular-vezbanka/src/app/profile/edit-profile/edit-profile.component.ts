@@ -22,7 +22,11 @@ export class EditProfileComponent implements OnInit {
   locked: boolean = false;
   user: User;
   editForm: FormGroup;
+  passForm: FormGroup;
   error = false;
+  changePasswordToggle: boolean = false;
+  newPassword: string = '';
+  retypePassword: string = '';
 
   constructor(private dataService: DataService ,private authService: AuthService, private snackBar: MatSnackBar, private storage: TokenStorageService, private router: Router, private route: ActivatedRoute) { }
 
@@ -52,18 +56,21 @@ export class EditProfileComponent implements OnInit {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl(''),
       username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       biography: new FormControl('', [Validators.required]),
+    });
+    this.passForm = new FormGroup({
+      newPassword: new FormControl('', [Validators.required]),
+      retypePassword: new FormControl('', [Validators.required]),
     });
   }
 
   finishEditing() {
-    if (!this.user.firstName || !this.user.username || !this.user.photo || !this.user.email || !this.user.password || !this.user.biography) {
+    if (!this.user.firstName || !this.user.username || !this.user.photo || !this.user.email || !this.user.biography) {
       this.error = true;
       return;
     }
-    this.authService.register(this.user)
+    this.dataService.editProfile(this.user)
         .subscribe(
           () => {
               this.openSnackBar("Успешни измени!", "Во ред");
@@ -75,6 +82,31 @@ export class EditProfileComponent implements OnInit {
           }
         );
     this.editForm.reset();
+  }
+
+  finishChangePassword() {
+    if(!this.newPassword || !this.retypePassword) {
+      this.error = true;
+      return;
+    }
+    this.dataService.changePassword(this.id, this.newPassword)
+        .subscribe(
+          (changed) => {
+            if(changed) {
+              this.openSnackBar("Успешни измени!", "Во ред");
+              this.router.navigate(['/profile']);
+            }
+            else {
+              this.error = true;
+              this.openSnackBar("Неуспешни измени", "Обиди се повторно");
+            }
+          },
+          () => {
+            this.error = true;
+            this.openSnackBar("Неуспешни измени", "Обиди се повторно");
+          }
+        );
+    this.passForm.reset();
   }
 
   bgEnter() {

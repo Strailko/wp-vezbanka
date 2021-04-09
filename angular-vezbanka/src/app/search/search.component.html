@@ -28,7 +28,7 @@
                         <strong>Листа на игри</strong>
                     </div>
                     <ul class="playlist list-group list-group-flush">
-                        <li class="list-group-item" *ngFor="let game of filteredGames" [routerLink]="['/game/' + game.id]">
+                        <li class="list-group-item" *ngFor="let game of filteredGames" (click)="routeToGame(game.id)">
                             <div class="d-flex align-items-center">
                                 <div class="col-10">
                                     <figure class="avatar avatar-md float-left  mr-3 mt-1">

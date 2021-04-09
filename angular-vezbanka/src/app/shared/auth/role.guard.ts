@@ -12,11 +12,13 @@ export class RoleGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const expectedRole = route.data.expectedRole;
     let user = this.storage.getUser();
-    if(!user.roles.includes(expectedRole)) {
+    if(user.roles.includes(expectedRole[0]) || user.roles.includes(expectedRole[1])) {
+      return true;
+    }
+    else {
       window.location.replace("/");
       return false;
     }
-    return true;
   }
   
 }

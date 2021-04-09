@@ -4,7 +4,16 @@
             <div class="row">
                 <div class="col-md-10 mx-md-auto">
                     <div style="display: flex; justify-content: center;">
-                            <div class="col-md-7 card p-5" *ngIf="user">
+                            <div class="col-md-7 card p-5" *ngIf="user && !changePasswordToggle">
+                                <div class="d-flex relative align-items-center justify-content-between">
+                                    <div class="mb-4">
+                                      <h4>Промена на податоци</h4>
+                                      <p>{{user.username}}</p>
+                                    </div>
+                                    <a style="color:#ff1744;" (click)="this.changePasswordToggle = !this.changePasswordToggle"
+                                      >Промени лозинка<i class="icon-angle-right ml-3"></i
+                                    ></a>
+                                  </div>
                                 <div class="header-bg" style="min-height: 10em; height: 10em; margin-bottom:2em; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url('{{user.photo}}');" (mouseenter)="bgEnter()" (mouseleave)="bgLeave()">
                                     <div *ngIf="bgButton" class="bgButtons">
                                         <a class="btn btn-primary" *ngIf="!bgLinks" (click)="this.bgLinks = true;"><i class="icon-photo p-0"></i> Смени ја сликата</a>
@@ -46,12 +55,6 @@
                                         </div>
                                         <div class="form-group form-float">
                                             <div class="form-line">
-                                                <input type="password" class="form-control" [(ngModel)]="this.user.password" formControlName="password">
-                                                <label class="form-label" *ngIf="!this.user.password">Нова лозинка *</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-float">
-                                            <div class="form-line">
                                                 <textarea type="text" maxlength="200" class="form-control" style="resize: none;" [(ngModel)]="this.user.biography" formControlName="biography"></textarea>
                                                 <label class="form-label" *ngIf="!this.user.biography">Био (до 200 карактери) *</label>
                                             </div>
@@ -60,6 +63,37 @@
                                         <input type="submit" class="btn btn-outline-primary btn-sm pl-4 pr-4" value="Измени профил" (click)="finishEditing()"><br><br>
                                         <small style="padding: 3em 0 0 0; white-space: nowrap;"><a *ngIf="error" href="#" style="pointer-events: none !important;">Невалидни податоци!</a></small>
                                     </div>
+                                </form>
+                            </div>
+                            <div class="col-md-7 card p-5" *ngIf="user && changePasswordToggle">
+                                <div class="d-flex relative align-items-center justify-content-between">
+                                    <div class="mb-4">
+                                      <h4>Промена на лозинка</h4>
+                                      <p>{{user.username}}</p>
+                                    </div>
+                                    <a style="color:#ff1744;" (click)="this.changePasswordToggle = !this.changePasswordToggle"
+                                      >Промени други податоци<i class="icon-angle-right ml-3"></i
+                                    ></a>
+                                  </div>
+                                <form class="form-material" [formGroup]="passForm" novalidate>
+                                <div class="form-group form-float">
+                                    <div class="body">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="password" class="form-control" [(ngModel)]="this.newPassword" formControlName="newPassword">
+                                                <label class="form-label" *ngIf="!this.newPassword">Нова лозинка *</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="password" class="form-control" [(ngModel)]="this.retypePassword" formControlName="retypePassword">
+                                                <label class="form-label" *ngIf="!this.retypePassword">Повтори лозинка *</label>
+                                            </div>
+                                        </div>
+                                        <input type="submit" class="btn btn-outline-primary btn-sm pl-4 pr-4" value="Измени лозинка" (click)="finishChangePassword()"><br><br>
+                                        <small style="padding: 3em 0 0 0; white-space: nowrap;"><a *ngIf="error" href="#" style="pointer-events: none !important;">Лозинките не се совпаѓаат!</a></small>
+                                    </div>
+                                </div>
                                 </form>
                             </div>
                     </div>

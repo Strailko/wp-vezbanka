@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../shared/auth/token-storage.service';
 import { DataService } from '../shared/data/data.service';
-import { Game } from '../shared/data/interfaces';
+import { Category, Game } from '../shared/data/interfaces';
 
 @Component({
   selector: 'app-rsidebar',
@@ -10,6 +10,7 @@ import { Game } from '../shared/data/interfaces';
 })
 export class RsidebarComponent implements OnInit {
   games: Game[] = [];
+  categories: Category[] = [];
   loggedIn: boolean = false;
   userId: Number;
 
@@ -28,7 +29,12 @@ export class RsidebarComponent implements OnInit {
     if(this.userId) {
       this.dataService.getProfileGames(this.userId)
           .subscribe((list: Game[]) => {
-            this.games = list;
+            this.dataService.getCategories()
+                .subscribe((cats) => {
+                  this.categories = cats;
+                  list.forEach((game) => game.categories = this.categories.filter(cat => game.categoryIds.includes(cat.id)));
+                  this.games = list;
+                });
           });
     }
   }

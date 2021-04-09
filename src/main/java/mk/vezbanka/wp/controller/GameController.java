@@ -74,13 +74,13 @@ public class GameController {
     }
 
     @PostMapping("/create")
-    public Game createGame(@RequestBody GameRequest request) {
-        return gameService.createGame(request);
+    public GameResponse createGame(@RequestBody GameRequest request) {
+        return mapToGameResponse(gameService.createGame(request));
     }
 
     @PostMapping("/edit/{id}")
-    public Game editGame(@PathVariable Long id, @RequestBody GameRequest request) {
-        return gameService.editGame(id, request);
+    public GameResponse editGame(@PathVariable Long id, @RequestBody GameRequest request) {
+        return mapToGameResponse(gameService.editGame(id, request));
     }
 
     @DeleteMapping("/delete/{id}")
@@ -89,7 +89,7 @@ public class GameController {
     }
 
     @PostMapping("/submit/{id}")
-    public float submitGame(@PathVariable Long id, @RequestBody Game game) {
+    public float submitGame(@PathVariable Long id, @RequestBody GameRequest game) {
         return gameService.submitGame(id, game);
     }
 

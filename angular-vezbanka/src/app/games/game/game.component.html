@@ -14,8 +14,8 @@
                                     <h1 class="my-3 text-white">{{game?.name}}</h1>
                                     <div class="ml-auto mb-2">
                                         <span *ngIf="user && game">
-                                            <a href="#" *ngIf="user.id === game.creator.id || isMod" [routerLink]="['/game/' + game.id + '/edit']" class="snackbar" data-text="Edit button clicked" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-edit s-24"></i></a>
-                                            <a style="color: #ff1744; cursor: pointer;" *ngIf="user.id === game.creator.id || isMod" (click)="deleteGame()" class="snackbar ml-3" data-text="Delete button clicked" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-trash s-24"></i></a>
+                                            <a href="#" *ngIf="user.id === game.creatorId || isMod" [routerLink]="['/game/' + game.id + '/edit']" class="snackbar" data-text="Edit button clicked" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-edit s-24"></i></a>
+                                            <a style="color: #ff1744; cursor: pointer;" *ngIf="user.id === game.creatorId || isMod" (click)="deleteGame()" class="snackbar ml-3" data-text="Delete button clicked" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-trash s-24"></i></a>
                                         </span>
                                         <a style="color: #ff1744; cursor: pointer;" (click)="heartGame(game?.id)" class="snackbar ml-3" data-text="You like this song" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-heart s-24"></i></a>
                                         <a style="color: #ff1744; cursor: pointer;" (click)="copyUrl()" class="snackbar ml-3" data-text="Thanks for sharing" data-pos="top-right" data-showaction="true" data-actiontext="ok" data-actiontextcolor="#fff" data-backgroundcolor="#0c101b"><i class="icon-share-1 s-24"></i></a>
@@ -25,10 +25,10 @@
                                 <div class="text-white my-2">
                                     <p>{{game?.shortDescription}}</p>
                                     <br>
-                                    <p>Креирана од <a [routerLink]="['/profile/' + game?.creator?.id]">{{game?.creator?.username}}</a></p>
+                                    <p>Креирана од <a [routerLink]="['/profile/' + game?.creatorId]">{{game?.creator?.username}}</a></p>
                                 </div>
                                 <div class="pt-3">
-                                    <a class="btn btn-primary btn-lg" style="z-index: 999999; position: relative;" (click)="playGame()">Играј сега</a>
+                                    <a class="btn btn-primary btn-lg" style="z-index: 1; position: relative;" (click)="playGame()">Играј сега</a>
                                 </div>
                             </div>
                         </div>

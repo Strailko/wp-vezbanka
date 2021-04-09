@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
   bgUrl: boolean = false;
   fileName: string;
   locked: boolean = false;
+  repeatPassword: string = '';
 
   constructor(
     private dataService: DataService,
@@ -79,6 +80,7 @@ export class LoginComponent implements OnInit {
       lastName: new FormControl(''),
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
+      repeatPassword: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       biography: new FormControl('', [Validators.required]),
     });
@@ -124,8 +126,19 @@ export class LoginComponent implements OnInit {
   }
 
   register() {
-    if (!this.registerUser.firstName || !this.registerUser.username || !this.registerUser.photo || !this.registerUser.email || !this.registerUser.password || !this.registerUser.biography || !this.registerForm.valid) {
+    if (!this.registerUser.firstName || !this.registerUser.username || !this.registerUser.photo || !this.registerUser.email || !this.registerUser.password || !this.registerUser.biography) {
       this.registerError = true;
+      this.openSnackBar("Празно поле, нецелосни податоци", "Дополни");
+      return;
+    }
+    if(!this.registerForm.valid) {
+      this.registerError = true;
+      this.openSnackBar("Невалидна email адреса", "Обиди се повторно");
+      return;
+    }
+    if(this.registerUser.password != this.repeatPassword) {
+      this.registerError = true;
+      this.openSnackBar("Лозинките не се совпаѓаат", "Обиди се повторно");
       return;
     }
     this.authService.register(this.registerUser)
@@ -136,7 +149,7 @@ export class LoginComponent implements OnInit {
           },
           () => {
             this.registerError = true;
-            this.openSnackBar("Неуспешна регистрација", "Обиди се повторно");
+            this.openSnackBar("Неуспешна регистрација, корисничкото име веќе постои", "Обиди се повторно");
           }
         );
     this.registerForm.reset();

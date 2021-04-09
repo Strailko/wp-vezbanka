@@ -8,6 +8,7 @@ import { PlayComponent } from './games/play/play.component';
 import { LandingComponent } from './landing/landing.component';
 import { LoginComponent } from './login/login.component';
 import { AdministrationComponent } from './panels/administration/administration.component';
+import { CategoryEditComponent } from './panels/moderation/category-edit/category-edit.component';
 import { ModerationComponent } from './panels/moderation/moderation.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -28,8 +29,10 @@ const routes: Routes = [
   { path: 'profile/:id/edit', component: EditProfileComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   { path: 'profile/:id', component: ProfileComponent, pathMatch: 'prefix' },
   { path: 'profile', component: ProfileComponent, pathMatch: 'full', canActivate: [AuthGuard] },
-  { path: 'panel/mod', component: ModerationComponent, pathMatch: 'full', canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'MODERATOR' } },
-  { path: 'panel/admin', component: AdministrationComponent, pathMatch: 'full', canActivate: [AuthGuard, RoleGuard], data: { expectedRole: 'ADMIN' } },
+  { path: 'category/create', component: CategoryEditComponent, pathMatch: 'full', canActivate: [AuthGuard, RoleGuard], data: { expectedRole: ['MODERATOR', 'ADMIN'] } },
+  { path: 'category/:id/edit', component: CategoryEditComponent, pathMatch: 'full', canActivate: [AuthGuard, RoleGuard], data: { expectedRole: ['MODERATOR', 'ADMIN'] } },
+  { path: 'panel/mod', component: ModerationComponent, pathMatch: 'full', canActivate: [AuthGuard, RoleGuard], data: { expectedRole: ['MODERATOR', 'ADMIN'] } },
+  { path: 'panel/admin', component: AdministrationComponent, pathMatch: 'full', canActivate: [AuthGuard, RoleGuard], data: { expectedRole: ['ADMIN', 'ADMIN'] } },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

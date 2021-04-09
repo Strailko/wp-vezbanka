@@ -32,6 +32,7 @@ import { authInterceptorProviders } from './shared/auth/auth.interceptor';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { ModerationComponent } from './panels/moderation/moderation.component';
 import { AdministrationComponent } from './panels/administration/administration.component';
+import { CategoryEditComponent } from './panels/moderation/category-edit/category-edit.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { AdministrationComponent } from './panels/administration/administration.
     AutofocusDirective,
     EditProfileComponent,
     ModerationComponent,
-    AdministrationComponent
+    AdministrationComponent,
+    CategoryEditComponent
   ],
   imports: [
     BrowserModule,
