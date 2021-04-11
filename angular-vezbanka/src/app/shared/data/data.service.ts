@@ -183,7 +183,7 @@ export class DataService {
                     catchError(this.handleError)
                );
   }
-  
+
   editProfile(user: User) : Observable<User> {
     return this.http.post<User>(this.baseProfileUrl + '/edit/' + user.id, user)
                .pipe(
@@ -193,9 +193,9 @@ export class DataService {
                     catchError(this.handleError)
                 );
   }
-    
+
   changePassword(userId: string, newPassword: string) : Observable<boolean> {
-    return this.http.post<boolean>(this.baseProfileUrl + '/editPassword/' + userId, newPassword)
+    return this.http.post<boolean>(this.baseProfileUrl + '/change-password/' + userId, {newPassword: newPassword})
                .pipe(
                     map((data) => {
                         return data;

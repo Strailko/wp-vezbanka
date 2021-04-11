@@ -287,6 +287,7 @@ export class CreategameComponent implements OnInit {
   finishCreatingGame() {
     this.game.questions = this.questions;
     this.game.creatorId = this.tokenStorageService.getUser().id;
+    this.game.categoryIds = this.categories.map(cat => cat.id);
     if(this.IsEditingGame) {
       this.game.questions = this.questions;
       this.dataService.editGame(this.game)

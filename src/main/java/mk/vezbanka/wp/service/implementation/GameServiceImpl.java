@@ -125,18 +125,35 @@ public class GameServiceImpl implements GameService {
     // TODO: Logic for different question types needs to be implemented
     @Override
     public float submitGame(Long id, GameRequest completedGame) {
-        int correctAnswers = 0;
+        float score = 0;
         // standard for loops are used because you can't change the value of correctAnswers in a lambda expression
         // explanation: https://stackoverflow.com/a/50341404/6553931
         for (QuestionRequest question : completedGame.questions) {
+            int numberOfCorrectAnswers = (int) question.answers.stream().filter(answer -> answer.isCorrect).count();
+
+            if (numberOfCorrectAnswers == 0) // this shouldn't be allowed, temporary fix is to skip the iteration
+                continue;
+
+            float scorePerCorrectAnswer = 1f / numberOfCorrectAnswers;
+            int numberOfCorrectSelectedAnswers = 0;
+            int numberOfIncorrectSelectedAnswers = 0;
+
             for (AnswerRequest answer : question.answers) {
                 if (answer.isCorrect && answer.isSelected) {
-                    correctAnswers += 1;
+                    numberOfCorrectSelectedAnswers += 1;
+                } else if (!answer.isCorrect && answer.isSelected) {
+                    numberOfIncorrectSelectedAnswers += 1;
                 }
             }
+
+            // I am not 100% how correct this formula is, there might be a slight problem with rounding numbers
+            float questionScore = numberOfCorrectSelectedAnswers * scorePerCorrectAnswer -
+                ((numberOfIncorrectSelectedAnswers * scorePerCorrectAnswer) / 2);
+            //if the score is negative, make it 0
+            score += questionScore > 0 ? questionScore : 0;
         }
 
-        float result = (float) correctAnswers / completedGame.questions.size() * 100;
+        float result = score / completedGame.questions.size() * 100;
 
         // Get the game we have saved in the database by the id, and increase the number of plays
         // (this shouldn't be done on the completedGame object because that will save the values for "isSelected" on
@@ -189,16 +206,21 @@ public class GameServiceImpl implements GameService {
 
         save(game);
 
+
         // Because of the many-to-many mapping, Category is the entity that's the "owner" of games, so we need to save
         // the categories the game belongs to through a Category object first in order for them to be saved in the db.
         List<Category> categoryList = new ArrayList<>();
         if(request.categoryIds != null || !request.categoryIds.isEmpty()) {
             //save the current game in each category it belongs to, through the method addGameToCategory
             request.categoryIds.forEach(categoryId -> {
-                categoryService.addGameToCategory(categoryId, game);
+                Category currentCategory = categoryService.getCategoryById(categoryId);
+                //if the game is already added to the current category, don't add it again (this prevents creating
+                // duplicate entries in the categories_games table)
+                if (!currentCategory.getGames().contains(game)) {
+                    categoryService.addGameToCategory(categoryId, game);
+                }
 
                 //add each category to categoryList which will later be saved in the entity game
-                Category currentCategory = categoryService.getCategoryById(categoryId);
                 categoryList.add(currentCategory);
             });
         }

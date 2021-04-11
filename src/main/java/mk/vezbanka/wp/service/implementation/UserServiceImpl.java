@@ -121,6 +121,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         roles.add(userRole);
         user.setRoles(roles);
 
+        setUpUser(user, request);
+
+        return saveUser(user);
+    }
+
+    public User editUser(Long userId, UserRequest request) {
+        User user = getUser(userId);
+        setUpUser(user, request);
+        return user;
+    }
+
+    @Transactional
+    private void setUpUser(User user, UserRequest request) {
         user.setUsername(request.username);
         user.setPassword(passwordEncoder.encode(request.password));
         user.setEmail(request.email);
@@ -134,8 +147,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (request.photo != null) {
             user.setPhoto(request.photo.getBytes(StandardCharsets.UTF_8));
         }
-
-        return saveUser(user);
     }
 
     private User saveUser(User user) {
@@ -151,4 +162,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return UserDetailsImpl.build(user);
     }
 
+    public void changePassword(Long userId, String newPassword) {
+        User user = getUser(userId);
+        if (newPassword == null)
+            throw new RuntimeException("Password cannot be null");
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+    }
 }

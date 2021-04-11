@@ -25,4 +25,8 @@ public interface UserService {
     //UserResponse login(String username, String password);
 
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
+    public User editUser(Long userId, UserRequest request);
+
+    public void changePassword(Long userId, String newPassword);
 }
