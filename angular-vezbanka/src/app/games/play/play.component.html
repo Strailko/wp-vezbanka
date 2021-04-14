@@ -15,8 +15,7 @@
     
     <div id="logoHolder" *ngIf="!startToggle">
         <div class="mainContent fitImg">
-            <div class="logo" *ngIf="game"><img [src]="game?.photo"/></div>
-            <div class="logo" *ngIf="!game"><img src="../../../assets/logo.png"/></div>
+            <div class="logo"><img src="../../../assets/logo.png"/></div>
             <div class="preloadText fontPreload resizeFont"></div>
             <div id="buttonStart" class="startImg buttonClick" (click)="startGame()"><img src="../../../assets/button_start.png"/></div>
         </div>
@@ -92,34 +91,40 @@
             <div class="question fontQuestion resizeFont" data-fontsize="50" data-lineheight="58" style="font-size: 60px; line-height: 70px; color: rgb(255, 255, 255); text-align: center; top: 25%; left: 5%; width: 90%; height: 30%;" *ngIf="photoStage">
                 {{questions[questionIndex].content}}
             </div>
-            <div id="answerHolder" *ngIf="photoStage" style="height: 50%; top: 40%; display: flex; justify-content: space-around;">
+            <div id="answerHolder" *ngIf="photoStage" style="height: 50%; top: 40%; display: flex; justify-content: space-around;" (click)="collapsePhotoStage()">
                 <div style="background: url('{{questions[questionIndex].classes[0].photo}}'); background-position: center; background-repeat: no-repeat; background-size: contain; width: 90%; height: 100%;"></div>
                 <div style="background: url('{{questions[questionIndex].classes[1].photo}}'); background-position: center; background-repeat: no-repeat; background-size: contain; width: 90%; height: 100%;"></div>
             </div>
             <div id="groupHolder" *ngIf="!photoStage">
                 <div id="groupLabel0" class="groupDropLabel fontAnswer resizeFont" data-fontsize="50" data-lineheight="50" style="width: 43%; height: 10%; top: 10%; left: 5%; font-size: 55px; line-height: 55px; color: rgb(204, 204, 204); text-align: center;">{{questions[questionIndex].classes[0].name}}</div>
-                <div id="groupDrop0" class="groupDrop ui-droppable" style="width:43%; height:30%; top:20%; left:5%; border:#fff solid 1px; background: white;" data-left="6%" data-top="23%" data-offleft="1%" data-offtop="3%" data-width="43%" data-height="30%" data-max="4" data-answer="1,4,5,7" data-id="0"></div>
+                <div id="groupDrop0" class="groupDrop ui-droppable" style="width:43%; height:30%; top:20%; left:5%; border:#fff solid 1px; background: white; z-index: 9; display: flex; justify-content: space-around; align-items: center; text-align: center;" cdkDropList #class1List="cdkDropList" [cdkDropListData]="class1" [cdkDropListConnectedTo]="[wordsList, class2List]" (cdkDropListDropped)="onDrop($event)">
+                    <div [id]="'answer'+i+'cat'" class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; width:43%; height:30%; top:20%; left:5%; z-index: 10; opacity: 1; position: fixed;" *ngFor="let word of class1; let i = index" cdkDrag>
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
                 <div id="groupLabel1" class="groupDropLabel fontAnswer resizeFont" data-fontsize="50" data-lineheight="50" style="width: 43%; height: 10%; top: 10%; left: 51%; font-size: 55px; line-height: 55px; color: rgb(204, 204, 204); text-align: center;">{{questions[questionIndex].classes[1].name}}</div>
-                <div id="groupDrop1" class="groupDrop ui-droppable" style="width:43%; height:30%; top:20%; left:51%; border:#fff solid 1px; background: white;" data-left="52%" data-top="23%" data-offleft="1%" data-offtop="3%" data-width="43%" data-height="30%" data-max="4" data-answer="2,3,6,8" data-id="1"></div>
+                <div id="groupDrop1" class="groupDrop ui-droppable" style="width:43%; height:30%; top:20%; left:51%; border:#fff solid 1px; background: white; z-index: 9;  display: flex; justify-content: space-around; align-items: center; text-align: center;" cdkDropList #class2List="cdkDropList" [cdkDropListData]="class2" [cdkDropListConnectedTo]="[wordsList, class1List]" (cdkDropListDropped)="onDrop($event)">
+                    <div [id]="'answer'+i+'cat'" class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; width:43%; height:30%; top:20%; left:5%; z-index: 10; opacity: 1; position: fixed;" *ngFor="let word of class2; let i = index" cdkDrag>
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
+                <div class="groupDrop ui-droppable" style="width:89%; height:40%; top:55%; left:5%; border:#fff solid 1px; background: white; z-index: 9; display: flex; justify-content: space-around; align-items: center; text-align: center;" cdkDropList #wordsList="cdkDropList" [cdkDropListData]="allWords" [cdkDropListConnectedTo]="[class1List, class2List]" (cdkDropListDropped)="onDrop($event)">
+                    <div class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; width: 20%; height: 11%; z-index: 10; opacity: 1; position: fixed;" *ngFor="let word of allWords; let i = index" cdkDrag>
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
             </div>
-            <div id="answerHolder" *ngIf="!photoStage">
-                <div *ngFor="let word of questions[questionIndex].classes[0].words; let i = index">
-                    <div [id]="'answer'+i+'2cat0'" class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; width: 20%; height: 11%; top: 55%; left: 5%; z-index: 10; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="0" data-type="text" data-ori-id="1" data-top="55%" data-left="5%" (click)="dragWord()">
-                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
-                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
-                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
-                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
-                    </div>
-                </div>
-                <div *ngFor="let word of questions[questionIndex].classes[1].words; let i = index">
-                    <div [id]="'answer'+i+'2cat1'" class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; width: 20%; height: 11%; top: 55%; left: 5%; z-index: 10; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="0" data-type="text" data-ori-id="1" data-top="55%" data-left="5%" (click)="dragWord()">
-                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
-                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
-                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
-                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
-                    </div>
-                </div>
-                <div id="answer82" class="answer resizeBorder" data-border="15" style="border-radius: 16.275px; width: 35%; height: 14%; top: 84%; left: 32%; z-index: 10; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="8" data-type="text" data-submit="true" (click)="submitQuestion(questions[questionIndex])">
+            <div id="answerHolder" *ngIf="!photoStage && allWords">
+                <div id="answer4" class="answer resizeBorder" data-border="15" style="border-radius: 16.275px; width: 35%; height: 14%; top: 84%; left: 32%; z-index: 10; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="8" data-type="text" data-submit="true" (click)="submitQuestion(questions[questionIndex])">
                     <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
                     <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
                     <div id="text8" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;"><i class="icon-arrow-right p-0"></i></div>

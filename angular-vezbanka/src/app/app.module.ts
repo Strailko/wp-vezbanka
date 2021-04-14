@@ -6,6 +6,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
+import { DragDropModule } from '@angular/cdk/drag-drop'; 
 
 import { AppComponent } from './app.component';
 import { PreloaderComponent } from './preloader/preloader.component';
@@ -65,11 +66,13 @@ import { CategoryEditComponent } from './panels/moderation/category-edit/categor
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    DragDropModule,
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
     ClipboardModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    DragDropModule
   ],
   providers: [authInterceptorProviders],
   entryComponents: [

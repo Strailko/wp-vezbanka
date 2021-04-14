@@ -86,7 +86,7 @@
       <div *ngFor="let cat of categories" [routerLink]="['/category/' + cat.id + '/edit']" class="gameCard">
         <figure style="margin: 0;">
           <div class="img-wrapper">
-            <img [src]="cat.photo" alt="Category photo" />
+            <img [src]="cat.coverPhoto" alt="Category photo" />
             <div class="img-overlay text-white">
               <div class="figcaption">
                 <ul
@@ -117,12 +117,12 @@
                   </li>
                 </ul>
                 <div class="text-center mt-5">
-                  <h5>{{category?.name}}</h5>
+                  <h5>{{cat?.name}}</h5>
                 </div>
               </div>
             </div>
             <div class="figure-title text-center p-2">
-              <h5>{{category?.name}}</h5>
+              <h5>{{cat?.name}}</h5>
             </div>
           </div>
         </figure>

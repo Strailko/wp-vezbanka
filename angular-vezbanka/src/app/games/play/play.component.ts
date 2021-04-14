@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/shared/data/data.service';
-import { Game, Question } from 'src/app/shared/data/interfaces';
+import { ClassificationCategory, Game, Question } from 'src/app/shared/data/interfaces';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import fscreen from "fscreen";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-play',
@@ -22,7 +23,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   resultToggle: boolean = false;
   soundToggle: boolean = true;
   explanationToggle: boolean = false;
-  seconds: string = '30';
+  seconds: string = '25';
   questionIndex: number = 0;
   numQuestions: number = 0;
   loading: boolean = true;
@@ -34,6 +35,14 @@ export class PlayComponent implements OnInit, OnDestroy {
   shareMessage: string = '[SCORE] е мојот нов најдобар резултат на Вежбанка! Пробај ја и ти!';
   submited: boolean = false;
   photoStage: boolean = true;
+  allWords = [];
+  class1 = [];
+  class2 = [];
+  // arr: ClassificationCategory = {
+  //   name: 'test',
+  //   photo: 'https://www.gamerefinery.com/wp-content/uploads/2019/11/MarioKartBanner.jpg',
+  //   words: ['test5']
+  // };
 
   constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router, private breakpointObserver: BreakpointObserver) {
     if (this.hasFullscreenSupport) {
@@ -80,23 +89,29 @@ export class PlayComponent implements OnInit, OnDestroy {
   
   startTimer() {
     var interval_id = window.setInterval("", 9999);
+    let counter = 5;
     for (var i = 1; i < interval_id; i++)
         window.clearInterval(i);
     let intervalId = setInterval(() => {
-      if(Number(this.seconds) == 26) {
-        this.photoStage = false;
-      }
-      if(Number(this.seconds) < 1 && !this.submited) {
-        clearInterval(intervalId);
-        this.result = "Времето истече!";
-        this.explanationToggle = true;
-        return;
-      }
-      if(Number(this.seconds) > 0) {
-        this.seconds = String(Number(this.seconds) - 1);
-        if(Number(this.seconds) < 10) {
-          this.seconds = '0' + this.seconds;
+      if(!this.photoStage) {
+        if(Number(this.seconds) < 1 && !this.submited) {
+          clearInterval(intervalId);
+          this.result = "Времето истече!";
+          this.explanationToggle = true;
+          return;
         }
+        if(Number(this.seconds) > 0) {
+          this.seconds = String(Number(this.seconds) - 1);
+          if(Number(this.seconds) < 10) {
+            this.seconds = '0' + this.seconds;
+          }
+        }
+      }
+      else {
+        if(counter < 1) {
+          this.collapsePhotoStage();
+        }
+        counter-=1;
       }
     }, 1000);
   }
@@ -111,17 +126,24 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.game.questions = this.questions;
       this.dataService.finishGame(this.game)
           .subscribe((percent) => {
-            console.log(percent);
             this.score = percent;
           });
       return;
     }
     this.questionIndex = this.questionIndex + 1;
-    if(this.questions[this.questionIndex].photo) {
-      this.photoStage = true;
+    if(this.questions[this.questionIndex].questionType == 2) {
+      if(this.questions[this.questionIndex].classes[0] && this.questions[this.questionIndex].classes[1]) {
+        this.allWords = [...this.questions[this.questionIndex].classes[0].words, ...this.questions[this.questionIndex].classes[1].words];
+        this.allWords.sort(() => Math.random() - 0.5);
+      }
+    }
+    else {
+      if(this.questions[this.questionIndex].photo) {
+        this.photoStage = true;
+      }
     }
     this.explanationToggle = false;
-    this.seconds = '30';
+    this.seconds = '1000';
     this.startTimer();
   }
 
@@ -137,21 +159,54 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.result = "";
     this.submited = true;
     this.seconds = "00";
-    question.answers.forEach(a => {
-      if((a.isSelected == true && a.isCorrect == false) || (a.isCorrect == true && a.isSelected == false)) {
-        this.result = "Неточно";
-        this.explanationToggle = true;
+    
+    if(question.questionType == 2) {
+      question.classes[0].words.forEach(w => {
+        if(!this.class1.includes(w)) {
+          this.result = "Неточно";
+        }
+      });
+      question.classes[1].words.forEach(w => {
+        if(!this.class2.includes(w)) {
+          this.result = "Неточно";
+        }
+      });
+      if(!this.result) {
+        this.result = "Точно";
+        this.score += 1;
       }
-    });
-    if(!this.result && question.answers.length > 0) {
-      this.result = "Точно";
-      this.score += 1;
+      question.classes[0].words = this.class1;
+      question.classes[1].words = this.class2;
+      this.class1 = [];
+      this.class2 = [];
+    }
+    else {
+      question.answers.forEach(a => {
+        if((a.isSelected == true && a.isCorrect == false) || (a.isCorrect == true && a.isSelected == false)) {
+          this.result = "Неточно";
+          this.explanationToggle = true;
+        }
+      });
+      if(!this.result && question.answers.length > 0) {
+        this.result = "Точно";
+        this.score += 1;
+      }
     }
     this.explanationToggle = true;
   }
 
-  dragWord() {
-    console.log(1);
+  onDrop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+    console.log(this.class1);
+    console.log(this.class2);
+    console.log(this.allWords);
   }
 
   share(action){

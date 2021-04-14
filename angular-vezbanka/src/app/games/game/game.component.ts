@@ -17,6 +17,7 @@ export class GameComponent implements OnInit {
   game: Game;
   loggedIn: boolean = false;
   user: User;
+  isHearted: boolean = false;
   heartedGame: HeartedGame = {
     gameId: 0,
     userId: 0
@@ -26,14 +27,6 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.dataService.getGame(Number(this.id))
-        .subscribe((data: Game) => {
-          this.game = data;
-          this.dataService.getProfile(this.game.creatorId)
-              .subscribe((user) => {
-                this.game.creator = user;
-              });
-        });
     if(this.storage.getToken()) {
       this.loggedIn = true;
       this.user = this.storage.getUser();
@@ -41,6 +34,26 @@ export class GameComponent implements OnInit {
         this.isMod = true;
       }
     }
+    this.getGame();
+  }
+
+  getGame() {
+    this.dataService.getGame(Number(this.id))
+    .subscribe((data: Game) => {
+      this.game = data;
+      if(this.loggedIn) {
+        if(this.game.usersHeartedIds.includes(this.user?.id)) {
+          this.isHearted = true;
+        }
+        else {
+          this.isHearted = false;
+        }
+      }
+      this.dataService.getProfile(this.game.creatorId)
+          .subscribe((user) => {
+            this.game.creator = user;
+          });
+    });
   }
 
   heartGame(gameId: Number) {
@@ -50,9 +63,11 @@ export class GameComponent implements OnInit {
       this.dataService.heartGame(this.heartedGame)
           .subscribe((confirmation) => {
             if(confirmation) {
+              this.getGame();
               this.openSnackBar("Успешно ја додадовте играта во омилени", "Во ред");
             }
             else {
+              this.getGame();
               this.openSnackBar("Играта е отстранета од омилени", "Во ред");
             }
             return;

@@ -285,6 +285,37 @@ export class CreategameComponent implements OnInit {
   }
 
   finishCreatingGame() {
+    let hasCorrectAnswer = false;
+    let questionsValidated = true;
+    this.questions.forEach((q) => {
+      hasCorrectAnswer = false;
+      if(!q.content) {
+        questionsValidated = false;
+      }
+      if(q.answers.length < 1) {
+        questionsValidated = false;
+      }
+      q.answers.forEach((a) => {
+        if(a.isCorrect) {
+          hasCorrectAnswer = true;
+        }
+        if(!a.answer) {
+          questionsValidated = false;
+        }
+      })
+    });
+    if(!hasCorrectAnswer) {
+      this.openSnackBar("Прашањата мора да имаат барем еден точен одговор", "Дополни");
+      return;
+    }
+    if(this.questions.length < 3) {
+      this.openSnackBar("Минималниот број на прашања е 3", "Дополни");
+      return;
+    }
+    if(!this.game.name || !this.game.shortDescription || !questionsValidated) {
+      this.openSnackBar("Сите полиња се задолжителни", "Дополни");
+      return;
+    }
     this.game.questions = this.questions;
     this.game.creatorId = this.tokenStorageService.getUser().id;
     this.game.categoryIds = this.categories.map(cat => cat.id);
