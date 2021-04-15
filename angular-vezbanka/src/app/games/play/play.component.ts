@@ -38,11 +38,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   allWords = [];
   class1 = [];
   class2 = [];
-  // arr: ClassificationCategory = {
-  //   name: 'test',
-  //   photo: 'https://www.gamerefinery.com/wp-content/uploads/2019/11/MarioKartBanner.jpg',
-  //   words: ['test5']
-  // };
+
 
   constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router, private breakpointObserver: BreakpointObserver) {
     if (this.hasFullscreenSupport) {
@@ -133,7 +129,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.questionIndex = this.questionIndex + 1;
     if(this.questions[this.questionIndex].questionType == 2) {
       if(this.questions[this.questionIndex].classes[0] && this.questions[this.questionIndex].classes[1]) {
-        this.allWords = [...this.questions[this.questionIndex].classes[0].words, ...this.questions[this.questionIndex].classes[1].words];
+        this.allWords = [...this.allWords, ...this.questions[this.questionIndex].classes[0].words, ...this.questions[this.questionIndex].classes[1].words];
         this.allWords.sort(() => Math.random() - 0.5);
       }
     }
@@ -143,7 +139,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
     }
     this.explanationToggle = false;
-    this.seconds = '1000';
+    this.seconds = '25';
     this.startTimer();
   }
 

@@ -142,14 +142,14 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                                <div class="d-flex justify-content-between classification">
+                                                <div class="d-flex justify-content-between classification" *ngIf="question.classes">
                                                     <div class="category" style="width: 45%;">
                                                         <form class="form-material" novalidate>
                                                             <div class="body">
                                                                 <div class="form-group form-float">
                                                                     <div class="form-line">
-                                                                        <input type="text" class="form-control" [name]="'cat1'" [(ngModel)]="this.question.classes[0].name">
-                                                                        <label class="form-label" *ngIf="!this.question.classes[0].name">Име на категорија 1</label>
+                                                                        <input type="text" class="form-control" [name]="'cat1'" [(ngModel)]="question.classes[0].name">
+                                                                        <label class="form-label" *ngIf="!question.classes[0].name">Име на категорија 1</label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -229,7 +229,9 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <a class="btn btn-outline-primary" style="margin: 1.5em;" *ngIf="question?.classes[0]?.words?.length < 2 || question?.classes[1]?.words?.length < 2" (click)="changeQuestionType(question)">Смени го типот на прашањето</a>
+                                                <div *ngIf="question.classes">
+                                                    <a class="btn btn-outline-primary" style="margin: 1.5em;" *ngIf="question?.classes[0]?.words?.length < 2 || question?.classes[1]?.words?.length < 2" (click)="changeQuestionType(question)">Смени го типот на прашањето</a>
+                                                </div>
                                             </section>
                                     </div>
                                 </div>
