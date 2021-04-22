@@ -8,6 +8,8 @@ import mk.vezbanka.wp.model.request.GameRequest;
 import mk.vezbanka.wp.model.response.GameResponse;
 import mk.vezbanka.wp.service.GameService;
 import mk.vezbanka.wp.service.implementation.MappingService;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,16 +76,19 @@ public class GameController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ROLE_REGULAR', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
     public GameResponse createGame(@RequestBody GameRequest request) {
         return mappingService.mapToGameResponse(gameService.createGame(request));
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("isAuthenticated() && (hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR') or (authenticated.id == #request.creatorId))")
     public GameResponse editGame(@PathVariable Long id, @RequestBody GameRequest request) {
         return mappingService.mapToGameResponse(gameService.editGame(id, request));
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("isAuthenticated() && (hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR') or (authenticated.id == #request.creatorId))")
     public void deleteGame(@PathVariable Long id) {
         gameService.deleteGame(id);
     }

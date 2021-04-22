@@ -1,6 +1,5 @@
 package mk.vezbanka.wp.config;
 
-import mk.vezbanka.wp.service.UserService;
 import mk.vezbanka.wp.service.implementation.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -51,10 +49,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
             .authorizeRequests()
-            .antMatchers("/**").permitAll();
+            .antMatchers("/api/user/login", "/api/user/register", "/api/user/{id}", "/api/user/games/{id}",
+                "/api/category/{id}", "/api/category/all", "/api/game/{id}", "/api/game/random", "/api/game/search/{query}",
+                "/api/game/all", "/api/game/top-played", "/api/game/top-ranked", "/api/game/latest", "/api/game/submit/{id}").permitAll()
+            .anyRequest()
+            .authenticated();
+            //.antMatchers("/**").permitAll();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Bean

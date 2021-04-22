@@ -8,6 +8,7 @@ import mk.vezbanka.wp.model.Category;
 import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.request.AnswerRequest;
+import mk.vezbanka.wp.model.request.ClassificationCategoryRequest;
 import mk.vezbanka.wp.model.request.QuestionRequest;
 import mk.vezbanka.wp.model.response.CategoryResponse;
 import mk.vezbanka.wp.model.response.GameResponse;
@@ -26,11 +27,15 @@ public class MappingService {
 
     public GameResponse mapToGameResponse(Game game) {
         List<QuestionRequest> questions = game.getQuestions().stream().map(question -> {
+            List<ClassificationCategoryRequest> classes = question.getClasses().stream().map(el ->
+                new ClassificationCategoryRequest(el.getId(), el.getName(), el.getPhoto() != null ? new String(el.getPhoto(), StandardCharsets.UTF_8) : null, el.getWords())).collect(
+                Collectors.toList());
+
             List<AnswerRequest> answers = question.getAnswers().stream().map(answer ->
                 new AnswerRequest(answer.getAnswer(), answer.isCorrect(), answer.isSelected())).collect(
                 Collectors.toList());
             return new QuestionRequest(question.getContent(), question.getPhoto() != null ? new String(question.getPhoto(), StandardCharsets.UTF_8) : null,
-                question.getQuestionType().ordinal(), answers);
+                question.getQuestionType().ordinal(), answers, classes);
         }).collect(Collectors.toList());
 
         List<User> usersHearted = game.getUsersHearted();
@@ -46,11 +51,15 @@ public class MappingService {
             games = category.getGames().stream().map(
                     game -> {
                         List<QuestionRequest> questions = game.getQuestions().stream().map(question -> {
+                            List<ClassificationCategoryRequest> classes = question.getClasses().stream().map(el ->
+                                new ClassificationCategoryRequest(el.getId(), el.getName(), el.getPhoto() != null ? new String(el.getPhoto(), StandardCharsets.UTF_8) : null, el.getWords())).collect(
+                                Collectors.toList());
+
                             List<AnswerRequest> answers = question.getAnswers().stream().map(answer ->
                                     new AnswerRequest(answer.getAnswer(), answer.isCorrect(), answer.isSelected())).collect(
                                     Collectors.toList());
                             return new QuestionRequest(question.getContent(), question.getPhoto() != null ? new String(question.getPhoto(), StandardCharsets.UTF_8) : null,
-                                    question.getQuestionType().ordinal(), answers);
+                                    question.getQuestionType().ordinal(), answers, classes);
                         }).collect(Collectors.toList());
                         return new GameResponse(game.getId(), game.getName(), game.getNumberOfPlays(), game.getDateCreated(), game.getNumberOfHearts(),
                                 game.getPhoto() != null ? new String(game.getPhoto(), StandardCharsets.UTF_8) : null, game.getState().toString(), game.getShortDescription(), game.getCreator().getId(),

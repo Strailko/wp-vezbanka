@@ -9,17 +9,20 @@ import java.util.stream.*;
 import javax.transaction.Transactional;
 import mk.vezbanka.wp.model.Answer;
 import mk.vezbanka.wp.model.Category;
+import mk.vezbanka.wp.model.ClassificationCategory;
 import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.Question;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.enums.GameState;
 import mk.vezbanka.wp.model.enums.QuestionType;
 import mk.vezbanka.wp.model.request.AnswerRequest;
+import mk.vezbanka.wp.model.request.ClassificationCategoryRequest;
 import mk.vezbanka.wp.model.request.GameRequest;
 import mk.vezbanka.wp.model.request.QuestionRequest;
 import mk.vezbanka.wp.repository.GameRepository;
 import mk.vezbanka.wp.repository.UserRepository;
 import mk.vezbanka.wp.service.CategoryService;
+import mk.vezbanka.wp.service.ClassificationCategoryService;
 import mk.vezbanka.wp.service.GameService;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +32,14 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final CategoryService categoryService;
+    private final ClassificationCategoryService classificationCategoryService;
 
     public GameServiceImpl(GameRepository gameRepository, UserRepository userRepository,
-                           CategoryService categoryService) {
+                           CategoryService categoryService, ClassificationCategoryService classificationCategoryService) {
         this.gameRepository = gameRepository;
         this.userRepository = userRepository;
         this.categoryService = categoryService;
+        this.classificationCategoryService = classificationCategoryService;
     }
 
     @Override
@@ -129,28 +134,63 @@ public class GameServiceImpl implements GameService {
         // standard for loops are used because you can't change the value of correctAnswers in a lambda expression
         // explanation: https://stackoverflow.com/a/50341404/6553931
         for (QuestionRequest question : completedGame.questions) {
-            int numberOfCorrectAnswers = (int) question.answers.stream().filter(answer -> answer.isCorrect).count();
 
-            if (numberOfCorrectAnswers == 0) // this shouldn't be allowed, temporary fix is to skip the iteration
-                continue;
+            switch (question.questionType) {
+                //SELECTABLE
+                case 0: {
+                    int numberOfCorrectAnswers =
+                        (int) question.answers.stream().filter(answer -> answer.isCorrect).count();
 
-            float scorePerCorrectAnswer = 1f / numberOfCorrectAnswers;
-            int numberOfCorrectSelectedAnswers = 0;
-            int numberOfIncorrectSelectedAnswers = 0;
+                    if (numberOfCorrectAnswers ==
+                        0) // this shouldn't be allowed, temporary fix is to skip the iteration
+                        continue;
 
-            for (AnswerRequest answer : question.answers) {
-                if (answer.isCorrect && answer.isSelected) {
-                    numberOfCorrectSelectedAnswers += 1;
-                } else if (!answer.isCorrect && answer.isSelected) {
-                    numberOfIncorrectSelectedAnswers += 1;
+                    float scorePerCorrectAnswer = 1f / numberOfCorrectAnswers;
+                    int numberOfCorrectSelectedAnswers = 0;
+                    int numberOfIncorrectSelectedAnswers = 0;
+
+                    for (AnswerRequest answer : question.answers) {
+                        if (answer.isCorrect && answer.isSelected) {
+                            numberOfCorrectSelectedAnswers += 1;
+                        } else if (!answer.isCorrect && answer.isSelected) {
+                            numberOfIncorrectSelectedAnswers += 1;
+                        }
+                    }
+
+                    // I am not 100% how correct this formula is, there might be a slight problem with rounding numbers
+                    float questionScore = numberOfCorrectSelectedAnswers * scorePerCorrectAnswer -
+                        ((numberOfIncorrectSelectedAnswers * scorePerCorrectAnswer) / 2);
+                    //if the score is negative, make it 0
+                    score += questionScore > 0 ? questionScore : 0;
+                    break;
+                }
+                //CLASSIFICATION
+                case 2: {
+                    /*
+                    * numberOfAllCorrectAnswers = zbir od (length od site words) za sekoja kategorija -> klasa.forEach{soberi length na words vo edna promenliva}
+                    request.klasa.forEach{ klasa -> klasa.words.forEach{question.klasa.words.contains(word) -> zgolemi counter } }
+                    score = tocni/numberOfAllCorrectAnswers
+                    * */
+                    int numberOfAllClassifications = 0;
+                    for (ClassificationCategoryRequest el : question.classes) {
+                        ClassificationCategory correctClassificationClass =
+                            classificationCategoryService.findById(el.id);
+                        numberOfAllClassifications += correctClassificationClass.getWords().size();
+                    }
+
+                    int numberOfCorrectClassifications = 0;
+                    for (ClassificationCategoryRequest el : question.classes) {
+                        for (String userClassifiedWord : el.words) {
+                            ClassificationCategory retrievedCategory = classificationCategoryService.findById(el.id);
+                            if (retrievedCategory.getWords().contains(userClassifiedWord))
+                                numberOfCorrectClassifications += 1;
+                        }
+                    }
+
+                    score += (float) numberOfCorrectClassifications / numberOfAllClassifications;
+                    break;
                 }
             }
-
-            // I am not 100% how correct this formula is, there might be a slight problem with rounding numbers
-            float questionScore = numberOfCorrectSelectedAnswers * scorePerCorrectAnswer -
-                ((numberOfIncorrectSelectedAnswers * scorePerCorrectAnswer) / 2);
-            //if the score is negative, make it 0
-            score += questionScore > 0 ? questionScore : 0;
         }
 
         float result = score / completedGame.questions.size() * 100;
@@ -159,7 +199,7 @@ public class GameServiceImpl implements GameService {
         // (this shouldn't be done on the completedGame object because that will save the values for "isSelected" on
         // the answers)
         Game game = getGameById(id);
-        game.setNumberOfPlays(game.getNumberOfPlays()+1);
+        game.setNumberOfPlays(game.getNumberOfPlays() + 1);
         save(game);
 
         return result;
@@ -186,6 +226,12 @@ public class GameServiceImpl implements GameService {
 
         request.questions.forEach(question -> {
             Question currentQuestion = new Question(question.content);
+
+            List<ClassificationCategory> classes = new ArrayList<>();
+            question.classes.forEach(el -> classes.add(new ClassificationCategory(el.name,
+                el.photo != null ? el.photo.getBytes(StandardCharsets.UTF_8) : null, el.words)));
+            currentQuestion.setClasses(classes);
+
             List<Answer> answerList = new ArrayList<>();
             question.answers.forEach(answer ->
                 answerList.add(new Answer(answer.answer, answer.isCorrect)));

@@ -16,11 +16,14 @@ public class QuestionRequest {
 
     public List<AnswerRequest> answers;
 
+    public List<ClassificationCategoryRequest> classes;
+
     public QuestionRequest(String content, String photo, int questionType,
-                           List<AnswerRequest> answers) {
+                           List<AnswerRequest> answers, List<ClassificationCategoryRequest> classes) {
         this.content = content;
         this.photo = photo;
         this.questionType = questionType;
         this.answers = answers;
+        this.classes = classes;
     }
 }

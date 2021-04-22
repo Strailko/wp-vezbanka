@@ -7,6 +7,7 @@ import mk.vezbanka.wp.model.request.CategoryRequest;
 import mk.vezbanka.wp.model.response.CategoryResponse;
 import mk.vezbanka.wp.service.CategoryService;
 import mk.vezbanka.wp.service.implementation.MappingService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,12 +43,14 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public CategoryResponse createNewCategory(@RequestBody CategoryRequest request) {
         Category category = categoryService.create(request);
         return mappingService.mapToCategoryResponse(category);
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public CategoryResponse editCategory(@PathVariable Long id, @RequestBody CategoryRequest request) {
         Category category = categoryService.edit(id, request);
         return mappingService.mapToCategoryResponse(category);

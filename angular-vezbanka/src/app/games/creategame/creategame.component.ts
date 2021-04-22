@@ -292,14 +292,17 @@ export class CreategameComponent implements OnInit {
       if(!q.content) {
         questionsValidated = false;
       }
-      if(q.answers.length < 1) {
+      if(q.answers.length < 1 && q.questionType == 0) {
         questionsValidated = false;
       }
+      if(q.questionType == 2) {
+        hasCorrectAnswer = true;
+      }
       q.answers.forEach((a) => {
-        if(a.isCorrect) {
+        if(a.isCorrect && q.questionType == 0) {
           hasCorrectAnswer = true;
         }
-        if(!a.answer) {
+        if(!a.answer && q.questionType == 0) {
           questionsValidated = false;
         }
       })

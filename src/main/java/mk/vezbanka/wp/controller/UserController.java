@@ -18,6 +18,7 @@ import mk.vezbanka.wp.repository.UserRepository;
 import mk.vezbanka.wp.service.UserService;
 import mk.vezbanka.wp.service.implementation.MappingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -72,23 +73,27 @@ public class UserController {
     }
 
     @PostMapping("/heart")
+    @PreAuthorize("#request.userId == authentication.id")
     public boolean heartGame(@RequestBody HeartedGameRequest request) {
         return this.userService.addGameToHeartedGames(request.userId, request.gameId);
     }
 
     @GetMapping("/favorites/{userId}")
+    @PreAuthorize("#userId == authentication.id")
     public List<GameResponse> getFavouriteGames(@PathVariable Long userId) {
         List<Game> games = userService.getFavoriteGames(userId);
         return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserResponse> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return users.stream().map(mappingService::mapToUserResponse).collect(Collectors.toList());
     }
 
     @PutMapping("/{userId}/change-role")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public UserResponse changeRole(@PathVariable Long userId, @RequestBody ChangeRoleRequest request) {
         User user = userService.changeRole(userId, request.role);
         return mappingService.mapToUserResponse(user);
@@ -141,6 +146,7 @@ public class UserController {
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserRequest request) {
         try {
             userService.editUser(id, request);
@@ -153,6 +159,7 @@ public class UserController {
     }
 
     @PostMapping("/change-password/{id}")
+    @PreAuthorize("#id == authentication.id")
     public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request) {
         try {
             userService.changePassword(id, request.newPassword);
