@@ -5,6 +5,7 @@ import { ClassificationCategory, Game, Question } from 'src/app/shared/data/inte
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import fscreen from "fscreen";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-play',
@@ -23,7 +24,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   resultToggle: boolean = false;
   soundToggle: boolean = true;
   explanationToggle: boolean = false;
-  seconds: string = '25';
+  seconds: string = '59';
   questionIndex: number = 0;
   numQuestions: number = 0;
   loading: boolean = true;
@@ -38,6 +39,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   allWords = [];
   class1 = [];
   class2 = [];
+  scorePercentage: number;
 
 
   constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router, private breakpointObserver: BreakpointObserver) {
@@ -79,8 +81,10 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   startGame() {
-    this.startToggle = true;
-    this.startTimer();
+    this.nextQuestion(true);
+    if(this.questions[this.questionIndex].questionType == 2) {
+      this.photoStage = false;
+    }
   }
   
   startTimer() {
@@ -112,7 +116,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  nextQuestion() {
+  nextQuestion(first?: boolean) {
     let start = new Date().getTime();
     while (new Date().getTime() < start + 200);
     this.submited = false;
@@ -122,11 +126,13 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.game.questions = this.questions;
       this.dataService.finishGame(this.game)
           .subscribe((percent) => {
-            this.score = percent;
+            this.scorePercentage = percent;
           });
       return;
     }
-    this.questionIndex = this.questionIndex + 1;
+    if(!first || first == undefined) {
+      this.questionIndex = this.questionIndex + 1;
+    }
     if(this.questions[this.questionIndex].questionType == 2) {
       if(this.questions[this.questionIndex].classes[0] && this.questions[this.questionIndex].classes[1]) {
         this.allWords = [...this.allWords, ...this.questions[this.questionIndex].classes[0].words, ...this.questions[this.questionIndex].classes[1].words];
@@ -139,8 +145,11 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
     }
     this.explanationToggle = false;
-    this.seconds = '25';
+    this.seconds = '59';
     this.startTimer();
+    if(first) {
+      this.startToggle = true;
+    }
   }
 
   goBackToGame() {

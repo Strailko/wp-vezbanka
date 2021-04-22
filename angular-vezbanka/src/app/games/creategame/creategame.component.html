@@ -154,7 +154,7 @@
                                                                 </div>
                                                             </div>
                                                         </form>
-                                                        <div class="item" style="width: 100%; min-height: 20em; height: 20em; margin-bottom:2em; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url('{{question?.classes[0].photo}}');" (mouseenter)="bgEnter(); question.classes[0].bgButtonCat = true;" (mouseleave)="bgLeave(0, question);">
+                                                        <div class="item" style="width: 100%; min-height: 20em; height: 20em; margin-bottom:2em; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url('{{question?.classes[0].photo}}');" (mouseenter)="bgEnter(); bgEnterCat(question, 0);" (mouseleave)="bgLeave(0, question);">
                                                             <div *ngIf="bgButton && question.classes[0].bgButtonCat" class="bgButtons">
                                                                 <a class="btn btn-primary" *ngIf="!bgLinks" (click)="this.bgLinks = true;"><i class="icon-photo p-0"></i> Смени ја сликата</a>
                                                                 <a class="btn btn-primary" *ngIf="bgLinks && !bgUrl" (click)="this.bgUrl = true; this.locked = true;"><i class="icon-link p-0"></i> Линк</a>
@@ -197,7 +197,7 @@
                                                                 </div>
                                                             </div>
                                                         </form>
-                                                        <div class="item" style="width: 100%; min-height: 20em; height: 20em; margin-bottom:2em; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url('{{question?.classes[1].photo}}');" (mouseenter)="bgEnter(); question.classes[1].bgButtonCat = true;" (mouseleave)="bgLeave(1, question);">
+                                                        <div class="item" style="width: 100%; min-height: 20em; height: 20em; margin-bottom:2em; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url('{{question?.classes[1].photo}}');" (mouseenter)="bgEnter(); bgEnterCat(question, 1);" (mouseleave)="bgLeave(1, question);">
                                                             <div *ngIf="bgButton && question.classes[1].bgButtonCat" class="bgButtons">
                                                                 <a class="btn btn-primary" *ngIf="!bgLinks" (click)="this.bgLinks = true;"><i class="icon-photo p-0"></i> Смени ја сликата</a>
                                                                 <a class="btn btn-primary" *ngIf="bgLinks && !bgUrl" (click)="this.bgUrl = true; this.locked = true;"><i class="icon-link p-0"></i> Линк</a>

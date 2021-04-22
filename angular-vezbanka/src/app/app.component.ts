@@ -13,7 +13,9 @@ export class AppComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    if(window.location.pathname.includes("play") && window.location.pathname.includes("game")) {
+    let pathname = window.location.pathname;
+    let path = pathname.split("/");
+    if(path.includes("play") && path.includes("game")) {
       this.isPlaying = true;
     }
   }

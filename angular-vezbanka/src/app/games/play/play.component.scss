@@ -149,7 +149,7 @@ box-sizing: border-box;         /* Opera/IE 8+ */}
 #groupHolder .groupDrop, #groupHolder .groupDropLabel{ position:absolute; width:100%; white-space: pre-line;}
 
 /*-- Result Wrapper -- */
-#resultHolder{display: table; position: absolute; height: 100%; width: 100%;}
+#resultHolder{display: table; background-color: #107FC9; position: absolute; height: 100%; width: 100%;}
 .resultContent{ width:40%; margin:auto; text-align:center; color:#fff;}
 .itemWinnerCup{ width:50%; margin:auto; padding-top:20%;}
 .share{ margin-top:5%;}

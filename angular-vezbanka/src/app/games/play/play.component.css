@@ -426,6 +426,7 @@ html {
 /*-- Result Wrapper -- */
 #resultHolder {
   display: table;
+  background-color: #107FC9;
   position: absolute;
   height: 100%;
   width: 100%;

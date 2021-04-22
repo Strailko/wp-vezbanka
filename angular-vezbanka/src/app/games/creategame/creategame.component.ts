@@ -61,6 +61,7 @@ export class CreategameComponent implements OnInit {
                 this.questions.forEach(q => {
                   this.qCounter+=1;
                   q.id = this.qCounter;
+                  q.answers.forEach(a => a.id = this.rand());
                 });
                 this.qCounter = 0;
                 this.IsEditingGame = true;
@@ -198,6 +199,16 @@ export class CreategameComponent implements OnInit {
     this.bgButton = true;
   }
 
+  bgEnterCat(question, num) {
+    if(num == 1) {
+      question.classes[0].bgButtonCat = false;
+    }
+    if(num == 0) {
+      question.classes[1].bgButtonCat = false;
+    }
+    question.classes[num].bgButtonCat = true;
+  }
+
   bgLeave(answer?: any, question?: any) {
     if(!this.locked) {
       this.bgUrl = false;
@@ -287,7 +298,7 @@ export class CreategameComponent implements OnInit {
   finishCreatingGame() {
     let hasCorrectAnswer = false;
     let questionsValidated = true;
-    this.questions.forEach((q) => {
+    for(var q of this.questions) {
       hasCorrectAnswer = false;
       if(!q.content) {
         questionsValidated = false;
@@ -305,8 +316,9 @@ export class CreategameComponent implements OnInit {
         if(!a.answer && q.questionType == 0) {
           questionsValidated = false;
         }
-      })
-    });
+      });
+      if(!hasCorrectAnswer) break;
+    }
     if(!hasCorrectAnswer) {
       this.openSnackBar("Прашањата мора да имаат барем еден точен одговор", "Дополни");
       return;
@@ -321,7 +333,11 @@ export class CreategameComponent implements OnInit {
     }
     this.game.questions = this.questions;
     this.game.creatorId = this.tokenStorageService.getUser().id;
-    this.game.categoryIds = this.categories.map(cat => cat.id);
+    this.game.categoryIds = this.categories.map(cat => {
+      if(this.game.categoryIds.includes(cat.id))
+        return cat.id;
+    });
+    this.game.categoryIds = this.game.categoryIds.filter(cat => cat != null);
     if(this.IsEditingGame) {
       this.game.questions = this.questions;
       this.dataService.editGame(this.game)
@@ -345,11 +361,9 @@ export class CreategameComponent implements OnInit {
 
   addCategory(event, category) {
     if(event.checked) {
-      this.game.categories.push(category);
       this.game.categoryIds.push(category.id);
     }
     else {
-      this.game.categories = this.game.categories.filter(cat => cat != category);
       this.game.categoryIds = this.game.categoryIds.filter(catId => catId != category.id);
     }
   }
@@ -375,5 +389,9 @@ export class CreategameComponent implements OnInit {
 
   customTrackBy(index: number, obj: any): any {
     return index;
+  }
+
+  rand() : number {
+      return Math.floor(Math.random() * (9999999 - 1000000) + 1000000);
   }
 }
