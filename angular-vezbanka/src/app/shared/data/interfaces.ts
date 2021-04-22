@@ -1,8 +1,10 @@
 export interface Answer{
   id?: Number;
   answer: string;
-  isCorrect: boolean;
-  isSelected: boolean;
+  correct?: boolean;
+  selected?: boolean;
+  isCorrect?: boolean;
+  isSelected?: boolean;
 }
 
 export interface MergingAnswers {
@@ -11,6 +13,14 @@ export interface MergingAnswers {
   photo2?: string;
   bgButton1?: boolean;
   bgButton2?: boolean;
+}
+
+export interface ClassificationCategory {
+  id?: Number;
+  name: string;
+  photo?: string;
+  words?: string[];
+  bgButtonCat?: boolean;
 }
 
 export enum Role{
@@ -48,8 +58,9 @@ export interface Question{
   content:string;
   photo:string;
   answers?:Answer[];
-  type:QuestionType;
+  questionType?: QuestionType;
   mergingAnswers?: MergingAnswers[];
+  classes?: ClassificationCategory[];
 }
 
 export interface Category{
@@ -72,8 +83,9 @@ export interface Game{
   player?:User;
   questions?:Question[];
   categories?:Category[];
-  userCreatorId?: Number;
+  creatorId?: Number;
   categoryIds?: Number[];
+  usersHeartedIds?: Number[];
 }
 
 export interface HeartedGame {

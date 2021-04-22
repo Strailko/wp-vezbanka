@@ -1,1 +1,11 @@
-/* No CSS *//*# sourceMappingURL=navbar.component.css.map */
+#btn-searchOverlay {
+  cursor: pointer;
+}
+
+#btn-searchOverlay:hover {
+  opacity: .8;
+  text-decoration: none;
+  outline: medium none;
+  color: #ff1744;
+}
+/*# sourceMappingURL=navbar.component.css.map */

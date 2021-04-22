@@ -11,4 +11,8 @@ body {
 mat-dialog-container {
   overflow: hidden !important;
 }
+
+.form-label {
+  pointer-events: none !important;
+}
 /*# sourceMappingURL=styles.css.map */

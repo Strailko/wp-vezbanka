@@ -1,17 +1,22 @@
 package mk.vezbanka.wp.model;
 
 import java.util.List;
+import java.util.Map;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Data;
 import mk.vezbanka.wp.model.enums.QuestionType;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Data
@@ -21,20 +26,25 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Question(String content) {
-        this.content = content;
-    }
-
-    public Question() {
-    }
-
     private String content;
 
-    private String photo;
+    @Lob
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] photo;
 
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Answer> answers;
 
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<ClassificationCategory> classes;
+
+    public Question(String content) {
+        this.content = content;
+    }
+
+    public Question() {
+    }
 }

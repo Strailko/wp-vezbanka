@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "",
-    "sources": [
-        "register-dialog.component.scss"
-    ],
-    "names": [],
-    "file": "register-dialog.component.css"
-}

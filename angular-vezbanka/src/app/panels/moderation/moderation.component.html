@@ -1,0 +1,131 @@
+<main id="pageContent" class="page has-sidebar">
+    <div class="p-md-5 p-3">
+        <section class="section">
+          <div class="d-flex relative align-items-center justify-content-between">
+            <div class="mb-4">
+              <h4>Панел за модерирање</h4>
+              <p>Сите креирани игри и категории на игри на Вежбанка</p>
+            </div>
+            <a style="color:#ff1744" *ngIf="!toggleCategories" (click)="this.toggleCategories = !this.toggleCategories"
+              >Прикажи категории<i class="icon-angle-right ml-3"></i
+            ></a>
+            <a style="color:#ff1744" *ngIf="toggleCategories" (click)="this.toggleCategories = !this.toggleCategories"
+            >Прикажи игри<i class="icon-angle-right ml-3"></i
+          ></a>
+          </div>
+        <div id="mobile" class="has-items-overlay playlist d-flex relative align-items-center justify-content-start" style="flex-wrap: wrap;"
+          data-item="6"
+          data-item-lg="3"
+          data-item-md="3"
+          data-item-sm="2"
+          data-auto="false"
+          data-pager="false"
+          data-controls="true"
+          data-loop="false"
+          *ngIf="games && !toggleCategories">
+          <div *ngFor="let game of games" [routerLink]="['/game/' + game.id]" class="gameCard">
+            <figure style="margin: 0;">
+              <div class="img-wrapper">
+                <img [src]="game.photo" alt="Game photo" />
+                <div class="img-overlay text-white">
+                  <div class="figcaption">
+                    <ul
+                      class="list-inline d-flex align-items-center justify-content-between"
+                    >
+                      <li class="list-inline-item">
+                        <a
+                          href="#"
+                          class="snackbar"
+                          data-text="Added to favourites"
+                          data-pos="top-right"
+                          data-showaction="true"
+                          data-actiontext="ok"
+                          data-actiontextcolor="#fff"
+                          data-backgroundcolor="#0c101b"
+                        >
+                          <i class="icon-heart-o s-18"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a
+                          class="no-ajaxy media-url"
+                        >
+                          <i class="icon-play s-48"></i>
+                        </a>
+                      </li>
+                      <li class="list-inline-item">
+                        <a><i class="icon-more s-18 pt-3"></i></a>
+                      </li>
+                    </ul>
+                    <div class="text-center mt-5">
+                      <h5>{{game?.name}}</h5>
+                      <span>Постирано од {{game?.creator?.username}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="figure-title text-center p-2">
+                  <h5>{{game?.name}}</h5>
+                  <span>{{game?.categories[0]?.name}}</span>
+                </div>
+              </div>
+            </figure>
+          </div>
+        </div>
+        </section>
+      </div>
+      <div id="mobile" class="has-items-overlay playlist d-flex relative align-items-center justify-content-start" style="flex-wrap: wrap;"
+      data-item="6"
+      data-item-lg="3"
+      data-item-md="3"
+      data-item-sm="2"
+      data-auto="false"
+      data-pager="false"
+      data-controls="true"
+      data-loop="false"
+      *ngIf="categories && toggleCategories">
+      <div *ngFor="let cat of categories" [routerLink]="['/category/' + cat.id + '/edit']" class="gameCard">
+        <figure style="margin: 0;">
+          <div class="img-wrapper">
+            <img [src]="cat.coverPhoto" alt="Category photo" />
+            <div class="img-overlay text-white">
+              <div class="figcaption">
+                <ul
+                  class="list-inline d-flex align-items-center justify-content-between"
+                >
+                  <li class="list-inline-item">
+                    <a
+                      href="#"
+                      class="snackbar"
+                      data-text="Added to favourites"
+                      data-pos="top-right"
+                      data-showaction="true"
+                      data-actiontext="ok"
+                      data-actiontextcolor="#fff"
+                      data-backgroundcolor="#0c101b"
+                    >
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a
+                      class="no-ajaxy media-url"
+                    >
+                      <i class="icon-edit s-48"></i>
+                    </a>
+                  </li>
+                  <li class="list-inline-item">
+                    <a><i class="icon-more s-18 pt-3"></i></a>
+                  </li>
+                </ul>
+                <div class="text-center mt-5">
+                  <h5>{{cat?.name}}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="figure-title text-center p-2">
+              <h5>{{cat?.name}}</h5>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </div>
+</main>

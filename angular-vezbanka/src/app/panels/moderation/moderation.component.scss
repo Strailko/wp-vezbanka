@@ -1,0 +1,35 @@
+.gameCard {
+    width: 20%;
+    padding: 0 1em;
+}
+
+@media only screen and (max-width: 1050px) {
+    .gameCard {
+        width: 25%;
+        padding: 0 0.5em;
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .gameCard {
+        width: 33%;
+        padding: 0 1em;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #mobile {
+        justify-content: center !important;
+    }
+    .gameCard {
+        width: 50%;
+        padding: 0 0.5em;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .gameCard {
+        width: 100%;
+        padding: 0;
+    }
+}

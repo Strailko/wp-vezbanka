@@ -10,4 +10,10 @@ public class AnswerRequest {
     public boolean isCorrect;
 
     public boolean isSelected;
+
+    public AnswerRequest(String answer, boolean isCorrect, boolean isSelected) {
+        this.answer = answer;
+        this.isCorrect = isCorrect;
+        this.isSelected = isSelected;
+    }
 }

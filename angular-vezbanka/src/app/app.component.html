@@ -1,12 +1,16 @@
 <app-preloader></app-preloader>
 
 
-<div id="app">
+<div id="app" *ngIf="!isPlaying">
  <app-sidebar></app-sidebar>
  <app-rsidebar></app-rsidebar>
  <app-search></app-search>
- <app-navbar></app-navbar>
+ <app-navbar ></app-navbar>
  <div style="top: 80px; position: relative;">
     <router-outlet></router-outlet>
  </div>
+</div>
+
+<div id="app" *ngIf="isPlaying" style="background-color: #107FC9; height: 100%;"> 
+   <router-outlet></router-outlet>
 </div>

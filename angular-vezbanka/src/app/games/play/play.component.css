@@ -1,1 +1,1463 @@
-/* No CSS *//*# sourceMappingURL=play.component.css.map */
+/* ==========================================================================
+Base styles: opinionated defaults
+========================================================================== */
+html, button, input, select, textarea {
+  color: #222;
+}
+
+html {
+  font-size: 1em;
+  line-height: 1.4;
+}
+
+/*
+    * Remove text-shadow in selection highlight: h5bp.com/i
+    * These selection rule sets have to be separate.
+    * Customize the background color to match your design.
+    */
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+/*
+    * A better looking default horizontal rule
+    */
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+/*
+    * Remove the gap between images, videos, audio and canvas and the bottom of
+    * their containers: h5bp.com/i/440
+    */
+audio, canvas, img, video {
+  vertical-align: middle;
+}
+
+/*
+    * Remove default fieldset styles.
+    */
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+    * Allow only vertical resizing of textareas.
+    */
+textarea {
+  resize: vertical;
+}
+
+/* ==========================================================================
+    Main styles
+    ========================================================================== */
+@font-face {
+  font-family: 'alcubierreregular';
+  src: url("../../../assets/fonts/alcubierre-webfont.woff2") format("woff2"), url("../../../assets/fonts/alcubierre-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -user-select: none;
+  -webkit-touch-callout: none;
+  background: #0970b5;
+}
+
+/*-- Percent Loader -- */
+#mainLoader {
+  position: absolute;
+  z-index: 5;
+  display: none;
+  font-size: 30px;
+  line-height: 30px;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  font-family: 'alcubierreregular';
+}
+
+/*-- Content Wrapper -- */
+#mainHolder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: #107fc9;
+}
+
+#option {
+  position: absolute;
+  right: 0;
+  z-index: 5;
+  margin: 15px;
+}
+
+.buttonFullscreen, .buttonSound, .buttonExit {
+  margin: 5px 0px;
+}
+
+.buttonSoundOn .soundOff {
+  display: block;
+}
+
+.buttonSoundOn .soundOn {
+  display: none;
+}
+
+.buttonSoundOff .soundOn {
+  display: block;
+}
+
+.buttonSoundOff .soundOff {
+  display: none;
+}
+
+.buttonOptionOn .optionOff {
+  display: block;
+}
+
+.buttonOptionOn .optionOn {
+  display: none;
+}
+
+.buttonOptionOff .optionOn {
+  display: block;
+}
+
+.buttonOptionOff .optionOff {
+  display: none;
+}
+
+.buttonIcon {
+  width: 100%;
+}
+
+.fontLoader {
+  font-family: 'alcubierreregular';
+  font-size: 25px;
+  line-height: 25px;
+  color: #fff;
+}
+
+/*-- Logo Wrapper -- */
+#logoHolder {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  color: #FFF;
+  text-align: center;
+}
+
+.logo {
+  width: 25%;
+  margin: auto;
+  padding-top: 7%;
+  padding-bottom: 2%;
+}
+
+#logoHolder .preloadText {
+  margin-top: 10px;
+}
+
+#logoHolder .startImg {
+  width: 15%;
+  margin: auto;
+  margin-top: 10px;
+}
+
+/*-- Confirm Wrapper -- */
+#confirmHolder {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  position: absolute;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.confirmContent .message {
+  position: absolute;
+  background: #107FC9;
+  width: 50%;
+  height: 30%;
+  left: 25%;
+  top: 30%;
+  text-align: center;
+  border-radius: 20px;
+  color: #FFF;
+  padding: 5% 10%;
+}
+
+.confirmContent .okImg {
+  position: absolute;
+  width: 20%;
+  top: 63%;
+  left: 29%;
+}
+
+.confirmContent .cancelImg {
+  position: absolute;
+  width: 20%;
+  top: 63%;
+  right: 29%;
+}
+
+.overlayBg {
+  background: url(../../../assets/bg_pixel.png) repeat;
+}
+
+/*-- Category Wrapper -- */
+#questionLoaderHolder {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+  background: url(../../../assets/ajax-loader.gif) center no-repeat;
+}
+
+/*-- Category Wrapper -- */
+#categoryHolder {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.categoryContent ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #FFF;
+  width: 80%;
+  margin: auto;
+  padding-top: 5%;
+}
+
+.categoryContent li {
+  width: 29%;
+  float: left;
+  margin: 0 2%;
+}
+
+.categoryContent .categoryTitle {
+  padding: 5%;
+  text-align: center;
+}
+
+.categoryContent .nextImg {
+  position: absolute;
+  width: 5%;
+  top: 75%;
+  right: 44%;
+}
+
+.categoryContent .prevImg {
+  position: absolute;
+  width: 5%;
+  top: 75%;
+  left: 44%;
+}
+
+/*-- Question Wrapper -- */
+#gameHolder {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+#gameStatus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 15px;
+  width: 100%;
+  height: 100%;
+}
+
+#gameStatus .gameTotal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 9%;
+}
+
+#gameStatus .gameTimer {
+  position: absolute;
+  top: 0;
+  left: 44%;
+  width: 12%;
+  text-align: center;
+}
+
+.gameQuestionStatus {
+  position: absolute;
+  top: 18%;
+  text-align: center;
+  color: #524e9a;
+  width: 100%;
+}
+
+.gameTimerStatus {
+  position: absolute;
+  top: 18%;
+  text-align: center;
+  color: #524e9a;
+  width: 100%;
+  left: 18%;
+}
+
+#questionHolder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#questionHolder .question {
+  position: absolute;
+  width: 100%;
+  white-space: pre-line;
+}
+
+#videoHolder {
+  position: absolute;
+}
+
+#answerHolder {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#answerHolder .answer {
+  position: absolute;
+  width: 100%;
+  white-space: pre-line;
+}
+
+#answerHolder .answerFocus {
+  z-index: 100;
+}
+
+#inputHolder {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#inputHolder .input {
+  position: absolute;
+  width: 100%;
+}
+
+#inputHolder input {
+  border: none;
+  -webkit-box-sizing: border-box;
+  /* Safari/Chrome, other WebKit */
+  /* Firefox, other Gecko */
+  box-sizing: border-box;
+  /* Opera/IE 8+ */
+}
+
+#questionResultHolder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.questionResultText, .nextImg, .previewImg {
+  position: absolute;
+}
+
+#questionResultHolder .nextImg {
+  top: 65%;
+  width: 6%;
+  left: 52%;
+}
+
+#questionResultHolder .previewImg {
+  top: 65%;
+  width: 6%;
+  left: 44%;
+}
+
+#explanationHolder {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#explanationHolder .explanation {
+  position: absolute;
+  width: 100%;
+}
+
+#groupHolder {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#groupHolder .groupDrop, #groupHolder .groupDropLabel {
+  position: absolute;
+  width: 100%;
+  white-space: pre-line;
+}
+
+/*-- Result Wrapper -- */
+#resultHolder {
+  display: table;
+  background-color: #107FC9;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.resultContent {
+  width: 40%;
+  margin: auto;
+  text-align: center;
+  color: #fff;
+}
+
+.itemWinnerCup {
+  width: 50%;
+  margin: auto;
+  padding-top: 20%;
+}
+
+.share {
+  margin-top: 5%;
+}
+
+.share ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.share li {
+  width: 13%;
+  margin: 0 3px;
+  display: inline-block;
+}
+
+.option {
+  margin-top: 5%;
+}
+
+.option ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.option li {
+  width: 13%;
+  margin: 0 3px;
+  display: inline-block;
+}
+
+.singleOption li:nth-child(2), .singleOption li:nth-child(3) {
+  display: none;
+}
+
+.NoSaveOption li:nth-child(2) {
+  display: none;
+}
+
+/*-- Scoreboard -- */
+.resultExtra {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: auto;
+  text-align: center;
+  color: #fff;
+  display: none;
+}
+
+.scoreContent, .submitContent {
+  position: relative;
+  background: #107FC9;
+  width: 85%;
+  height: 90%;
+  display: none;
+  border-radius: 25px;
+  margin: auto;
+  margin-top: 2%;
+}
+
+.scoreTitle {
+  padding: 2% 0;
+}
+
+ul.scoreList {
+  list-style: none;
+  padding: 0;
+  margin: auto;
+  width: 90%;
+  position: relative;
+  height: 62%;
+}
+
+ul.scoreList li {
+  height: 8.5%;
+  padding: .5% 2%;
+}
+
+ul.scoreList li .list {
+  float: left;
+}
+
+ul.scoreList li:nth-child(odd) {
+  background: #8077B7;
+}
+
+.buttonBack {
+  width: 20%;
+  margin: auto;
+}
+
+.submitTitle {
+  padding: 5% 0;
+}
+
+.submitContent .label, .submitContent input {
+  margin: 1% 0;
+  text-align: center;
+}
+
+.action {
+  width: 40%;
+  margin: 3% auto;
+}
+
+.buttonSubmit {
+  float: left;
+  width: 48%;
+}
+
+.buttonCancelSubmit {
+  float: right;
+  width: 48%;
+}
+
+.fontStatus {
+  font-family: 'Raleway';
+  font-size: 30px;
+  line-height: 30px;
+  color: #fff;
+}
+
+.fontQuestion {
+  font-family: 'Raleway';
+}
+
+.fontAnswer {
+  font-family: 'Raleway';
+}
+
+.fontInput {
+  font-family: 'Raleway';
+}
+
+.fontCorrectWrong {
+  font-family: 'Raleway';
+}
+
+.fontResultScore {
+  font-family: 'Raleway';
+}
+
+.fontShare {
+  font-family: 'Raleway';
+}
+
+.fontCategory {
+  font-family: 'Raleway';
+}
+
+.fontMessage {
+  font-family: 'Raleway';
+}
+
+.fontPreload {
+  font-family: 'Raleway';
+}
+
+.fontScoreTitle {
+  font-family: 'Raleway';
+}
+
+.fontScoreList {
+  font-family: 'Raleway';
+}
+
+.fontLabel {
+  font-family: 'Raleway';
+}
+
+.fontInput {
+  font-family: 'Raleway';
+}
+
+/*-- Form Wrapper -- */
+#editWrapper {
+  display: none;
+}
+
+#floatForm {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background: #36BDA3;
+  padding: 15px;
+  color: #FFF;
+  width: 280px;
+  border: #fff solid 2px;
+}
+
+#floatForm {
+  font-size: 12px;
+}
+
+#floatForm #questionWrapper, #floatForm #answersWrapper, #floatForm #inputsWrapper, #floatForm #explanationWrapper, #floatForm #sortWrapper, #floatForm #templateWrapper {
+  background: #2C9883;
+  padding: 10px;
+}
+
+#floatForm input.button, #floatForm select.half, #floatForm label {
+  width: 49%;
+}
+
+#floatForm .formRow input, #floatForm .formRow select {
+  float: right;
+  width: 48%;
+}
+
+#floatForm .formRow label {
+  float: left;
+  width: 48%;
+}
+
+#floatForm input {
+  width: 100%;
+  font-size: 12px;
+}
+
+#floatForm textarea {
+  float: left;
+  width: 100%;
+}
+
+#floatForm select, #floatForm option {
+  width: 100%;
+}
+
+.editBorder .question, .editBorder #videoHolder, .editBorder .dropLabel, .editBorder .groupDropLabel, .editBorder .explanation {
+  outline: #fff000 dashed 2px;
+}
+
+.editBorder .buttonClick, .editBorder input {
+  outline: #F90 dashed 2px;
+}
+
+.editFrontIndex {
+  z-index: 1000;
+}
+
+.editSecondIndex {
+  z-index: 500;
+}
+
+.editDrag {
+  position: absolute;
+}
+
+.editDrag:hover {
+  outline: 1px dashed #ccc;
+}
+
+.editDrag .ui-icon {
+  width: 18px;
+  height: 18px;
+  background: url("../../../assets/button_save.png");
+}
+
+.editBorderFocus {
+  -webkit-animation-name: borderFocus;
+          animation-name: borderFocus;
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes borderFocus {
+  0% {
+    outline: #F90 solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #F90 solid 4px;
+  }
+}
+
+@keyframes borderFocus {
+  0% {
+    outline: #F90 solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #F90 solid 4px;
+  }
+}
+
+.editBorderDropFocus {
+  -webkit-animation-name: borderDropFocus;
+          animation-name: borderDropFocus;
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes borderDropFocus {
+  0% {
+    outline: #15a30e solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #15a30e solid 4px;
+  }
+}
+
+@keyframes borderDropFocus {
+  0% {
+    outline: #15a30e solid 4px;
+  }
+  50% {
+    outline: #fff solid 4px;
+  }
+  100% {
+    outline: #15a30e solid 4px;
+  }
+}
+
+.buttonClick {
+  cursor: pointer;
+}
+
+.fitImg img {
+  width: 100%;
+  height: auto;
+}
+
+.ignorePadding {
+  border: none;
+  -webkit-box-sizing: border-box;
+  /* Safari/Chrome, other WebKit */
+  /* Firefox, other Gecko */
+  box-sizing: border-box;
+  /* Opera/IE 8+ */
+}
+
+@media (max-width: 900px) and (orientation: portrait) {
+  .logo {
+    width: 90%;
+    margin: auto;
+    padding-top: 30%;
+  }
+  #logoHolder .startImg {
+    width: 50%;
+  }
+  .confirmContent .message {
+    width: 80%;
+    height: 20%;
+    left: 10%;
+    top: 20%;
+    padding: 5% 10%;
+  }
+  .confirmContent .okImg {
+    width: 50%;
+    top: 43%;
+    left: 25%;
+  }
+  .confirmContent .cancelImg {
+    width: 50%;
+    top: 57%;
+    right: 25%;
+  }
+  .categoryContent ul {
+    padding-top: 15%;
+  }
+  .categoryContent li {
+    width: 46%;
+    float: left;
+    margin: 0 2%;
+  }
+  .categoryContent .categoryTitle {
+    min-height: 30px;
+  }
+  .categoryContent .nextImg {
+    position: absolute;
+    width: 15%;
+    top: 82%;
+    right: 32%;
+  }
+  .categoryContent .prevImg {
+    position: absolute;
+    width: 15%;
+    top: 82%;
+    left: 32%;
+  }
+  .resultContent {
+    width: 70%;
+  }
+  .scoreContent, .submitContent {
+    width: 90%;
+    margin-top: 15%;
+    height: 85%;
+  }
+  .scoreTitle {
+    padding: 8% 0;
+  }
+  ul.scoreList {
+    list-style: none;
+    padding: 0;
+    margin: auto;
+    width: 95%;
+    position: relative;
+    height: 62%;
+  }
+  ul.scoreList li {
+    height: 9%;
+    padding: 2% 2%;
+  }
+  .buttonBack {
+    width: 40%;
+    margin: auto;
+  }
+  .submitTitle {
+    padding: 15% 0;
+  }
+  .submitContent .label, .submitContent input {
+    margin: 2% 0;
+  }
+  .action {
+    width: 40%;
+    margin: 3% auto;
+  }
+  .buttonSubmit {
+    float: none;
+    width: 100%;
+    margin-bottom: 2%;
+  }
+  .buttonCancelSubmit {
+    float: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) and (orientation: portrait) {
+  #option {
+    margin: 5px;
+    margin-right: 0;
+  }
+  .buttonIcon {
+    width: 80%;
+  }
+  #gameStatus {
+    margin: 5px;
+  }
+  #gameStatus .gameTotal {
+    width: 17%;
+  }
+  #gameStatus .gameTimer {
+    left: 38%;
+    width: 25%;
+  }
+  #questionResultHolder .nextImg {
+    top: 65%;
+    width: 15%;
+    left: 52%;
+  }
+  #questionResultHolder .previewImg {
+    top: 65%;
+    width: 15%;
+    left: 35%;
+  }
+  .resultContent {
+    width: 90%;
+  }
+  .itemWinnerCup {
+    width: 70%;
+  }
+}
+
+@-ms-viewport {
+  width: device-width;
+}
+
+@-o-viewport {
+  width: device-width;
+}
+
+@viewport {
+  width: device-width;
+}
+
+/* ==========================================================================
+    Helper classes
+    ========================================================================== */
+/*
+    * Image replacement
+    */
+.ir {
+  background-color: transparent;
+  border: 0;
+  overflow: hidden;
+  /* IE 6/7 fallback */
+  *text-indent: -9999px;
+}
+
+.ir:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 150%;
+}
+
+/*
+    * Hide from both screenreaders and browsers: h5bp.com/u
+    */
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+
+/*
+    * Hide only visually, but have it available for screenreaders: h5bp.com/v
+    */
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/*
+    * Extends the .visuallyhidden class to allow the element to be focusable
+    * when navigated to via the keyboard: h5bp.com/p
+    */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+}
+
+/*
+    * Hide visually and from screenreaders, but maintain layout
+    */
+.invisible {
+  visibility: hidden;
+}
+
+/*
+    * Clearfix: contain floats
+    *
+    * For modern browsers
+    * 1. The space content is one way to avoid an Opera bug when the
+    *    `contenteditable` attribute is included anywhere else in the document.
+    *    Otherwise it causes space to appear at the top and bottom of elements
+    *    that receive the `clearfix` class.
+    * 2. The use of `table` rather than `block` is only necessary if using
+    *    `:before` to contain the top-margins of child elements.
+    */
+.clearfix:before, .clearfix:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+/*
+    * For IE 6/7 only
+    * Include this rule to trigger hasLayout and contain floats.
+    */
+.clearfix {
+  *zoom: 1;
+}
+
+/* ==========================================================================
+    EXAMPLE Media Queries for Responsive Design.
+    These examples override the primary ('mobile first') styles.
+    Modify as content requires.
+    ========================================================================== */
+@media only screen and (max-width: 35em) {
+  /* Style adjustments for viewports that meet the condition */
+}
+
+@media print, (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+  /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+    Print styles.
+    Inlined to avoid required HTTP connection: h5bp.com/r
+    ========================================================================== */
+@media print {
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  a, a:visited {
+    text-decoration: underline;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+    content: "";
+  }
+  pre, blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tr, img {
+    page-break-inside: avoid;
+  }
+  img {
+    max-width: 100% !important;
+  }
+  @page {
+    margin: .5cm;
+  }
+  p, h2, h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  h2, h3 {
+    page-break-after: avoid;
+  }
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+  display: block;
+}
+
+audio, canvas, video {
+  display: inline;
+  zoom: 1;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+[hidden] {
+  display: none;
+}
+
+html {
+  font-size: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+html, button, input, select, textarea {
+  font-family: sans-serif;
+}
+
+a:focus {
+  outline: thin dotted;
+}
+
+a:active, a:hover {
+  outline: 0;
+}
+
+h1 {
+  font-size: 2em;
+  margin: .67em 0;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin: .83em 0;
+}
+
+h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
+h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+
+h5 {
+  font-size: .83em;
+  margin: 1.67em 0;
+}
+
+h6 {
+  font-size: .67em;
+  margin: 2.33em 0;
+}
+
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+b, strong {
+  font-weight: 700;
+}
+
+blockquote {
+  margin: 1em 40px;
+}
+
+dfn {
+  font-style: italic;
+}
+
+hr {
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  height: 0;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+code, kbd, pre, samp {
+  font-family: monospace, serif;
+  _font-family: 'courier new', monospace;
+  font-size: 1em;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+q {
+  quotes: none;
+}
+
+q:before, q:after {
+  content: none;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -.5em;
+}
+
+sub {
+  bottom: -.25em;
+}
+
+dd {
+  margin: 0 0 0 40px;
+}
+
+menu, ol, ul {
+  padding: 0 0 0 40px;
+}
+
+nav ul, nav ol {
+  list-style: none;
+  list-style-image: none;
+}
+
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+fieldset {
+  border: 1px solid silver;
+  margin: 0 2px;
+  padding: .35em .625em .75em;
+}
+
+legend {
+  border: 0;
+  white-space: normal;
+  margin-left: -7px;
+  padding: 0;
+}
+
+button, input, select, textarea {
+  font-size: 100%;
+  vertical-align: middle;
+  margin: 0;
+}
+
+button, input {
+  line-height: normal;
+}
+
+button, select {
+  text-transform: none;
+}
+
+button, html input[type="button"],
+input[type="reset"], input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+  overflow: visible;
+}
+
+button[disabled], html input[disabled] {
+  cursor: default;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 13px;
+  width: 13px;
+  padding: 0;
+}
+
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+button::-moz-focus-inner, input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body, figure, form {
+  margin: 0;
+}
+
+p, pre, dl, menu, ol, ul {
+  margin: 1em 0;
+}
+
+.selected1 {
+  background-color: #dc4832 !important;
+}
+
+.selected2 {
+  background-color: #f89a31 !important;
+}
+
+#answer0 {
+  top: 41%;
+  left: 14%;
+}
+
+#answer1 {
+  top: 41%;
+  left: 51%;
+}
+
+#answer2 {
+  top: 58%;
+  left: 14%;
+}
+
+#answer3 {
+  top: 58%;
+  left: 51%;
+}
+
+#answer0small {
+  top: 40%;
+  left: 10%;
+}
+
+#answer1small {
+  top: 52%;
+  left: 10%;
+}
+
+#answer2small {
+  top: 64%;
+  left: 10%;
+}
+
+#answer3small {
+  top: 76%;
+  left: 10%;
+}
+
+#answer0cat {
+  position: relative !important;
+}
+
+#answer1cat {
+  position: relative !important;
+}
+
+#answer2cat {
+  position: relative !important;
+}
+
+#answer3cat {
+  position: relative !important;
+}
+
+#answer4cat {
+  position: relative !important;
+}
+
+#answer5cat {
+  position: relative !important;
+}
+
+#answer6cat {
+  position: relative !important;
+}
+
+#answer7cat {
+  position: relative !important;
+}
+
+.cdk-drag-preview {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  -webkit-transition: -webkit-transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: -webkit-transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1), -webkit-transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.gameTimerStatus, .gameQuestionStatus {
+  font-size: 40px !important;
+  line-height: 40px !important;
+}
+
+@media only screen and (max-width: 1600px) {
+  .gameTimerStatus, .gameQuestionStatus {
+    font-size: 35px !important;
+    line-height: 35px !important;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .gameTimerStatus, .gameQuestionStatus {
+    font-size: 25px !important;
+    line-height: 25px !important;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .gameTimerStatus, .gameQuestionStatus {
+    font-size: 15px !important;
+    line-height: 20px !important;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .gameTimerStatus, .gameQuestionStatus {
+    font-size: 20px !important;
+    line-height: 20px !important;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .gameTimerStatus, .gameQuestionStatus {
+    font-size: 15px !important;
+    line-height: 20px !important;
+  }
+}
+/*# sourceMappingURL=play.component.css.map */

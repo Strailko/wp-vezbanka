@@ -6,21 +6,25 @@ import mk.vezbanka.wp.config.JwtUtils;
 import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.User;
 import mk.vezbanka.wp.model.UserDetailsImpl;
+import mk.vezbanka.wp.model.request.ChangePasswordRequest;
 import mk.vezbanka.wp.model.request.ChangeRoleRequest;
 import mk.vezbanka.wp.model.request.HeartedGameRequest;
 import mk.vezbanka.wp.model.request.UserRequest;
+import mk.vezbanka.wp.model.response.GameResponse;
 import mk.vezbanka.wp.model.response.JwtResponse;
 import mk.vezbanka.wp.model.response.MessageResponse;
+import mk.vezbanka.wp.model.response.UserResponse;
 import mk.vezbanka.wp.repository.UserRepository;
 import mk.vezbanka.wp.service.UserService;
+import mk.vezbanka.wp.service.implementation.MappingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,20 +41,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-
-    AuthenticationManager authenticationManager;
-
-    UserRepository userRepository;
-
-    PasswordEncoder encoder;
-
-    JwtUtils jwtUtils;
+    private final MappingService mappingService;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
+    private final JwtUtils jwtUtils;
 
     public UserController(UserService userService,
+                          MappingService mappingService,
                           AuthenticationManager authenticationManager,
                           UserRepository userRepository,
                           PasswordEncoder encoder, JwtUtils jwtUtils) {
         this.userService = userService;
+        this.mappingService = mappingService;
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.encoder = encoder;
@@ -58,33 +61,42 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getProfile(@PathVariable Long id) {
-        return userService.getUser(id);
+    public UserResponse getProfile(@PathVariable Long id) {
+        User user = userService.getUser(id);
+        return mappingService.mapToUserResponse(user);
     }
 
     @GetMapping("/games/{id}")
-    public List<Game> getGamesCreatedByUser(@PathVariable Long id) {
-        return userService.getGamesCreatedByUser(id);
+    public List<GameResponse> getGamesCreatedByUser(@PathVariable Long id) {
+        List<Game> games = userService.getGamesCreatedByUser(id);
+        return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @PostMapping("/heart")
+    @PreAuthorize("#request.userId == authentication.id")
     public boolean heartGame(@RequestBody HeartedGameRequest request) {
         return this.userService.addGameToHeartedGames(request.userId, request.gameId);
     }
 
     @GetMapping("/favorites/{userId}")
-    public List<Game> getFavouriteGames(@PathVariable Long userId) {
-        return this.userService.getFavoriteGames(userId);
+    @PreAuthorize("#userId == authentication.id")
+    public List<GameResponse> getFavouriteGames(@PathVariable Long userId) {
+        List<Game> games = userService.getFavoriteGames(userId);
+        return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return this.userService.getAllUsers();
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return users.stream().map(mappingService::mapToUserResponse).collect(Collectors.toList());
     }
 
     @PutMapping("/{userId}/change-role")
-    public User changeRole(@PathVariable Long userId, @RequestBody ChangeRoleRequest request) {
-        return userService.changeRole(userId, request.role);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserResponse changeRole(@PathVariable Long userId, @RequestBody ChangeRoleRequest request) {
+        User user = userService.changeRole(userId, request.role);
+        return mappingService.mapToUserResponse(user);
     }
 
     @PostMapping("/register")
@@ -112,7 +124,6 @@ public class UserController {
         }
     }
 
-
     @PostMapping("/login")
     public JwtResponse login(@RequestBody UserRequest request)
     {
@@ -134,5 +145,29 @@ public class UserController {
             roles);
     }
 
+    @PostMapping("/edit/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserRequest request) {
+        try {
+            userService.editUser(id, request);
+            return ResponseEntity.ok(new MessageResponse("User edited successfully!"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error editing the user"));
+        }
+    }
 
+    @PostMapping("/change-password/{id}")
+    @PreAuthorize("#id == authentication.id")
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request) {
+        try {
+            userService.changePassword(id, request.newPassword);
+            return ResponseEntity.ok(new MessageResponse("Password changed successfully"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest()
+                .body(new MessageResponse("Error changing password"));
+        }
+    }
 }

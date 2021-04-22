@@ -12,10 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Data
@@ -30,7 +32,9 @@ public class Category {
 
     private String shortDescription;
 
-    private String coverPhoto;
+    @Lob
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] coverPhoto;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore

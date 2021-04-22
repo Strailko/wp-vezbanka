@@ -29,13 +29,13 @@
                             </ul>
                             <div class="text-center mt-5">
                                 <h5>{{game.name}}</h5>
-                                <span><p *ngFor="let cat of game.categories">{{cat.name}}, </p></span>
+                                <span>{{game?.categories[0]?.name}}</span>
                             </div>
                         </div>
                     </div>
                     <div class="figure-title text-center p-2">
                         <h5>{{game.name}}</h5>
-                        <span><p *ngFor="let cat of game.categories">{{cat.name}}, </p></span>
+                        <span>{{game?.categories[0]?.name}}</span>
                     </div>
                 </div>
             </figure>

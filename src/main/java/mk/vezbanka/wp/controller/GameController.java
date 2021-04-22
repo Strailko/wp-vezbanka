@@ -1,9 +1,15 @@
 package mk.vezbanka.wp.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.*;
 import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.request.GameRequest;
+import mk.vezbanka.wp.model.response.GameResponse;
 import mk.vezbanka.wp.service.GameService;
+import mk.vezbanka.wp.service.implementation.MappingService;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,63 +25,77 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameController {
 
     private final GameService gameService;
+    private final MappingService mappingService;
 
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService,
+                          MappingService mappingService) {
         this.gameService = gameService;
+        this.mappingService = mappingService;
     }
 
     @GetMapping("/{id}")
-    public Game getGame(@PathVariable Long id) {
-        return gameService.getGameById(id);
+    public GameResponse getGame(@PathVariable Long id) {
+        Game game = gameService.getGameById(id);
+        return mappingService.mapToGameResponse(game);
     }
 
     @GetMapping("/random")
-    public Game getRandomGame() {
-        return gameService.getRandomGame();
+    public GameResponse getRandomGame() {
+        Game game = gameService.getRandomGame();
+        return mappingService.mapToGameResponse(game);
     }
 
     @GetMapping("/search/{query}")
-    public List<Game> search(@PathVariable String query) {
-        return gameService.searchGamesByName(query);
+    public List<GameResponse> search(@PathVariable String query) {
+        List<Game> games = gameService.searchGamesByName(query);
+        return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/top-ranked")
-    public List<Game> getTopRanked() {
-        return gameService.getTopRankedGames();
+    public List<GameResponse> getTopRanked() {
+        List<Game> games = gameService.getTopRankedGames();
+        return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/latest")
-    public List<Game> getLatestGames() {
-        return gameService.getLatestGames();
+    public List<GameResponse> getLatestGames() {
+        List<Game> games = gameService.getLatestGames();
+        return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/top-played")
-    public List<Game> getTopPlayed() {
-        return gameService.getTopPlayedGames();
+    public List<GameResponse> getTopPlayed() {
+        List<Game> games = gameService.getTopPlayedGames();
+        return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/all")
-    public List<Game> getAllGames() {
-        return gameService.getAllGames();
+    public List<GameResponse> getAllGames() {
+        List<Game> games = gameService.getAllGames();
+        return games.stream().map(mappingService::mapToGameResponse).collect(Collectors.toList());
     }
 
     @PostMapping("/create")
-    public Game createGame(@RequestBody GameRequest request) {
-        return gameService.createGame(request);
+    @PreAuthorize("hasAnyRole('ROLE_REGULAR', 'ROLE_ADMIN', 'ROLE_MODERATOR')")
+    public GameResponse createGame(@RequestBody GameRequest request) {
+        return mappingService.mapToGameResponse(gameService.createGame(request));
     }
 
     @PostMapping("/edit/{id}")
-    public Game editGame(@PathVariable Long id, @RequestBody GameRequest request) {
-        return gameService.editGame(id, request);
+    @PreAuthorize("isAuthenticated() && (hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR') or (authenticated.id == #request.creatorId))")
+    public GameResponse editGame(@PathVariable Long id, @RequestBody GameRequest request) {
+        return mappingService.mapToGameResponse(gameService.editGame(id, request));
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("isAuthenticated() && (hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR') or (authenticated.id == #request.creatorId))")
     public void deleteGame(@PathVariable Long id) {
         gameService.deleteGame(id);
     }
 
     @PostMapping("/submit/{id}")
-    public float submitGame(@PathVariable Long id, @RequestBody Game game) {
+    public float submitGame(@PathVariable Long id, @RequestBody GameRequest game) {
         return gameService.submitGame(id, game);
     }
+
 }

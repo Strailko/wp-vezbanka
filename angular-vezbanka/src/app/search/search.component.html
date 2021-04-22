@@ -28,14 +28,14 @@
                         <strong>Листа на игри</strong>
                     </div>
                     <ul class="playlist list-group list-group-flush">
-                        <li class="list-group-item" *ngFor="let game of filteredGames" [routerLink]="['/game/' + game.id]">
+                        <li class="list-group-item" *ngFor="let game of filteredGames" (click)="routeToGame(game.id)">
                             <div class="d-flex align-items-center">
                                 <div class="col-10">
                                     <figure class="avatar avatar-md float-left  mr-3 mt-1">
                                         <img [src]="game.photo" alt="Game photo">
                                     </figure>
                                     <h6>{{game.name}}</h6>
-                                    <small><p *ngFor="let cat of game.categories">{{cat.name}}</p>></small>
+                                    <small><p *ngFor="let cat of game.categories">{{cat.name}}</p></small>
                                 </div>
                                 <a href="#" class="ml-auto"><i class="icon-more"></i></a>
                             </div>

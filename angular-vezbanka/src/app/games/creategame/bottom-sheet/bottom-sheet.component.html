@@ -8,23 +8,23 @@
       <span style="font-size: x-small; color: #86939E;" mat-line>Обични прашања со погодување на точни одговори</span>
     </a>
   
-    <a href="#" mat-list-item (click)="setType($event, 1)" *ngIf="data.type != 1">
+    <!-- <a href="#" mat-list-item (click)="setType($event, 1)" *ngIf="data.type != 1">
       <span mat-line><mat-icon>drag_indicator</mat-icon> Спојување</span>
       <span style="font-size: x-small;" mat-line>Прашања со влечење, односно спојување на слики</span>
     </a>
-    <a href="#" mat-list-item (click)="setType($event, 1)" *ngIf="data.type == 1">
+    <a href="#" mat-list-item (click)="setType($event, 1)" *ngIf="data.type == 1"> -->
+    <a mat-list-item>
       <span mat-line style="color: #86939E;"><mat-icon>drag_indicator</mat-icon> Спојување</span>
       <span style="font-size: x-small; color: #86939E;" mat-line>Прашања со влечење, односно спојување на слики</span>
     </a>
   
-    <!-- <a href="#" mat-list-item (click)="setType($event, 2)" *ngIf="data.type != 2">
-      <span mat-line><mat-icon>select_all</mat-icon> Селекција</span>
-      <span style="font-size: x-small;" mat-line>Прашања со селекција и групирање на елементи</span>
-    </a>   -->
-    <!-- <a href="#" mat-list-item (click)="setType($event, 2)" *ngIf="data.type == 2"> -->
-    <a mat-list-item>
-      <span mat-line style="color: #86939E;"><mat-icon>select_all</mat-icon> Селекција</span>
-      <span style="font-size: x-small; color: #86939E;" mat-line>Прашања со селекција и групирање на елементи</span>
+    <a href="#" mat-list-item (click)="setType($event, 2)" *ngIf="data.type != 2">
+      <span mat-line><mat-icon>select_all</mat-icon> Класификација</span>
+      <span style="font-size: x-small;" mat-line>Прашања со класификација и групирање на елементи</span>
+    </a>  
+    <a href="#" mat-list-item (click)="setType($event, 2)" *ngIf="data.type == 2">
+      <span mat-line style="color: #86939E;"><mat-icon>select_all</mat-icon> Класификација</span>
+      <span style="font-size: x-small; color: #86939E;" mat-line>Прашања со класификација и групирање на елементи</span>
     </a>
   </mat-nav-list>
   

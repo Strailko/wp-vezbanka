@@ -30,5 +30,5 @@ public interface GameService {
 
     void deleteGame(Long id);
 
-    float submitGame(Long id, Game completedGame);
+    float submitGame(Long id, GameRequest completedGame);
 }

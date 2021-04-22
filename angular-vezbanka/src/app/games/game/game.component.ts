@@ -12,24 +12,48 @@ import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/s
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
+  isMod: boolean = false;
   id: string;
   game: Game;
   loggedIn: boolean = false;
   user: User;
-  heartedGame: HeartedGame;
+  isHearted: boolean = false;
+  heartedGame: HeartedGame = {
+    gameId: 0,
+    userId: 0
+  };
 
   constructor(private snackBar: MatSnackBar, private dataService: DataService, private storage: TokenStorageService, private router: Router, private route: ActivatedRoute, private clipboard: Clipboard) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
-    this.dataService.getGame(Number(this.id))
-        .subscribe((data: Game) => {
-          this.game = data;
-        });
     if(this.storage.getToken()) {
       this.loggedIn = true;
       this.user = this.storage.getUser();
+      if(this.storage.getUser().roles.includes("MODERATOR") || this.storage.getUser().roles.includes("ADMIN")) {
+        this.isMod = true;
+      }
     }
+    this.getGame();
+  }
+
+  getGame() {
+    this.dataService.getGame(Number(this.id))
+    .subscribe((data: Game) => {
+      this.game = data;
+      if(this.loggedIn) {
+        if(this.game.usersHeartedIds.includes(this.user?.id)) {
+          this.isHearted = true;
+        }
+        else {
+          this.isHearted = false;
+        }
+      }
+      this.dataService.getProfile(this.game.creatorId)
+          .subscribe((user) => {
+            this.game.creator = user;
+          });
+    });
   }
 
   heartGame(gameId: Number) {
@@ -38,14 +62,29 @@ export class GameComponent implements OnInit {
       this.heartedGame.userId = this.user.id;
       this.dataService.heartGame(this.heartedGame)
           .subscribe((confirmation) => {
-            console.log(confirmation);
-            this.openSnackBar("Успешно ја додадовте играта во омилени", "Во ред");
+            if(confirmation) {
+              this.getGame();
+              this.openSnackBar("Успешно ја додадовте играта во омилени", "Во ред");
+            }
+            else {
+              this.getGame();
+              this.openSnackBar("Играта е отстранета од омилени", "Во ред");
+            }
             return;
           });
-      this.openSnackBar("Играта е веќе поставена во омилени", "Во ред");
     }
     else {
       this.openSnackBar("Мора да бидете логирани за да додавате игри во омилени", "Во ред");
+    }
+  }
+
+  deleteGame() {
+    if(this.game) {
+      this.dataService.deleteGame(String(this.game.id))
+          .subscribe(() => {
+            this.router.navigate(['/games']);
+            this.openSnackBar("Успешно ја избришавте играта", "Во ред");
+          });
     }
   }
 
@@ -55,7 +94,8 @@ export class GameComponent implements OnInit {
   }
 
   playGame() {
-    this.router.navigate(['/game/' + this.game.id + '/play'])
+    //this.router.navigate(['/game/' + this.game.id + '/play'])
+    window.location.replace("/game/" + this.game.id + "/play");
   }
 
   openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {

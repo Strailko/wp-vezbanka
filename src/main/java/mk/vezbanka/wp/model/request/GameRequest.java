@@ -13,10 +13,20 @@ public class GameRequest {
     public String shortDescription;
 
     @NotNull
-    public Long userCreatorId;
+    public Long creatorId;
 
     public List<QuestionRequest> questions;
 
     @NotNull
     public List<Long> categoryIds;
+
+    public GameRequest(String name, String photo, String shortDescription, Long creatorId,
+                       List<QuestionRequest> questions, List<Long> categoryIds) {
+        this.name = name;
+        this.photo = photo;
+        this.shortDescription = shortDescription;
+        this.creatorId = creatorId;
+        this.questions = questions;
+        this.categoryIds = categoryIds;
+    }
 }

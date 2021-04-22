@@ -1,1 +1,167 @@
-<p>play works!</p>
+<!-- PERCENT LOADER START-->
+<div id="mainLoader"><img src="../../../assets/loader.png" /><br><span>0</span></div>
+<!-- PERCENT LOADER END-->
+
+<!-- CONTENT START-->
+<div id="main" style="top: -80px; height: 100%;">
+    <div id="option" class="fitImg" style="user-select: none;">
+        <div id="buttonOption" class="buttonClick buttonIcon buttonOptionOff" (click)="this.optionToggle = !this.optionToggle"><img class="optionOff" alt="Begin" src="../../../assets/button_option_close.png" /><img class="optionOn" *ngIf="!optionToggle" alt="Begin" src="../../../assets/button_option.png" /><img class="optionOn" *ngIf="optionToggle" alt="Begin" src="../../../assets/button_option_close.png" /></div>
+        <div id="optionList" *ngIf="optionToggle">
+            <div id="buttonFullscreen" class="buttonClick buttonIcon buttonFullscreen" (click)="toggleFullscreen()"><img alt="Begin" src="../../../assets/button_fullscreen.png" /></div>
+            <div id="buttonSound" class="buttonClick buttonIcon buttonSound buttonSoundOn" (click)="this.soundToggle = !this.soundToggle"><img class="soundOff" *ngIf="soundToggle" alt="Begin" src="../../../assets/button_sound_off.png" /><img class="soundOff" alt="Begin" *ngIf="!soundToggle" src="../../../assets/button_sound_on.png" /></div>
+            <div id="buttonExit" class="buttonClick buttonIcon buttonExit" *ngIf="startToggle" (click)="this.exitToggle = true"><img alt="Begin" src="../../../assets/button_exit.png" /></div>
+        </div>
+    </div>
+    
+    <div id="logoHolder" *ngIf="!startToggle">
+        <div class="mainContent fitImg">
+            <div class="logo" style="user-select: none;"><img src="../../../assets/logo.png"/></div>
+            <div class="preloadText fontPreload resizeFont"></div>
+            <div id="buttonStart" class="startImg buttonClick" (click)="startGame()"><img src="../../../assets/button_start.png"/></div>
+        </div>
+    </div>
+    
+    <div id="confirmHolder" class="overlayBg" *ngIf="exitToggle">
+        <div class="confirmContent">
+            <div class="message fontMessage resizeFont ignorePadding" data-fontSize="30" data-lineHeight="30" style="font-size: 20px;">Дали сте сигурни дека сакате да ја исклучите играта?</div>
+            <div id="buttonOk" class="okImg buttonClick fitImg" (click)="goBackToGame()"><img src="../../../assets/button_ok.png"/></div>
+            <div id="buttonCancel" class="cancelImg buttonClick fitImg" (click)="this.exitToggle = false"><img src="../../../assets/button_cancel.png"/></div>
+        </div>
+    </div>
+    
+    
+    <div id="gameHolder" *ngIf="startToggle && !resultToggle">
+        <div id="gameStatus" class="fitImg">
+            <div class="gameTotal fontStatus">
+                <div class="gameQuestionStatus resizeFont" data-fontSize="30" data-lineHeight="30">{{questionIndex+1}}/{{numQuestions}}</div>
+                <img class="soundOn" alt="Begin" src="../../../assets/item_question.png" />
+            </div>
+            <div class="gameTimer fontStatus">
+                <div class="gameTimerStatus resizeFont" data-fontSize="30" data-lineHeight="30">00:{{seconds}}</div>
+                <img class="soundOn" alt="Begin" src="../../../assets/item_timer.png" />
+            </div>
+        </div>
+        
+        <div id="questionLoaderHolder" *ngIf="loading"></div>
+        
+        <div id="questionHolder" style="display: block; opacity: 1;" *ngIf="!explanationToggle && !resultToggle && !loading && questions[questionIndex].questionType == 0">
+
+            <div class="question fontQuestion resizeFont" data-fontsize="50" data-lineheight="58" style="font-size: 60px; line-height: 70px; color: rgb(255, 255, 255); text-align: center; top: 25%; left: 5%; width: 90%; height: 30%;">
+                {{questions[questionIndex].content}}
+            </div>
+            <div id="answerHolder" *ngIf="photoStage" style="height: 50%; top: 40%; display: flex; justify-content: center;" (click)="collapsePhotoStage()">
+                <div style="background: url('{{questions[questionIndex].photo}}'); background-position: center; background-repeat: no-repeat; background-size: contain; width: 90%; height: 100%;"></div>
+            </div>
+            <div id="answerHolder" *ngIf="!isScreenSmall && !photoStage">
+                <div *ngFor="let answer of questions[questionIndex].answers; let i = index">
+                    <div [id]="'answer'+i" class="answer resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 35%; height: 10%; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="0" data-type="text" (click)="toggleAnswerSelection(answer)">
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;" [class.selected1]="answer.isSelected"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;" [class.selected2]="answer.isSelected"></div>
+                        <div id="text1" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 48px; line-height: 48px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{answer.answer}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
+                <div id="answer4" class="answer resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 35%; height: 10%; top: 75%; left: 32%; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="4" data-type="text" data-submit="true" (click)="submitQuestion(questions[questionIndex])">
+                    <div class="shadow resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                    <div class="background resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                    <div id="text4" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 48px; line-height: 48px; color: rgb(255, 255, 255); text-align: center; user-select: none;"><i class="icon-arrow-right p-0"></i></div>
+                    <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                </div>
+            </div>
+            <div id="answerHolder" *ngIf="isScreenSmall && !photoStage">
+                <div *ngFor="let answer of questions[questionIndex].answers; let i = index">
+                    <div [id]="'answer'+i+'small'" class="answer resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 80%; height: 10%; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="0" data-type="text" (click)="toggleAnswerSelection(answer)">
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;" [class.selected1]="answer.isSelected"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;" [class.selected2]="answer.isSelected"></div>
+                        <div id="text1" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 48px; line-height: 48px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{answer.answer}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
+                <div id="answer4" class="answer resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 80%; height: 10%; top: 85%; left: 10%; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="4" data-type="text" data-submit="true" (click)="submitQuestion(questions[questionIndex])">
+                    <div class="shadow resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                    <div class="background resizeBorder" data-border="15" style="border-radius: 17.9875px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                    <div id="text4" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 48px; line-height: 48px; color: rgb(255, 255, 255); text-align: center; user-select: none;"><i class="icon-arrow-right p-0"></i></div>
+                    <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 17.9875px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="questionHolder" style="display: block; opacity: 1;" *ngIf="!explanationToggle && !resultToggle && !loading && questions[questionIndex].questionType == 2">
+
+            <div class="question fontQuestion resizeFont" data-fontsize="50" data-lineheight="58" style="font-size: 60px; line-height: 70px; color: rgb(255, 255, 255); text-align: center; top: 25%; left: 5%; width: 90%; height: 30%;" *ngIf="photoStage">
+                {{questions[questionIndex].content}}
+            </div>
+            <div id="answerHolder" *ngIf="photoStage" style="height: 50%; top: 40%; display: flex; justify-content: space-around;" (click)="collapsePhotoStage()">
+                <div style="background: url('{{questions[questionIndex].classes[0].photo}}'); background-position: center; background-repeat: no-repeat; background-size: contain; width: 90%; height: 100%;"></div>
+                <div style="background: url('{{questions[questionIndex].classes[1].photo}}'); background-position: center; background-repeat: no-repeat; background-size: contain; width: 90%; height: 100%;"></div>
+            </div>
+            <div id="groupHolder" *ngIf="!photoStage">
+                <div id="groupLabel0" class="groupDropLabel fontAnswer resizeFont" data-fontsize="50" data-lineheight="50" style="width: 43%; height: 10%; top: 10%; left: 5%; font-size: 55px; line-height: 55px; color: rgb(204, 204, 204); text-align: center; display: flex; justify-content: space-evenly; align-items: center;">{{questions[questionIndex].classes[0].name}}</div>
+                <div id="groupDrop0" class="groupDrop ui-droppable" style="width:43%; height:auto; min-height: 35%; top:20%; left:5%; border:#fff solid 1px; background: url('{{questions[questionIndex].classes[0].photo}}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 9; display: flex; text-align: center; flex-wrap: wrap;" cdkDropList #class1List="cdkDropList" [cdkDropListData]="class1" [cdkDropListConnectedTo]="[wordsList, class2List]" (cdkDropListDropped)="onDrop($event)">
+                    <div [id]="'answer'+i+'cat'" class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; width:43%; height:30%; z-index: 10; opacity: 1; max-width: 300px; max-height: 83px; min-height: 83px; height: 100%; width: 100%; position: relative !important; margin: 1em;" *ngFor="let word of class1; let i = index" cdkDrag>
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
+                <div id="groupLabel1" class="groupDropLabel fontAnswer resizeFont" data-fontsize="50" data-lineheight="50" style="width: 43%; height: 10%; top: 10%; left: 51%; font-size: 55px; line-height: 55px; color: rgb(204, 204, 204); text-align: center; display: flex; justify-content: space-evenly; align-items: center;">{{questions[questionIndex].classes[1].name}}</div>
+                <div id="groupDrop1" class="groupDrop ui-droppable" style="width:43%; height:auto; min-height: 35%; top:20%; left:51%; border:#fff solid 1px; background: url('{{questions[questionIndex].classes[1].photo}}'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 9;  display: flex; text-align: center; flex-wrap: wrap;" cdkDropList #class2List="cdkDropList" [cdkDropListData]="class2" [cdkDropListConnectedTo]="[wordsList, class1List]" (cdkDropListDropped)="onDrop($event)">
+                    <div [id]="'answer'+i+'cat'" class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; width:43%; height:30%; z-index: 10; opacity: 1; max-width: 300px; max-height: 83px; min-height: 83px; height: 100%; width: 100%; position: relative !important; margin: 1em; " *ngFor="let word of class2; let i = index" cdkDrag>
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
+                <div class="groupDrop ui-droppable" style="width:89%; height:auto; min-height: 30%; top:55%; left:5%; z-index: 8; display: flex; text-align: center; justify-content: center; flex-wrap: wrap; padding-top: 4em;" cdkDropList #wordsList="cdkDropList" [cdkDropListData]="allWords" [cdkDropListConnectedTo]="[class1List, class2List]" (cdkDropListDropped)="onDrop($event)">
+                    <div [id]="'answer'+i+'cat'" class="answer resizeBorder groupDrag ui-droppable ui-draggable ui-draggable-handle" data-border="15" style="border-radius: 16.275px; z-index: 10; opacity: 1; max-width: 300px; max-height: 83px; min-height: 83px; height: 100%; width: 100%; position: relative !important; margin: 1em;" *ngFor="let word of allWords; let i = index" cdkDrag>
+                        <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                        <div id="text0" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 43px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;">{{word}}</div>
+                        <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="answerHolder" *ngIf="!photoStage && allWords.length < 2">
+                <div id="answer4" class="answer resizeBorder" data-border="15" style="border-radius: 16.275px; width: 35%; height: 14%; top: 84%; left: 32%; z-index: 10; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-id="8" data-type="text" data-submit="true" (click)="submitQuestion(questions[questionIndex])">
+                    <div class="shadow resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(111, 173, 78) none repeat scroll 0% 0%; width: 100%; height: 100%; position: absolute; top: -15%; left: 0px;"></div>
+                    <div class="background resizeBorder" data-border="15" style="border-radius: 16.275px; background: rgb(162, 205, 74) none repeat scroll 0% 0%; width: 100%; height: 85%; position: absolute; top: -15%; left: 0px;"></div>
+                    <div id="text8" class="fontAnswer resizeFont" data-fontsize="40" data-lineheight="40" style="position: relative; font-size: 64px; line-height: 43px; color: rgb(255, 255, 255); text-align: center; user-select: none;"><i class="icon-arrow-right p-0"></i></div>
+                    <div class="buttonClick resizeBorder" data-border="15" style="border-radius: 16.275px; width: 100%; height: 100%; position: absolute; top: -15%;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="questionResultHolder" *ngIf="explanationToggle">
+            <div id="explanationHolder">
+                <div class="explanation fontExplanation resizeFont" data-fontsize="35" data-lineheight="35" style="font-size: 42px; line-height: 42px; color: rgb(204, 204, 204); text-align: center; top: 45%; left: 5%; width: 90%; height: 10%;"></div>
+            </div>
+            <div class="questionResultText fontCorrectWrong" style="font-size: 50px; line-height: 50px; color: rgb(255, 255, 255); top: 30%; left: 5%; width: 90%; height: 30%; text-align: center; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0);" data-fontsize="50" data-lineheight="50">{{result}}</div>
+            <div class="buttonClick fitImg fontCorrectWrong nextImg" id="buttonNextQues" (click)="nextQuestion()"><img src="../../../assets/button_next.png"></div>
+            <div class="buttonClick fitImg fontCorrectWrong previewImg" id="buttonPreviewQues"><img src="../../../assets/button_preview.png"></div>
+        </div>
+    </div>
+    
+    <div id="resultHolder" *ngIf="resultToggle">        
+        <div class="resultContent fitImg">
+            <div class='itemWinnerCup'><img src="../../../assets/item_cup.png" /></div>
+            <div class="resizeFont fontResultScore fontScore" id="resultScore" data-fontsize="50" data-lineheight="50" style="padding: 0.3em 0; font-size: 60px; line-height: 60px;">
+                Твојот резултат е : {{score}}/{{numQuestions}} <div *ngIf="scorePercentage"><br> {{scorePercentage | number : '1.0-1'}}%</div>
+            </div>
+            <div class="option singleOption">
+                <ul>
+                    <li id="buttonReplay" class="buttonClick fitImg" (click)="playAgain()"><img alt="Replay" src="../../../assets/button_replay.png" /></li>
+                </ul>
+            </div>
+            <div id="shareOption" class="share">
+                <div class="resizeFont fontShare" data-fontsize="30" data-lineheight="30" style="font-size: 36px; line-height: 36px;">Сподели</div>
+                <ul>
+                    <li id="buttonFacebook" class="buttonClick fitImg" (click)="share('facebook')"><img alt="Facebook" src="../../../assets/button_facebook.png" /></li>
+                    <li id="buttonTwitter" class="buttonClick fitImg" (click)="share('twitter')"><img alt="Twitter" src="../../../assets/button_twitter.png" /></li>
+                    <li id="buttonGoogle" class="buttonClick fitImg" (click)="share('google')"><img alt="Google" src="../../../assets/button_google.png" /></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

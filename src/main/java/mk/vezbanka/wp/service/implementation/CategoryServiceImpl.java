@@ -1,8 +1,11 @@
 package mk.vezbanka.wp.service.implementation;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import javax.transaction.Transactional;
 import mk.vezbanka.wp.model.Category;
 import mk.vezbanka.wp.model.Game;
+import mk.vezbanka.wp.model.request.CategoryRequest;
 import mk.vezbanka.wp.repository.CategoryRepository;
 import mk.vezbanka.wp.service.CategoryService;
 import org.springframework.stereotype.Service;
@@ -22,8 +25,8 @@ public class CategoryServiceImpl implements CategoryService {
             new RuntimeException("Can't find category with id: " + id));
     }
 
-    private void save(Category category) {
-        categoryRepository.save(category);
+    private Category save(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -44,5 +47,27 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Game> getGamesByCategory(Long id) {
         Category category = getCategoryById(id);
         return category.getGames();
+    }
+
+    @Override
+    public Category create(CategoryRequest request) {
+        Category category = new Category();
+        setUpCategory(category, request);
+
+        return save(category);
+    }
+
+    @Override
+    public Category edit(Long categoryId, CategoryRequest request) {
+        Category category = getCategoryById(categoryId);
+        setUpCategory(category, request);
+        return save(category);
+    }
+
+    @Transactional
+    private void setUpCategory(Category category, CategoryRequest request) {
+        category.setName(request.name);
+        category.setShortDescription(request.shortDescription);
+        category.setCoverPhoto(request.coverPhoto.getBytes(StandardCharsets.UTF_8));
     }
 }
