@@ -39,6 +39,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public void removeGameFromCategory(Long categoryId, Game game) {
+        Category category = getCategoryById(categoryId);
+
+        category.getGames().remove(game);
+
+        save(category);
+    }
+
+    @Override
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }

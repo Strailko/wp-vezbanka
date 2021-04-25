@@ -18,4 +18,6 @@ public interface CategoryService {
     List<Game> getGamesByCategory(Long id);
 
     void addGameToCategory(Long categoryId, Game game);
+
+    void removeGameFromCategory(Long categoryId, Game game);
 }

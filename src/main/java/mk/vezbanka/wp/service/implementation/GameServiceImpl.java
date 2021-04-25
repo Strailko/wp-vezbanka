@@ -270,7 +270,20 @@ public class GameServiceImpl implements GameService {
                 categoryList.add(currentCategory);
             });
         }
-        game.setCategories(categoryList);
+        //remove all the categories which were previously in the game but are not anymore with the edit
+        if(game.getCategories() != null && !game.getCategories().isEmpty()) {
+            List<Category> temporaryList = new ArrayList<>(game.getCategories());
+            //This will remove the categories that were already added and
+            // the categories that need to be removed will stay in temporaryList
+            temporaryList.removeAll(categoryList);
+
+            temporaryList.forEach(cat -> {
+                if (cat.getGames().contains(game))
+                    categoryService.removeGameFromCategory(cat.getId(), game);
+            });
+        }
+
+            game.setCategories(categoryList);
 
         save(game);
     }
