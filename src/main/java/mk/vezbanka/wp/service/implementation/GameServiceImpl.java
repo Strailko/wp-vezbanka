@@ -118,6 +118,11 @@ public class GameServiceImpl implements GameService {
     @Override
     public void deleteGame(Long id) {
         Game game = getGameById(id);
+
+        //Because category is owner of games, we have to delete each game from its parent category object
+        game.getCategories().forEach(cat ->
+            categoryService.removeGameFromCategory(cat.getId(), game)
+        );
         gameRepository.delete(game);
     }
 

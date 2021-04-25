@@ -80,11 +80,14 @@ export class GameComponent implements OnInit {
 
   deleteGame() {
     if(this.game) {
-      this.dataService.deleteGame(String(this.game.id))
+      let confirmationMessage = confirm("Дали сте сигурни дека сакате да ја избришете играта?");
+      if (confirmationMessage) {
+        this.dataService.deleteGame(String(this.game.id))
           .subscribe(() => {
             this.router.navigate(['/games']);
             this.openSnackBar("Успешно ја избришавте играта", "Во ред");
           });
+      }
     }
   }
 
