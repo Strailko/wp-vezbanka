@@ -3,8 +3,10 @@ package mk.vezbanka.wp.service.implementation;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.*;
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import mk.vezbanka.wp.model.Game;
 import mk.vezbanka.wp.model.Role;
@@ -38,6 +40,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.gameService = gameService;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+    }
+
+    @PostConstruct
+    private void createAdminUserAndRoles() {
+        List<Role> roles = roleRepository.findAll();
+        if(roles.isEmpty()) {
+            roleRepository.save(new Role(RoleEnum.REGULAR));
+            roleRepository.save(new Role(RoleEnum.ADMIN));
+            roleRepository.save(new Role(RoleEnum.MODERATOR));
+        }
+
+        Optional<User> adminUser = userRepository.findByUsername("admin");
+        if (adminUser.isEmpty()) {
+            User admin = new User("admin", passwordEncoder.encode("admin"));
+            Set<Role> adminRole = new HashSet<>();
+            adminRole.add(new Role(RoleEnum.ADMIN));
+            admin.setRoles(adminRole);
+            saveUser(admin);
+        }
     }
 
     @Override

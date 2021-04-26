@@ -25,4 +25,8 @@ public class Role {
 
     public Role() {
     }
+
+    public Role(RoleEnum name) {
+        this.name = name;
+    }
 }
