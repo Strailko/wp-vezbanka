@@ -118,11 +118,24 @@ public class GameServiceImpl implements GameService {
     @Override
     public void deleteGame(Long id) {
         Game game = getGameById(id);
+        List<User> users = userRepository.findAll();
 
         //Because category is owner of games, we have to delete each game from its parent category object
         game.getCategories().forEach(cat ->
             categoryService.removeGameFromCategory(cat.getId(), game)
         );
+
+        //User is owner of hearted games, we have to remove the game from all users that have hearted it
+        users.stream()
+            .filter(user -> user.getHeartedGames().contains(game))
+            .forEach(user -> {
+                List<Game> heartedGames = user.getHeartedGames();
+                heartedGames.remove(game);
+                user.setHeartedGames(heartedGames);
+                //update user in db
+                userRepository.save(user);
+            });
+
         gameRepository.delete(game);
     }
 

@@ -42,24 +42,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.roleRepository = roleRepository;
     }
 
-    @PostConstruct
-    private void createAdminUserAndRoles() {
-        List<Role> roles = roleRepository.findAll();
-        if(roles.isEmpty()) {
-            roleRepository.save(new Role(RoleEnum.REGULAR));
-            roleRepository.save(new Role(RoleEnum.ADMIN));
-            roleRepository.save(new Role(RoleEnum.MODERATOR));
-        }
-
-        Optional<User> adminUser = userRepository.findByUsername("admin");
-        if (adminUser.isEmpty()) {
-            User admin = new User("admin", passwordEncoder.encode("admin"));
-            Set<Role> adminRole = new HashSet<>();
-            adminRole.add(new Role(RoleEnum.ADMIN));
-            admin.setRoles(adminRole);
-            saveUser(admin);
-        }
-    }
+    //@PostConstruct
+    //private void createAdminUserAndRoles() {
+    //    List<Role> roles = roleRepository.findAll();
+    //    if(roles.isEmpty()) {
+    //        roleRepository.save(new Role(RoleEnum.REGULAR));
+    //        roleRepository.save(new Role(RoleEnum.ADMIN));
+    //        roleRepository.save(new Role(RoleEnum.MODERATOR));
+    //    }
+    //
+    //    Optional<User> adminUser = userRepository.findByUsername("admin");
+    //    if (adminUser.isEmpty()) {
+    //        User admin = new User("admin", passwordEncoder.encode("admin"));
+    //        Set<Role> adminRole = new HashSet<>();
+    //        adminRole.add(new Role(RoleEnum.ADMIN));
+    //        admin.setRoles(adminRole);
+    //        saveUser(admin);
+    //    }
+    //}
 
     @Override
     public User getUser(Long id) {
